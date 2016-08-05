@@ -14,9 +14,9 @@ $db->FetchRow();
 $ghoston=$db->FetchField("rt_stream_ghost");
 $db->DoQuery("select * from surveys where isghost=1");
 if($db->FetchRow()){
-	$nmd=$db->FetchField("md");
-	$ninc=$db->FetchField("inc");
-	$nazm=$db->FetchField("azm");
+	$nmd=sprintf("%.2f",$db->FetchField("md"));
+	$ninc=sprintf("%.2f",$db->FetchField("inc"));
+	$nazm=sprintf("%.2f",$db->FetchField("azm"));
 } else{
 	$nmd=0;
 	$ninc=0;
