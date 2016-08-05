@@ -39,7 +39,7 @@ function reloadAndClose(){
 	}
 	window.close();
 }	
-setTimeout(reloadAndClose, 100);
+//setTimeout(reloadAndClose, 100);
 </script>
 </head>
 </html>
