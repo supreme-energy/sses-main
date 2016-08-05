@@ -12,7 +12,17 @@ $db->OpenDb();
 $db->DoQuery("select * from wellinfo");
 $db->FetchRow();
 $ghoston=$db->FetchField("rt_stream_ghost");
-echo("ghost on value :".$ghoston);
+$db->DoQuery("select * from surveys where isghost=1");
+if($db->FetchRow()){
+	$nmd=$db->FetchField("md");
+	$ninc=$db->FetchField("inc");
+	$nazm=$db->FetchField("azm");
+} else{
+	$nmd=0;
+	$ninc=0;
+	$nazm=0;
+}
+
 	try{
 	require 'HTTP/Upload.php';
 	$upload = new http_upload('en');
@@ -126,15 +136,16 @@ function streamPolling(){
 		 "seldbname=<?=$seldbname?>&depth="+current_rt_id,
 		function(data) {
 			if(data.res == 'ERR') alert('ERROR: ' + data.msg);
+
 			$.each( data, function( key, val ) {
 	    		current_rt_id=val.id
 	    		stream_dp_count=stream_dp_count+1;
 	    		$("#streaming-data-table tr:first").after('<tr class="surveys"><td class="surveys">'+val.tvd+'</td><td class="surveys">'+val.md+'</td><td class="surveys">'+val.value+'</td></tr>');
 	 		 });
 	 		 $("#streaming-data-count").text(stream_dp_count);
-	 		 var ghost_status = <?=$ghoston?>;
-	 		 
+	 		 var ghost_status = <?=$ghoston?>; 		 
 	 		 if(ghost_status==1){
+	 		 	
 	 		 	$('#streaming-data').hide()
 				$('#pause-stream').hide()
 				$('#play-stream').show()
@@ -251,8 +262,30 @@ $(document).ready(function() {
 				</table>
 			</div></td></tr>
 		</table>
-	
+		<form method="post">
+		<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
+		
+		</form>
+		<div>
+			<TABLE class='container'>
+	<TR>
+	<TH>Depth</TH>
+	<TH>Inc</TH>
+	<TH>Azm</TH>
+	</TR>
+	<TR>
+	<FORM action="ghostcomplete.php" method="post">
+	<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
+	<TD><INPUT TYPE="text" VALUE="<?=$nmd?>" NAME="md" SIZE="6"></TD>
+	<TD><INPUT TYPE="text" VALUE="<?echo $ninc?>" NAME="inc" SIZE="4"></TD>
+	<TD><INPUT TYPE="text" VALUE="<?echo $nazm?>" NAME="azm" SIZE="4"></TD>
+	<TD><INPUT TYPE="submit" VALUE="Mark Ghost Complete"></TD>
+	</FORM>
+	</TR>
+	</TABLE>
+		</div>
 	</div>
+	
 	<br>
 	</div>
 </body>
