@@ -132,7 +132,8 @@ function streamPolling(){
 	    		$("#streaming-data-table tr:first").after('<tr class="surveys"><td class="surveys">'+val.tvd+'</td><td class="surveys">'+val.md+'</td><td class="surveys">'+val.value+'</td></tr>');
 	 		 });
 	 		 $("#streaming-data-count").text(stream_dp_count);
-	 		 var ghost_status = <?=$ghoston?>
+	 		 var ghost_status = <?=$ghoston?>;
+	 		 
 	 		 if(ghost_status==1){
 	 		 	$('#streaming-data').hide()
 				$('#pause-stream').hide()
