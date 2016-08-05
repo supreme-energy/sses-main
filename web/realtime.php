@@ -132,13 +132,21 @@ function streamPolling(){
 	    		$("#streaming-data-table tr:first").after('<tr class="surveys"><td class="surveys">'+val.tvd+'</td><td class="surveys">'+val.md+'</td><td class="surveys">'+val.value+'</td></tr>');
 	 		 });
 	 		 $("#streaming-data-count").text(stream_dp_count);
+	 		 var ghost_status = <?=$ghoston?>
+	 		 if(ghost_status==1){
+	 		 	$('#streaming-data').hide()
+				$('#pause-stream').hide()
+				$('#play-stream').show()
+				$('#enable-ghost').hide()
+				$('#disable-ghost').show()	
+	 		 }
 		}).fail(function( jqxhr, textStatus, error ) {
 			alert('Request Failed: ' + textStatus + ", " + error);
 		});
 	}
 	//setTimeout(streamPolling,10000);
 }
-setTimeout(streamPolling, 1000);
+setTimeout(streamPolling, 100);
 $(document).ready(function() {
 	
 	$('#pause-stream').click(function(){
