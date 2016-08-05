@@ -9,21 +9,17 @@ require_once("dbio.class.php");
 if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname']) ? $_GET['seldbname'] : '');
 $db= new dbio($seldbname);
 $db->OpenDb();
-$sql = "update surveys set isghost=0 where isghost=1";
-echo($sql."<br>");
+$sql = "update surveys set isghost=0 where isghost=1;";
 $db->DoQuery($sql);
-$sql = "update welllogs set isghost=0 where isghost=1";
-echo($sql."<br>");
+$sql = "update welllogs set isghost=0 where isghost=;1";
 $db->DoQuery($sql);
-$sql = "update appinfo set ghost_dip=0,ghost_fault=0";
-echo($sql."<br>");
+$sql = "update appinfo set ghost_dip=0,ghost_fault=0;";
 $db->DoQuery($sql);
-$sql ="update wellinfo set rt_stream_ghost=0 ";
-echo($sql."<br>");
+$sql ="update wellinfo set rt_stream_ghost=0;";
 $db->DoQuery($sql);
-$sql = "delete from ghost_data";
-echo($sql."<br>");
+$sql = "delete from ghost_data;";
 $db->DoQuery($sql);
+$db->CloseDb();
 ?>
 <!doctype html>
 <html>
