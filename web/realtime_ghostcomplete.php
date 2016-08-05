@@ -39,7 +39,7 @@ function reloadAndClose(){
 //				window.opener.callMask(true);
 				window.opener.location.reload()
 	}
-	//window.close();
+	window.location="/sses/realtime.php?seldbname=<?=$seldbname?>";
 }	
 setTimeout(reloadAndClose, 100);
 </script>
