@@ -6,7 +6,7 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
 require_once("dbio.class.php");
-if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname']) ? $_GET['seldbname'] : '');
+if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_POST['seldbname']) ? $_POST['seldbname'] : '');
 $db= new dbio($seldbname);
 $db->OpenDb();
 $sql = "update surveys set isghost=0 where isghost=1;";
@@ -39,9 +39,9 @@ function reloadAndClose(){
 //				window.opener.callMask(true);
 				window.opener.location.reload()
 	}
-	window.close();
+	//window.close();
 }	
-//setTimeout(reloadAndClose, 100);
+setTimeout(reloadAndClose, 100);
 </script>
 </head>
 </html>
