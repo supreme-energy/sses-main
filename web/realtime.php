@@ -274,7 +274,7 @@ $(document).ready(function() {
 	<TH>Azm</TH>
 	</TR>
 	<TR>
-	<FORM action="ghostcomplete.php" method="post">
+	<FORM action="realtime_ghostcomplete.php" method="post">
 	<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 	<TD><INPUT TYPE="text" VALUE="<?=$nmd?>" NAME="md" SIZE="6"></TD>
 	<TD><INPUT TYPE="text" VALUE="<?echo $ninc?>" NAME="inc" SIZE="4"></TD>
