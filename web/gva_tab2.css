@@ -1,0 +1,150 @@
+body {
+	margin: 10px;
+   font-family: Arial,Helvetica,"sans-serif",Tahoma;
+  font-size: 10pt;
+  color: black;
+  background-color: #307040;
+}
+h2 {
+	margin: 0 0;
+	text-align: left;
+}
+td {
+	vertical-align: top;
+	text-align: left;
+	padding: 0;
+}
+th {
+	text-align: center;
+	font-size: 10pt;
+}
+input {
+	font-size: .8em;
+	text-align: right;
+}
+form {
+	padding: 0;
+	margin: 0;
+}
+a { color: #000080; }
+a.tabs {text-decoration:none; color: #000;}
+a.tabsinactive {text-decoration:none; color: #777;}
+a.tabsinactive:hover {text-decoration:none; color: #000;}
+a.menu { font-size: 10pt; }
+table.tabs {
+	border-style: none;
+	border-width: 0px;
+	border-spacing: 0px;
+	color: #000;
+	/* float: left; */
+	text-align: left;
+	padding: 0px;
+	margin: 0;
+  	background-color: transparent;
+  }
+td.active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0;
+	border-bottom-color: rgb(230,220,177);
+  	background-color: rgb(230,220,177);
+	color: #000;
+	width: 100px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+td.inactive:hover {
+	background-color: #90d0a0;
+}
+td.inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0px;
+	background-color: #ddd;
+	color: #777;
+	width: 100px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+table.tabcontainer {
+	-moz-border-radius: 0px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	text-align: left;
+	padding: 2px;
+	margin: 0;
+  background-color: rgb(230,220,177);
+  }
+table.container {
+  -moz-border-radius: 5px 5px 5px 5px;
+  border-spacing: 0;
+  padding: 4;
+  margin: 0;
+	border: thin solid black;
+  background-color: #c0c0a0;
+	height: 80px;
+}
+
+table.surveys {
+  -moz-border-radius: 5px 5px 5px 5px;
+  text-align: left;
+  border-spacing: 0;
+  border: thin solid black;
+  background-color: #c0c0a0;
+  width: 700px;
+  font-size: 10pt;
+	padding: 0;
+}
+th.surveys {
+  text-align: center;
+  padding: 0 2;
+  background-color: #509060;
+  border: none;
+  border-left: thin solid black;
+  border-top: thin solid black;
+  border-bottom: thin solid black;
+}
+td.surveys {
+  background-color: #f0f0d0;
+  text-align: right;
+  padding: 0 0;
+  border: none;
+  border-left: thin solid black;
+  border-bottom: thin solid black;
+}
+input.surveys {
+  text-align: right;
+  margin: 0 0;
+  border-style: none;
+  background-color: white;
+  width: 100%;
+}
+td.gridro {
+  background-color: rgb(210,225,180);;
+  text-align: right;
+  padding: 0 4;
+  border: none;
+  border-left: thin solid black;
+  border-bottom: thin solid black;
+  font-size: 9pt;
+}
+td.gridro2 {
+  background-color: rgb(240,240,190);;
+  text-align: right;
+  padding: 0 4;
+  border: none;
+  border-left: thin solid black;
+  border-bottom: thin solid black;
+  font-size: 9pt;
+}

@@ -1,0 +1,850 @@
+--
+-- PostgreSQL database dump
+--
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: appinfo; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE appinfo (
+    id integer NOT NULL,
+    version double precision,
+    scaleright double precision DEFAULT 0,
+    zoom numeric DEFAULT 3 NOT NULL,
+    bias double precision DEFAULT 0 NOT NULL,
+    scale double precision DEFAULT 1 NOT NULL,
+    tot double precision DEFAULT 0 NOT NULL,
+    bot double precision DEFAULT 0 NOT NULL,
+    viewallds integer DEFAULT 1 NOT NULL,
+    viewrotds integer DEFAULT 0 NOT NULL,
+    surveysort text DEFAULT 'asc'::text NOT NULL,
+    dataset integer DEFAULT 1 NOT NULL,
+    tablename text DEFAULT ''::text NOT NULL,
+    viewadjds integer DEFAULT 1 NOT NULL,
+    lastptype text DEFAULT 'LAT'::text NOT NULL,
+    lastmtype text DEFAULT 'INC'::text NOT NULL
+);
+
+
+ALTER TABLE public.appinfo OWNER TO umsdata;
+
+--
+-- Name: appinfo_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE appinfo_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.appinfo_id_seq OWNER TO umsdata;
+
+--
+-- Name: appinfo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE appinfo_id_seq OWNED BY appinfo.id;
+
+
+--
+-- Name: appinfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('appinfo_id_seq', 1, true);
+
+
+--
+-- Name: cld_10; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE cld_10 (
+    id integer NOT NULL,
+    md double precision,
+    tvd double precision,
+    vs double precision,
+    value double precision,
+    hide smallint DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.cld_10 OWNER TO umsdata;
+
+--
+-- Name: cld_10_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE cld_10_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cld_10_id_seq OWNER TO umsdata;
+
+--
+-- Name: cld_10_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE cld_10_id_seq OWNED BY cld_10.id;
+
+
+--
+-- Name: cld_10_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('cld_10_id_seq', 1, false);
+
+
+--
+-- Name: controllogs; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE controllogs (
+    id integer NOT NULL,
+    tablename text,
+    startmd numeric,
+    endmd numeric,
+    realname text,
+    dip double precision DEFAULT 0 NOT NULL,
+    tot double precision DEFAULT 0 NOT NULL,
+    bot double precision DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.controllogs OWNER TO umsdata;
+
+--
+-- Name: controllogs_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE controllogs_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.controllogs_id_seq OWNER TO umsdata;
+
+--
+-- Name: controllogs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE controllogs_id_seq OWNED BY controllogs.id;
+
+
+--
+-- Name: controllogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('controllogs_id_seq', 10, true);
+
+
+--
+-- Name: emailinfo; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE emailinfo (
+    id integer NOT NULL,
+    smtp_from text DEFAULT ''::text NOT NULL,
+    smtp_server text DEFAULT ''::text NOT NULL,
+    smtp_login text DEFAULT ''::text NOT NULL,
+    smtp_password text DEFAULT ''::text NOT NULL,
+    enabled integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.emailinfo OWNER TO umsdata;
+
+--
+-- Name: emailinfo_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE emailinfo_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.emailinfo_id_seq OWNER TO umsdata;
+
+--
+-- Name: emailinfo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE emailinfo_id_seq OWNED BY emailinfo.id;
+
+
+--
+-- Name: emailinfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('emailinfo_id_seq', 1, true);
+
+
+--
+-- Name: emaillist; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE emaillist (
+    id integer NOT NULL,
+    name text DEFAULT ''::text NOT NULL,
+    email text DEFAULT ''::text NOT NULL,
+    enabled integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.emaillist OWNER TO umsdata;
+
+--
+-- Name: emaillist_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE emaillist_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.emaillist_id_seq OWNER TO umsdata;
+
+--
+-- Name: emaillist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE emaillist_id_seq OWNED BY emaillist.id;
+
+
+--
+-- Name: emaillist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('emaillist_id_seq', 1, false);
+
+
+--
+-- Name: splotlist; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE splotlist (
+    id integer NOT NULL,
+    ptype text DEFAULT ''::text NOT NULL,
+    mtype text DEFAULT ''::text NOT NULL,
+    inputa double precision DEFAULT 5.0 NOT NULL,
+    inputb double precision DEFAULT 6.0 NOT NULL
+);
+
+
+ALTER TABLE public.splotlist OWNER TO umsdata;
+
+--
+-- Name: splotlist_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE splotlist_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.splotlist_id_seq OWNER TO umsdata;
+
+--
+-- Name: splotlist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE splotlist_id_seq OWNED BY splotlist.id;
+
+
+--
+-- Name: splotlist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('splotlist_id_seq', 1, false);
+
+
+--
+-- Name: surveys; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE surveys (
+    azm numeric,
+    dl numeric,
+    ew numeric,
+    id integer NOT NULL,
+    inc numeric,
+    md numeric,
+    ns numeric,
+    temp numeric,
+    tvd numeric,
+    vs numeric,
+    ca numeric,
+    cd numeric,
+    hide integer DEFAULT 0 NOT NULL,
+    plan integer DEFAULT 0 NOT NULL,
+    cl double precision DEFAULT 0 NOT NULL,
+    tot double precision DEFAULT 0 NOT NULL,
+    bot double precision DEFAULT 0 NOT NULL,
+    dip double precision DEFAULT 0 NOT NULL,
+    fault double precision DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.surveys OWNER TO umsdata;
+
+--
+-- Name: surveys_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE surveys_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.surveys_id_seq OWNER TO umsdata;
+
+--
+-- Name: surveys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE surveys_id_seq OWNED BY surveys.id;
+
+
+--
+-- Name: surveys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('surveys_id_seq', 319, true);
+
+
+--
+-- Name: wblog; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE wblog (
+    id integer NOT NULL,
+    md numeric,
+    tvd numeric,
+    value numeric,
+    vs numeric
+);
+
+
+ALTER TABLE public.wblog OWNER TO umsdata;
+
+--
+-- Name: wblog_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE wblog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.wblog_id_seq OWNER TO umsdata;
+
+--
+-- Name: wblog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE wblog_id_seq OWNED BY wblog.id;
+
+
+--
+-- Name: wblog_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('wblog_id_seq', 1, false);
+
+
+--
+-- Name: wellinfo; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE wellinfo (
+    depthunits numeric,
+    propazm numeric,
+    operatorphone2 text,
+    operatorphone1 text,
+    operatoremail2 text,
+    operatoremail1 text,
+    directionalphone2 text,
+    directionalphone1 text,
+    directionalemail2 text,
+    directionalemail1 text,
+    field text,
+    jobnumber text,
+    description text,
+    county text,
+    stateprov text,
+    country text,
+    rigid text,
+    wellid text,
+    location text,
+    wellborename text,
+    directionalzip text,
+    directionaladdress2 text,
+    directionaladdress1 text,
+    directionalname text,
+    directionalcontact2 text,
+    directionalcontact1 text,
+    operatorcontact2 text,
+    operatorcontact1 text,
+    id integer NOT NULL,
+    operatorname text,
+    tot double precision DEFAULT 0 NOT NULL,
+    bot double precision DEFAULT 0 NOT NULL,
+    projection double precision DEFAULT 0 NOT NULL,
+    bitoffset double precision DEFAULT 0 NOT NULL,
+    projdip double precision DEFAULT 0.0 NOT NULL,
+    pbhl_easting double precision DEFAULT 0.0 NOT NULL,
+    pbhl_northing double precision DEFAULT 0.0 NOT NULL,
+    survey_easting double precision DEFAULT 0.0 NOT NULL,
+    survey_northing double precision DEFAULT 0.0 NOT NULL,
+    landing_easting double precision DEFAULT 0.0 NOT NULL,
+    landing_northing double precision DEFAULT 0.0 NOT NULL,
+    elev_ground double precision DEFAULT 0.0 NOT NULL,
+    elev_rkb double precision DEFAULT 0.0 NOT NULL,
+    correction text DEFAULT 'True North'::text NOT NULL,
+    coordsys text DEFAULT 'Polar'::text NOT NULL,
+    startdate date,
+    enddate date,
+    padata text DEFAULT '0,0,0'::text NOT NULL,
+    pbdata text DEFAULT '0,0,0'::text NOT NULL,
+    pamethod integer DEFAULT 0 NOT NULL,
+    pbmethod integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.wellinfo OWNER TO umsdata;
+
+--
+-- Name: wellinfo_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE wellinfo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.wellinfo_id_seq OWNER TO umsdata;
+
+--
+-- Name: wellinfo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE wellinfo_id_seq OWNED BY wellinfo.id;
+
+
+--
+-- Name: wellinfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('wellinfo_id_seq', 1, false);
+
+
+--
+-- Name: welllogs; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE welllogs (
+    color text,
+    dip numeric,
+    endmd numeric,
+    endtvd numeric,
+    endvs numeric,
+    fault numeric,
+    filter numeric,
+    id integer NOT NULL,
+    scaleleft numeric,
+    scaleright numeric,
+    startmd numeric,
+    starttvd numeric,
+    startvs numeric,
+    tablename text,
+    realname text,
+    startdepth double precision DEFAULT 0 NOT NULL,
+    enddepth double precision DEFAULT 0 NOT NULL,
+    scalebias numeric DEFAULT 0 NOT NULL,
+    scalefactor numeric DEFAULT 1 NOT NULL,
+    tot double precision DEFAULT 0 NOT NULL,
+    bot double precision DEFAULT 0 NOT NULL,
+    hide integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.welllogs OWNER TO umsdata;
+
+--
+-- Name: welllogs_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE welllogs_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.welllogs_id_seq OWNER TO umsdata;
+
+--
+-- Name: welllogs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE welllogs_id_seq OWNED BY welllogs.id;
+
+
+--
+-- Name: welllogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('welllogs_id_seq', 122, true);
+
+
+--
+-- Name: wellplan; Type: TABLE; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+CREATE TABLE wellplan (
+    azm numeric,
+    dl numeric,
+    ew numeric,
+    id integer NOT NULL,
+    inc numeric,
+    md numeric,
+    ns numeric,
+    temp numeric,
+    tvd numeric,
+    vs numeric,
+    ca numeric,
+    cd numeric,
+    hide integer DEFAULT 0 NOT NULL,
+    plan integer DEFAULT 0 NOT NULL,
+    cl double precision DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.wellplan OWNER TO umsdata;
+
+--
+-- Name: wellplan_id_seq; Type: SEQUENCE; Schema: public; Owner: umsdata
+--
+
+CREATE SEQUENCE wellplan_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.wellplan_id_seq OWNER TO umsdata;
+
+--
+-- Name: wellplan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: umsdata
+--
+
+ALTER SEQUENCE wellplan_id_seq OWNED BY wellplan.id;
+
+
+--
+-- Name: wellplan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: umsdata
+--
+
+SELECT pg_catalog.setval('wellplan_id_seq', 7268, true);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE appinfo ALTER COLUMN id SET DEFAULT nextval('appinfo_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE cld_10 ALTER COLUMN id SET DEFAULT nextval('cld_10_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE controllogs ALTER COLUMN id SET DEFAULT nextval('controllogs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE emailinfo ALTER COLUMN id SET DEFAULT nextval('emailinfo_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE emaillist ALTER COLUMN id SET DEFAULT nextval('emaillist_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE splotlist ALTER COLUMN id SET DEFAULT nextval('splotlist_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE surveys ALTER COLUMN id SET DEFAULT nextval('surveys_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE wblog ALTER COLUMN id SET DEFAULT nextval('wblog_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE wellinfo ALTER COLUMN id SET DEFAULT nextval('wellinfo_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE welllogs ALTER COLUMN id SET DEFAULT nextval('welllogs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: umsdata
+--
+
+ALTER TABLE wellplan ALTER COLUMN id SET DEFAULT nextval('wellplan_id_seq'::regclass);
+
+
+--
+-- Data for Name: appinfo; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY appinfo (id, version, scaleright, zoom, bias, scale, tot, bot, viewallds, viewrotds, surveysort, dataset, tablename, viewadjds, lastptype, lastmtype) FROM stdin;
+1	\N	600	1	40	1	10647	10682	1	0	ASC	-1		1	LAT	INC
+\.
+
+
+--
+-- Data for Name: cld_10; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY cld_10 (id, md, tvd, vs, value, hide) FROM stdin;
+\.
+
+
+--
+-- Data for Name: controllogs; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY controllogs (id, tablename, startmd, endmd, realname, dip, tot, bot) FROM stdin;
+10	cld_10	\N	\N	\N	0	0	0
+\.
+
+
+--
+-- Data for Name: emailinfo; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY emailinfo (id, smtp_from, smtp_server, smtp_login, smtp_password, enabled) FROM stdin;
+1	email@yourdomain.com				1
+\.
+
+
+--
+-- Data for Name: emaillist; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY emaillist (id, name, email, enabled) FROM stdin;
+\.
+
+
+--
+-- Data for Name: splotlist; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY splotlist (id, ptype, mtype, inputa, inputb) FROM stdin;
+\.
+
+
+--
+-- Data for Name: surveys; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY surveys (azm, dl, ew, id, inc, md, ns, temp, tvd, vs, ca, cd, hide, plan, cl, tot, bot, dip, fault) FROM stdin;
+0	\N	0.00	282	0.00	0.00	0.00	\N	0.00	0.00	90.000000	0.000000	0	0	0	0	0	0	0
+\.
+
+
+--
+-- Data for Name: wblog; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY wblog (id, md, tvd, value, vs) FROM stdin;
+\.
+
+
+--
+-- Data for Name: wellinfo; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY wellinfo (depthunits, propazm, operatorphone2, operatorphone1, operatoremail2, operatoremail1, directionalphone2, directionalphone1, directionalemail2, directionalemail1, field, jobnumber, description, county, stateprov, country, rigid, wellid, location, wellborename, directionalzip, directionaladdress2, directionaladdress1, directionalname, directionalcontact2, directionalcontact1, operatorcontact2, operatorcontact1, id, operatorname, tot, bot, projection, bitoffset, projdip, pbhl_easting, pbhl_northing, survey_easting, survey_northing, landing_easting, landing_northing, elev_ground, elev_rkb, correction, coordsys, startdate, enddate, padata, pbdata, pamethod, pbmethod) FROM stdin;
+0	0																		gtta_template	\N	\N	\N						1		0	0	0	0	0	0	0	0	0	0	0	0	0	True North	Polar	\N	\N	0,0,0	0,0,0	-1	-1
+\.
+
+
+--
+-- Data for Name: welllogs; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY welllogs (color, dip, endmd, endtvd, endvs, fault, filter, id, scaleleft, scaleright, startmd, starttvd, startvs, tablename, realname, startdepth, enddepth, scalebias, scalefactor, tot, bot, hide) FROM stdin;
+\.
+
+
+--
+-- Data for Name: wellplan; Type: TABLE DATA; Schema: public; Owner: umsdata
+--
+
+COPY wellplan (azm, dl, ew, id, inc, md, ns, temp, tvd, vs, ca, cd, hide, plan, cl) FROM stdin;
+0.0	\N	0	7267	0.0	0.0	0	\N	0	0	90.000000	0.000000	0	0	0
+\.
+
+
+--
+-- Name: appinfo_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY appinfo
+    ADD CONSTRAINT appinfo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: controllogs_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY controllogs
+    ADD CONSTRAINT controllogs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: emailinfo_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY emailinfo
+    ADD CONSTRAINT emailinfo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: emaillist_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY emaillist
+    ADD CONSTRAINT emaillist_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: id; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY welllogs
+    ADD CONSTRAINT id PRIMARY KEY (id);
+
+
+--
+-- Name: splotlist_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY splotlist
+    ADD CONSTRAINT splotlist_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY surveys
+    ADD CONSTRAINT surveys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wblog_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY wblog
+    ADD CONSTRAINT wblog_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wellinfo_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY wellinfo
+    ADD CONSTRAINT wellinfo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wellplan_pkey; Type: CONSTRAINT; Schema: public; Owner: umsdata; Tablespace: 
+--
+
+ALTER TABLE ONLY wellplan
+    ADD CONSTRAINT wellplan_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

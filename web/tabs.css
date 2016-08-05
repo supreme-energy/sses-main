@@ -1,0 +1,52 @@
+.apptabs {
+	width: 100%;
+}
+div.apptab_inactive:hover {
+	background-color: #90d0a0;
+	color: #000;
+}
+.apptab_inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #ddd;
+	color: #777;
+	float: left;
+	width: 120px;
+	cursor: default;
+	padding: 2px 4px;
+	font-size: 10pt;
+	text-align: center;
+}
+
+.apptab_active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 1px;
+	border-bottom-color: #c0c0a0;
+  background-color: #c0c0a0;
+	color: #000;
+	float: left;
+	width: 120px;
+	cursor: default;
+	padding: 2px 4px;
+	font-size: 10pt;
+	text-align: center;
+}
+
+.apptab_content {
+	-moz-border-radius: 0px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 1px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 0px;
+	background-color: #c0c0a0;
+	width: 950px;
+	height: 380px;
+}

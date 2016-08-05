@@ -1,0 +1,77 @@
+body {
+  margin: 10px;
+  font-size: 12;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  color: black;
+  background-color: #307040;
+}
+h1 {
+	padding: 0;
+	margin: 0;
+	line-height: 50%;
+}
+h2 {
+	padding: 0 8 4 0;
+	margin: 0;
+	line-height: 50%;
+}
+td {
+  vertical-align: top;
+  margin: 0;
+  padding: 2;
+  border-style: none;
+}
+td.left {
+  vertical-align: middle;
+  text-align: left
+  vertical-align: center;
+  padding: 0 0 0 8;
+}
+td.right {
+  vertical-align: middle;
+  text-align: right;
+  vertical-align: center;
+  padding: 0 8 0 0;
+}
+img.logo  {
+  -moz-border-radius: 5px 5px 5px 5px;
+  background-color: rgb(255,255,255);
+  border: thin solid black;
+  padding: 2;
+  margin: 0 10 0 0;
+}
+table.header  {
+  -moz-border-radius: 10px 10px 10px 10px;
+  background-color: rgb(220,220,160);
+  border-style: solid;
+  border-color: #000000;
+  border-width: 2px;
+  font-size: 12;
+  vertical-align: top;
+  padding: 0;
+  margin: 0 0 4 0;
+  width: 850px;
+}
+td.header {
+  vertical-align: top;
+  margin: 0;
+  padding: 2;
+  border-style: none;
+}
+table.plot  {
+  -moz-border-radius: 10px 10px 10px 10px;
+  background-color: rgb(220,220,160);
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  vertical-align: top;
+  padding: 8;
+  margin: 0;
+  border-spacing: 0;
+}
+td.plot {
+  margin: 0;
+  padding: 0;
+  border: thin solid black;
+  vertical-align: top;
+}

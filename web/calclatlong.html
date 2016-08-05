@@ -1,0 +1,1842 @@
+<HTML>
+<HEAD>
+<TITLE>The JavaScript Source:  Math Related:  Latitude-Longitude Converter</TITLE>
+<META HTTP-EQUIV="The JavaScript Source" CONTENT = "no-cache">
+<META NAME="description" CONTENT="Convert latitude and longitude from degree decimal to degree, minutes, and seconds and vice versa. This script will also find the farthest point from the point entered, as well as the distance.">
+<META NAME="date" CONTENT="2005-11-11">
+<META NAME="channel" CONTENT="Developer">
+<META NAME="author" CONTENT="Joe Ho">
+<META NAME="section" CONTENT="Math Related">
+
+<style type="text/css">
+<!--
+input.script {
+  border: .06em #000 solid;
+  padding: .2em;
+  text-align: right;
+}
+#demo {
+  line-height: 1.5em;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+/* This script and many more are available free online at
+The JavaScript Source!! http://javascript.internet.com
+Created by: Joe Ho */
+
+function calc(Location) {
+  // Retrieve the DD/DMS option
+  for (var i=0;i<Location.inputType.length;i++) {
+    if (Location.inputType[i].checked)
+    {
+      var inputed = Location.inputType[i].value;
+    }
+  }
+  if (inputed == "DD")
+  {
+    // Retrieve Lat and Lon information
+    var lat = Location.Latitude.value;
+    var lon = Location.Longitude.value;
+    if (lat==null)
+    var lat=0;
+    if (lon==null)
+            var lon=0;
+
+    // Check if any error occurred
+    if (isNaN(Location.Latitude.value) || isNaN(Location.Longitude.value)) {
+      alert("Latitude and Longitude must be numeric");
+    } else if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+            alert("ERROR");
+    } else {
+      //Retrieve the latitude direction for Degrees Decimal
+      for (var i=0;i<Location.LatDirect.length;i++) {
+        if (Location.LatDirect[i].checked)
+        {
+          var LatDirect = Location.LatDirect[i].value;
+        }
+      }
+
+      // If the user does not click direct button,
+      // then a positive latitude value regards North, negative latitude value regards South
+      if (LatDirect==null) {
+        if (lat<0) {
+          LatDirect = "S";
+          Location.LatDirect[1].click();
+        }
+        else {
+          LatDirect ="N";
+          Location.LatDirect[0].click();
+        }
+      }
+
+      // Retrieve the longitude direction for Deg/Min/Sec
+      for (var i=0;i<Location.LonDirect.length;i++) {
+        if (Location.LonDirect[i].checked)
+        {
+          var LonDirect = Location.LonDirect[i].value;
+        }
+      }
+
+      // If the user does not click direct button,
+      // then a positive latitude value regards East, negative latitude value regards West
+      if (LonDirect==null) {
+        if (lon<0) {
+          LonDirect = "W";
+          Location.LonDirect[1].click();
+         }
+        else {
+          LonDirect ="E";
+          Location.LonDirect[0].click();
+        }
+      }
+
+      // Change to absolute value
+      lat = Math.abs(lat);
+      lon = Math.abs(lon);
+      Location.Latitude.value=lat;
+      Location.Longitude.value=lon;
+      setAllEnabled(Location);
+
+      // Convert to Degree Minutes Seconds Representation
+      LatDeg = Math.floor(lat);
+      LatMin = Math.floor((lat-LatDeg)*60);
+      LatSec =  (Math.round((((lat - LatDeg) - (LatMin/60)) * 60 * 60) * 100) / 100 ) ;
+      LonDeg = Math.floor(lon);
+      LonMin = Math.floor((lon-LonDeg)*60);
+      LonSec = (Math.round((((lon - LonDeg) - (LonMin / 60 )) * 60 * 60) * 100 ) / 100);
+
+      // Copy result to the board
+      Location.LatDeg.value=LatDeg;
+      Location.LatMin.value=LatMin;
+      Location.LatSec.value=LatSec;
+      Location.LonDeg.value=LonDeg;
+      Location.LonMin.value=LonMin;
+      Location.LonSec.value=LonSec;
+      if (LatDirect == "N") {
+        Location.LatDMSDirect[0].click();
+      } else {
+        Location.LatDMSDirect[1].click();
+      }
+      if (LonDirect == "E") {
+        Location.LonDMSDirect[0].click();
+      } else {
+        Location.LonDMSDirect[1].click();
+      }
+      clickedOption(Location);
+
+      // Find the farthest Point Location
+      farthestPoint(lat,lon,LatDeg,LonDeg,LatMin,LonMin,LatSec,LonSec,LatDirect,LonDirect);
+    }
+  } else if (inputed == "DMS") {
+
+    // Retrieve Lat and Lon information
+    var LatDeg = Location.LatDeg.value;
+    var LatMin = Location.LatMin.value;
+    var LatSec = Location.LatSec.value;
+    var LonDeg = Location.LonDeg.value;
+    var LonMin = Location.LonMin.value;
+    var LonSec = Location.LonSec.value;
+
+    // Assume the value to be zero if the user does not enter value
+    if (LatDeg==null)
+      LatDeg=0;
+    if (LatMin==null) {
+      LatMin=0;
+    }
+    if (LatSec==null) {
+      LatSec=0;
+    }
+    if (LonDeg==null)
+      LonDeg=0;
+    if (LonMin==null) {
+      LonMin=0
+    }
+    if (LonSec==null){
+      LonSec=0;
+    }
+
+    // Check if any error occurred
+    if (isNaN(Location.LatDeg.value) || isNaN(Location.LonDeg.value) || isNaN(Location.LatMin.value) || isNaN(Location.LonMin.value) || isNaN(Location.LatSec.value) || isNaN(Location.LonSec.value)) {
+      alert("Latitude and Longitude must be numeric");
+    } else if (LatDeg != Math.round(LatDeg) || LonDeg != Math.round(LonDeg) || LatMin != Math.round(LatMin) || LonMin != Math.round(LonMin)) {
+      alert("ERROR");
+    } else if (LatDeg < -90 || LatDeg > 90 || LonDeg < -180 || LonDeg > 180 || LatMin < -60 || LatMin > 60 || LonMin < -60 || LonMin > 60 || LatSec < -60 || LatSec > 60 || LonSec < -60 || LonSec > 60) {
+      alert("ERROR");
+    } else {
+    // If no error, then go on
+
+    // Retrieve the latitude direction for Degrees Decimal
+    for (var i=0;i<Location.LatDMSDirect.length;i++) {
+      if (Location.LatDMSDirect[i].checked)
+      {
+        var LatDMSDirect = Location.LatDMSDirect[i].value;
+      }
+    }
+
+    // If the user does not click direct button,
+    // then a postive latitude value regards North, negative latitude value regards South
+    if (LatDMSDirect==null) {
+      if (LatDeg<0 || Location.LatDeg.value=="-0") {
+        LatDMSDirect = "S";
+        Location.LatDMSDirect[1].click();
+      }
+      else {
+        LatDMSDirect ="N";
+        Location.LatDMSDirect[0].click();
+      }
+    }
+
+    // Retrieve the longitude direction for Deg/Min/Sec
+    for (var i=0;i<Location.LonDMSDirect.length;i++) {
+      if (Location.LonDMSDirect[i].checked)
+      {
+        var LonDMSDirect = Location.LonDMSDirect[i].value;
+      }
+    }
+
+    // If the user does not click direct button,
+    // then a positive latitude value regards East, negative latitude value regards West
+    if (LonDMSDirect==null) {
+      if (LonDeg<0 || Location.LonDeg.value=="-0") {
+        LonDMSDirect = "W";
+        Location.LonDMSDirect[1].click();
+      } else {
+        LonDMSDirect ="E";
+        Location.LonDMSDirect[0].click();
+      }
+    }
+
+    // Change to absolute value
+    LatDeg = Math.abs(LatDeg);
+    LonDeg = Math.abs(LonDeg);
+    LatMin = Math.abs(LatMin);
+    LonMin = Math.abs(LonMin);
+    LatSec = Math.abs(LatSec);
+    LonSec = Math.abs(LonSec);
+    setAllEnabled(Location);
+
+    // Convert to Decimal Degrees Representation
+    var lat = LatDeg + (LatMin/60) + (LatSec / 60 / 60);
+    var lon = LonDeg + (LonMin/60) + (LonSec / 60 / 60);
+    if ( lat <= 90 && lon <= 180 && lat >=0 && lon >= 0 )
+    {
+      // Copy the absolute value to the board
+      Location.LatDeg.value=LatDeg;
+      Location.LonDeg.value=LonDeg;
+      Location.LatMin.value=LatMin;
+      Location.LonMin.value=LonMin;
+      Location.LatSec.value=LatSec;
+      Location.LonSec.value=LonSec;
+
+      // Rounding off
+      lat = (Math.round(lat*1000000)/1000000);
+      lon = (Math.round(lon*1000000)/1000000);
+
+      // Copy result to the board
+      Location.Latitude.value=lat;
+      Location.Longitude.value=lon;
+      if (LatDMSDirect == "N") {
+        Location.LatDirect[0].click();
+      } else {
+        Location.LatDirect[1].click();
+      }
+      if (LonDMSDirect == "E") {
+        Location.LonDirect[0].click();
+      } else {
+        Location.LonDirect[1].click();
+      }
+        clickedOption(Location);
+        farthestPoint(lat,lon,LatDeg,LonDeg,LatMin,LonMin,LatSec,LonSec,LatDMSDirect,LonDMSDirect);
+      } else
+        alert("ERROR!!");
+    }
+  }
+}
+
+function clickedOption(Location) {
+        // Retrieve The DD/DMS Option
+        for (var i=0;i<Location.inputType.length;i++) {
+                if (Location.inputType[i].checked)
+                {
+                        var inputed = Location.inputType[i].value;
+                }
+        }
+        changeOption(Location,inputed);
+}
+
+function resetForm(Location) {
+        changeOption(Location,"DD");
+}
+
+function changeOption(Location,inputed) {
+  if (inputed=="DD") {
+    with (Location) {
+      LatDeg.disabled=true;
+      LonDeg.disabled=true;
+      LatMin.disabled=true;
+      LonMin.disabled=true;
+      LatSec.disabled=true;
+      LonSec.disabled=true;
+      Latitude.disabled=false;
+      Longitude.disabled=false;
+      LatDirect[0].disabled=false;
+      LonDirect[0].disabled=false;
+      LatDirect[1].disabled=false;
+      LonDirect[1].disabled=false;
+      LatDMSDirect[0].disabled=true;
+      LonDMSDirect[0].disabled=true;
+      LatDMSDirect[1].disabled=true;
+      LonDMSDirect[1].disabled=true;
+    }
+  } else if (inputed =="DMS") {
+    with (Location){
+      Latitude.disabled=true;
+      Longitude.disabled=true;
+      LatDeg.disabled=false;
+      LonDeg.disabled=false;
+      LatMin.disabled=false;
+      LonMin.disabled=false;
+      LatSec.disabled=false;
+      LonSec.disabled=false;
+      LatDMSDirect[0].disabled=false;
+      LonDMSDirect[0].disabled=false;
+      LatDMSDirect[1].disabled=false;
+      LonDMSDirect[1].disabled=false;
+      LatDirect[0].disabled=true;
+      LonDirect[0].disabled=true;
+      LatDirect[1].disabled=true;
+      LonDirect[1].disabled=true;
+    }
+  }
+}
+
+function setAllEnabled(Location) {
+  with (Location) {
+    Latitude.disabled=false;
+    Longitude.disabled=false;
+    LatDeg.disabled=false;
+    LonDeg.disabled=false;
+    LatMin.disabled=false;
+    LonMin.disabled=false;
+    LatSec.disabled=false;
+    LonSec.disabled=false;
+    LatDMSDirect[0].disabled=false;
+    LonDMSDirect[0].disabled=false;
+    LatDMSDirect[1].disabled=false;
+    LonDMSDirect[1].disabled=false;
+    LatDirect[0].disabled=false;
+    LonDirect[0].disabled=false;
+    LatDirect[1].disabled=false;
+    LonDirect[1].disabled=false;
+  }
+}
+
+function farthestPoint(lat,lon,LatDeg,LonDeg,LatMin,LonMin,LatSec,LonSec,LatDirect,LonDirect) {
+  var farLat,farLon,farLat2,farLon2,farLatDeg,farLonDeg;
+  var farLatMin,farLonMin,farLatSec,farLonSec,farLatDirect,farLonDirect;
+  var dist;
+  if (LatDirect == "N") {
+    farLatDirect = "S";
+  } else {
+    farLatDirect = "N";
+  }
+  if (LonDirect == "E") {
+    farLonDirect = "W";
+  } else {
+    farLonDirect = "E";
+  }
+  farLat = lat;
+  farLatDeg = LatDeg;
+  farLatMin = LatMin;
+  farLatSec = LatSec;
+  farLon = 180 - Math.abs(lon);
+
+  // Method 1
+  farLonDeg = Math.floor(farLon);
+  farLonMin = Math.floor((farLon-farLonDeg)*60);
+  farLonSec = (Math.round((((farLon - farLonDeg) - (farLonMin / 60 )) * 60 * 60) * 100 ) / 100);
+
+  // Method 2
+  /*
+    farLonSec = 60 - LonSec;
+    if (farLonSec == 60) {
+      farLonSec=0;
+    }
+    if (farLonSec >0) {
+      farLonMin = 60 - LonMin - 1;
+    } else {
+      farLonMin = 60 - LonMin ;
+    }
+    if (farLonMin ==60) {
+      farLonMin =0;
+    }
+    if (farLonMin >0) {
+      farLonDeg = 180 - Math.abs(farLonDeg) - 1;
+    } else {
+      farLonDeg = 180 - Math.abs(farLonDeg);
+    }
+  */
+  farLon = Math.round(farLon*1000000)/1000000;
+  farLonSec = Math.round(farLonSec*100)/100;
+  elev = 200;
+  farElev = 200;
+  var dist = distance(lat,LatDirect,lon,LonDirect,elev,farLat,farLatDirect,farLon,farLonDirect,farElev);
+  var alertMsg="";
+  alertMsg+=("The location you entered is : " + "\n\n" +
+  "Latitude: " + lat + " " + LatDirect + "\n" + "Degrees: " + LatDeg + " Minutes: " + LatMin + " Seconds: " + LatSec + " " + LatDirect + "\n\n" +
+  "Longitude: " + lon + " " + LonDirect + "\n" + "Degrees: " + LonDeg + " Minutes: " + LonMin + " Seconds: " + LonSec + " " + LonDirect + "\n\n" +
+  "---------------------------------------------------------------" + "\n");
+
+  alertMsg+=("The farthest location from the point you entered is : " + "\n\n" +
+  "Latitude: " + farLat + " " + farLatDirect + "\n" + "Degrees: " + farLatDeg + " Minutes: " + farLatMin + " Seconds: " + farLatSec + " " + farLatDirect + "\n\n" +
+  "Longitude: " + farLon + " " + farLonDirect + "\n" + "Degrees: " + farLonDeg + " Minutes: " + farLonMin + " Seconds: " + farLonSec + " " + farLonDirect + "\n\n");
+
+  alertMsg+=("---------------------------------------------------------------" + "\n");
+  alertMsg+=("Distance: " + dist + " km ");
+
+  alert(alertMsg);
+}
+
+function distance(lat,LatDirect,lon,LonDirect,elev,lat2,ptDirect,lon2,ptLonDirect,ptElev) {
+  var radLat,radLon,radLat2,radLon2;
+  if (ptDirect == "S")
+    lat2 = lat2*-1;
+  if (ptLonDirect == "W")
+    lon2 = lon2*-1;
+  if (LatDirect == "S")
+    lat = lat*-1;
+  if (LonDirect == "W")
+    lon = lon*-1;
+  var radian = 180/Math.PI;
+  radLat=lat/radian;
+  radLon=lon/radian;
+  radLat2=lat2/radian;
+  radLon2=lon2/radian;
+  var dist = calcDistance(radLat,radLon,elev,radLat2,radLon2,ptElev);
+  dist = Math.round(dist*100)/100;
+  return dist;
+}
+
+
+// calculate the distance between two coordinates
+function calcDistance(lat1,long1,elev,lat2,long2,ptElev) {
+  var earthEquatorialRadius = 6378.14; // in kilometers
+  var earthFlattened = 1/298.257;
+  var exCentricityEarth = 0.08181922;
+  var radian = 180/Math.PI;
+  meanPosLat = (lat1+lat2)/2;
+  meanNegLat = (lat1-lat2)/2;
+  lambda = (long1-long2)/2;
+  with(Math) {
+    si = pow(sin(meanNegLat)*cos(lambda),2)+pow(cos(meanPosLat)*sin(lambda),2);
+    co = pow(cos(meanNegLat)*cos(lambda),2)+pow(sin(meanPosLat)*sin(lambda),2);
+    delta = atan(sqrt(si/co));
+    ra = sqrt(si*co)/delta;
+    di = 2*delta*earthEquatorialRadius;
+    ha =(3*ra-1)/2/co;
+    hb =(3*ra+1)/2/si;
+    distances = di*(1+earthFlattened*ha*pow(sin(meanPosLat)*cos(meanNegLat),2)-earthFlattened*hb*pow(cos(meanPosLat)*sin(meanNegLat),2));
+  }
+
+  // Taking elevation into consideration
+  var totalElev, elevDist
+  totalElevDist = Math.abs(elev - ptElev);
+
+  // Convert back to km
+  totalElevDist = totalElevDist / 1000;
+  elevDist = Math.sqrt((distances * distances) + (totalElevDist * totalElevDist));
+  return elevDist;
+}
+// -->
+</script>
+</HEAD>
+
+<BODY BGCOLOR=#ffffff vlink=#0000ff>
+
+<BR>
+<center>
+<script language="JavaScript" type="text/javascript"><!--
+function openDescription(ID) {
+var url = "http://www.ppcforhosts.com/public/util/description.cfm?id=" + ID;
+link = window.open(url,"newWin","directories=0,height=250,location=0,menubar=0,resizable=1,scrollbars=1,status=0,toolbar=0,width=450");
+}
+//--></script>
+<table cellpadding=10 cellspacing=0 border=0 width="100%">
+   <tr><td align=center>
+<!-- cdXpo code -->
+
+<script language="javascript" src="http://e1.cdn.qnsr.com/cgi/d/0/0/203/662688/cmp0.js"></script>
+<script language="javascript" src="http://e1.cdn.qnsr.com/jsc/e1/fx.js"></script>
+<script language="JavaScript" src="http://e1.cdn.qnsr.com/jsc/e1/fc.js"></script>
+
+
+<center>
+ <span class='quad_R'>
+<script language="JavaScript">zzfocrender("203", "10665", "662698/662688/662676/662675/581034", "31", "0", "0", "", "", "");</script>
+<noscript>
+<a href="http://o1.qnsr.com/cgi/r?;n=203;c=662698/662688/662676/662675/581034;s=10665;x=7936;f=602695770;u=j;z=20110310191712" target="_blank">
+<img border="0" width="0" height="0" src="http://o1.qnsr.com/cgi/x?;n=203;c=662698/662688/662676/662675/581034;s=10665;x=7936;f=602695770;u=j;z=20110310191712" alt="Click here"></a>
+</noscript>
+</span>
+
+ <script type="text/javascript" src="/icom_includes/toolbars/globaltoolbar/scripts/globaltoolbar-js.js"></script>
+<style type="text/css"> #navitoolbarcontainer a { line-height: 16px; } ::root menulist, .menulist ul{margin-top:-10px} .menulist, .menulist ul{margin:0; padding:0; list-style:none; font:9px arial; color:#fff; float:left; display:inline} .menulist a:visited{color:#fff; text-decoration:none} .menulist ul{ display:none;  position:absolute;  top:1.0em; margin-top:12px;  left:-1px;  width:180px;  color:#fff} .menulist ul ul{ top:-1px; margin-top:0;  left:148px;  color:#fff;  z-index:200} .menulist li{ float:left;  display:block;  position:relative;  background:#676767;  border:1px solid #999;  border-bottom:0px solid #999;  border-top:0px solid #999;  margin-right:-1px;  background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_dn.gif');  background-repeat:repeat-x;  line-height:15px;  color:#fff} #menulist_cust li{ float:left;  display:block;  position:relative;  background:#676767;  border:1px solid #999;  border-bottom:0px solid #999;  border-top:0px solid #999;  margin-right:-1px;  background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_login.gif');  background-repeat:repeat-x;  line-height:15px;  color:#fff} .menulist ul li{ float:none;  margin:0;  margin-bottom:-1px;  margin-top:-2px;  color:#fff;  filter:alpha(opacity=95); -moz-opacity:.05; opacity:.95; color:#fff} .menulist ul>li:last-child{ margin-bottom:1px} .menulist ul li a:hover{ float:none;  margin:0;  background-color:#666;  color:#fff} .menulist ul>li:last-child{ margin-bottom:1px;  color:#fff} .menulist a{ display:block;  padding:3px;  color:#fff;  text-decoration:none;  text-align:left} .menulist a:hover, .menulist a.highlighted:hover, .menulist a:focus,{ color:#FFF;  background-color:#666;  text-decoration:none} .menulist a.highlighted{ color:#FFF;  background-color:#e51a16} .menulist a .subind{ display:none} .menulist ul a .subind{ display:block;  float:right} .menulist a{ float:left} .menulist ul a{ float:none} .menulist a{ float:none} *:first-child+html .menulist ul li{ float:left;  width:100%;  color:#fff} * html .menulist ul li{ float:left;  height:1%;  color:#fff} * html .menulist ul a{ height:1%;  color:#fff} .menulistv2, .menulistv2  ul{margin:0; padding:0; list-style:none; font:9px sans-serif; color:#fff; float:left; z-index:200; background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_lght_fixed.gif')} .menulistv2 a:visited{color:#fff; text-decoration:none} .menulistv2 ul{ display:none;  position:absolute;  top:1.0em; margin-top:12px;  left:-1px;  width:180px;  color:#fff;  z-index:200;   background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_lght_fixed.gif')} .menulistv2 ul ul{ top:-1px; margin-top:0;  left:148px;  color:#fff;  z-index:200} .menulistv2 li{ float:left;  display:block;  position:relative;  background:#676767;  border:1px solid #999;  border-bottom:0px solid #999;  border-top:0px solid #999;  margin-right:-1px;  background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_lght_fixed.gif');  background-repeat:repeat-x;  line-height:15px;  color:#fff} .menulistv2 ul li{ float:none;  margin:0;  margin-bottom:-1px;  margin-top:-2px;  color:#fff;  filter:alpha(opacity=80); -moz-opacity:.20; opacity:.90; color:#fff} .menulistv2 ul>li:last-child{ margin-bottom:1px} .menulistv2 ul li a:hover{ float:none;  margin:0;  background-color:#666;  color:#fff} .menulistv2 ul>li:last-child{ margin-bottom:1px;  color:#fff} .menulistv2 a{ display:block;  padding:3px;  color:#fff;  text-decoration:none;  text-align:left} .menulistv2 a:hover, .menulistv2 a.highlighted:hover, .menulistv2 a:focus,{ color:#FFF;  background-color:#666;  text-decoration:none} .menulistv2 a.highlighted{ color:#FFF;  background-color:#999} .menulistv2 a .subind{ display:none} .menulistv2 ul a .subind{ display:block;  float:right} .menulistv2 a{ float:left} .menulistv2 ul a{ float:none} .menulistv2 a{ float:none} *:first-child+html .menulistv2 ul li{ float:left;  width:100%;  color:#fff} * html .menulistv2 ul li{ float:left;  height:1%;  color:#fff} * html .menulistv2 ul a{ height:1%;  color:#fff} .menulistv3, .menulistv3  ul{margin:0; padding:0; list-style:none; font:9px sans-serif; color:#fff; float:left; z-index:200;   background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_login.gif')} .menulistv3 a:visited{color:#fff; text-decoration:none} .menulistv3 ul{ display:none;  position:absolute;  top:1.0em; margin-top:12px;  left:-1px;  width:100px;  color:#fff;  z-index:200;   background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_login.gif')} .menulistv3 ul ul{ top:-1px; margin-top:0;  left:148px;  color:#fff;  z-index:200} .menulistv3 li{ float:left;  display:block;  position:relative;  background:#676767;  border:1px solid #999;  border-bottom:0px solid #999;  border-top:0px solid #999;  margin-right:-1px;  background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_login.gif');  background-repeat:repeat-x;  line-height:15px;  color:#fff} .menulistv3 ul li{ float:none;  margin:0;  margin-bottom:-1px;  margin-top:-2px;  color:#fff;  filter:alpha(opacity=80); -moz-opacity:.20; opacity:.90; color:#fff} .menulistv3 ul>li:last-child{ margin-bottom:1px} .menulistv3 ul li a:hover{ float:none;  margin:0;  background-color:#000;  color:#fff} .menulistv3 ul>li:last-child{ margin-bottom:1px;  color:#fff} .menulistv3 a{ display:block;  padding:3px;  color:#fff;  text-decoration:none;  text-align:left} .menulistv3 a:hover, .menulistv3 a.highlighted:hover, .menulistv3 a:focus,{ color:#FFF;  background-color:#666;  text-decoration:none} .menulistv3 a.highlighted{ color:#FFF;  background-color:#e51a16} .menulistv3 a .subind{ display:none} .menulistv3 ul a .subind{ display:block;  float:right} .menulistv3 a{ float:left} .menulistv3 ul a{ float:none} .menulistv3 a{ float:none} *:first-child+html .menulistv3 ul li{ float:left;  width:100%;  color:#fff} * html .menulistv3 ul li{ float:left;  height:1%;  color:#fff} * html .menulistv3 ul a{ height:1%;  color:#fff} a.gt{color:#fff; text-decoration:none} a.gt:hover{text-decoration:none} a.gt:visited{text-decoration:none} a.gt:link{text-decoration:none} a.gt:active{text-decoration:none} #navitile{width:820px; margin-left:0px; height:22px; background-repeat:repeat-x; position:absolute; left:0px; top:0px; font-family:arial,verdana,helvetica; font-size:8px; white-space:nowrap; z-index:1000} #navitoolbarcontainer{width:100%; min-width:830px; width:expression('101.7%'); height:22px; position:absolute; left:0px; top:0px; font-family:arial,verdana,helvetica; font-size:8px; background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_end_fixed.png'); background-repeat:repeat-x; white-space:nowrap; z-index:1000; margin:0px; padding:0px} #navitoolbarcontainer a{color:#fff} #heightcontainer{position:relative; height:35px; width:99%; background:transparent;} #globalform{padding:0px; margin:0px} #lightgrey{text-align:left; color:#fff; text-indent:5px;     background-image:url('/icom_includes/toolbars/globaltoolbar/img/background_end_fixed.png')} #lightgrey .inputglobal{font-size:9px; font-size:expression('8px'); text-align:left; margin-top:0px; margin-left:2px;  background-repeat:no-repeat} #lightgrey .inputglobal:hover{font-size:9px; text-align:left; margin-top:0px; background-color:#ccc} #lightgrey a{font-family:sans-serif; text-decoration:none; color:#FFF; text-decoration:none; FONT-SIZE:10px; padding:0px; top:1px; top:expression('-2px'); position:relative} #lightgrey a:link{text-decoration:none; color:#FFF; text-decoration:none; FONT-SIZE:10px} #lightgrey a:visited{display:inline; text-decoration:none; color:#FFF; text-decoration:none; FONT-SIZE:10px; padding:0px; margin:0px} #lightgrey a:active{display:inline; text-decoration:none; color:#FFF; text-decoration:none; FONT-SIZE:10px; padding:0px; margin:0px} #lightgrey a:hover{display:inline; text-decoration:none; color:#fcf2ca; text-decoration:none; FONT-SIZE:10px; padding:0px; margin:0px} </style>
+<!--<div id="heightcontainer" class="heightcontainer"></div>-->
+
+<div id="ewgtcontainer" style="height: 24px;"></div>
+<div style="width: 100%;" id="navitoolbarcontainer">
+	<div style="margin: 0px; padding: 0px; width: 100%">
+		<div id="navitile" style="width: 980px">
+			<div style="padding-left: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; float: left; white-space: nowrap;">
+				<a title="View Internet.com - The Network for Technology Professionals" href="http://www.internet.com/" class="gt"><img alt="Internet.com - The Network for Technology Professionals" src="http://files.internet.com/images/icom_logo_networkNav.gif" border="0"></a>
+			</div>
+			<ul class="menulist" id="listMenuRoot" style="height:22px;">
+			
+				<li style="margin-top:0px;"><a class="gt" href="http://www.internet.com/it/" style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration:none;"><strong>IT Professionals</strong></a>
+
+					<ul id="listMenu-id-1">
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://itmanagement.earthweb.com/">IT Management</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.esecurityplanet.com/">Security</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.enterprisestorageforum.com/">Storage</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.serverwatch.com/">Server</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.enterprisenetworkingplanet.com/">Networking</a></li>
+
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.smallbusinesscomputing.com/">Small Business</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.telephonyworld.com/">Communications</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.crm2day.com/">Enterprise Applications</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.databasejournal.com/">Database</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.enterprisemobiletoday.com/">Mobile</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.hardwarecentral.com/">Hardware</a></li>
+
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.internetnews.com/">IT News</a></li>
+					</ul>
+				</li>
+				<li style="margin-top:0px;"><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/developer" class="gt" href="http://www.internet.com/developer"> <strong>Developers</strong></a>
+					<ul id="listMenu-id-2">
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.devx.com/">Architect</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.developer.com/">Java / OS</a></li>
+
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.codeguru.com/">Microsoft Technology</a></li>
+						<li style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;"><a href="http://www.webdeveloper.com/">Web Development</a></li>
+					</ul>
+				</li>	
+			</ul>
+			<ul style="height: 22px;" id="listMenuv2Root" class="menulistv2">
+				<li style="margin-top:0px;"> <a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/solutions" class="gt">Solutions</a>
+
+					<ul id="listMenuv2-id-2">
+						<li><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/HotList">HotList</a></li> 
+						<li><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/video">Video</a></li>
+					</ul>
+				</li>
+				<li style="margin-top:0px;"><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration:none;" href="http://www.internet.com/ebook" class="" gt="">eBook Library</a></li>
+				<li style="margin-top:0px;"><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration:none;" href="http://www.webopedia.com/" class="" gt="">Webopedia</a></li>
+
+			</ul>
+			<ul class="menulistv3" id="listMenuv3Root" style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; height: 22px;">
+				<li style="margin-top:0px;"> <a class="gt" href="http://member.internet.com/?gt" style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration:none">Login</a> 
+          			<ul id="listMenuv3-id-1">
+          				<li><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://member.internet.com/profile/postal?gt">Manage My Profile</a></li>
+          			</ul>
+          		</li>
+          		<li style="margin-top:0px;"> <a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://member.internet.com/register?gt" class="gt">Register</a> 
+            		<ul id="listMenuv3-id-2">
+
+            			<li><a style="color: #fff; font-size: 11px; font-family: arial,verdana,helvetica; text-decoration: none;" href="http://www.internet.com/WhyJoin">Why Join?</a></li>
+            		</ul>
+            	</li>
+            </ul>
+		</div>
+	</div>
+</div>
+ 
+</center>
+<!-- cdXpo code -->
+
+   
+<span class='quad_D'>
+<script language="JavaScript">zzfocrender("203", "10665", "662692/662688/662676/662675/581034", "14", "728", "90", "", "", "");</script>
+<noscript>
+<a href="http://o1.qnsr.com/cgi/r?;n=203;c=662692/662688/662676/662675/581034;s=10665;x=3584;f=625789566;u=j;z=20110310191712" target="_blank">
+<img border="0" width="728" height="90" src="http://o1.qnsr.com/cgi/x?;n=203;c=662692/662688/662676/662675/581034;s=10665;x=3584;f=625789566;u=j;z=20110310191712" alt="Click here"></a>
+</noscript>
+</span>
+
+</td></tr>
+</table>
+
+<BR>
+<BR>
+<table width="100%" cellpadding=0 cellspacing=0 border=0>
+<tr><td width="99%" align=center>
+
+<basefont size=3>
+
+<FONT SIZE="+2" FACE="Helvetica,Arial">
+<A HREF="http://javascript.internet.com" TARGET="_top"><FONT COLOR="#0000FF"><b>Home</b></font></A>
+<img src="http://javascript.internet.com/img/arrow.gif" height=13 width=7 border=0 alt="}">
+<A HREF="./" TARGET="_top"><font color="#FF0000"><b>Math Related</b></font></A>
+<img src="http://javascript.internet.com/img/arrow.gif" height=13 width=7 border=0 alt="}">
+<FONT COLOR="#006666"><b>Latitude-Longitude Converter</b></font></font>
+<BR>
+<BR>
+<table BORDER=0 WIDTH=486 CELLPADDING=3 CELLSPACING=0>
+<tr><td><font FACE="helvetica,arial,geneva">
+<br>
+<br>
+<!-- Description --><!--content_start-->
+Convert latitude and longitude from degree decimal to degree, minutes, and seconds and vice versa. This script will also find the farthest point from the point entered, as well as the distance.
+
+<hr>
+</td></tr>
+</table>
+<!-- Demonstration -->
+<div id="demo">
+<form name="Locations">
+<input class="script" type="radio" name="inputType" value="DD" checked onclick="clickedOption(this.form)"> <strong>Degrees Decimal</strong>
+
+<br>Latitude&nbsp;&nbsp;&nbsp;: <input class="script" name="Latitude" type="text" size="5">&nbsp;&nbsp;North <input class="script" type="radio" name="LatDirect" value="N"> South <input class="script" type="radio" name="LatDirect" value="S">
+<br>Longitude: <input class="script" name="Longitude" type="text" size="5">&nbsp;&nbsp;East&nbsp;&nbsp;<input class="script" type="radio" name="LonDirect" value="E"> West&nbsp;&nbsp;<input class="script" type="radio" name="LonDirect" value="W">
+
+<br>
+
+<br><input class="script" type="radio" name="inputType" value="DMS" onclick="clickedOption(this.form)"> <strong>Degrees, Minutes, &amp; Seconds</strong>
+<br><strong>Latitude:</strong>
+<br>Degrees: <input class="script" name="LatDeg" type="text" size="5" disabled>&nbsp;&nbsp;Minutes: <input class="script" name="LatMin" type="text" size="5" disabled>
+<br>Seconds: <input class="script" name="LatSec" type="text" size="5" disabled>
+&nbsp;&nbsp;North <input class="script" type="radio" name="LatDMSDirect" value="N" disabled>&nbsp;&nbsp;South <input class="script" type="radio" name="LatDMSDirect" value="S" disabled>
+
+<br><strong>Longitude:</strong>
+<br>Degrees: <input class="script" name="LonDeg" type="text" size="5" disabled>&nbsp;&nbsp;Minutes: <input class="script" name="LonMin" type="text" size="5" disabled>
+<br>Seconds: <input class="script" name="LonSec" type="text" size="5" disabled>
+&nbsp;&nbsp;East&nbsp;&nbsp;<input class="script" type="radio" name="LonDMSDirect" value="E" disabled>&nbsp;&nbsp;&nbsp;&nbsp;West <input class="script" type="radio" name="LonDMSDirect" value="W" disabled>
+
+<br><br><input class="script" value="Calculate" type="button" onclick="calc(this.form)">
+<input class="script" name="Reset" type="reset" value="Clear" onclick="resetForm(this.form)">
+</form>
+</div>
+<P>
+<P>
+
+<a name="source">
+<table BORDER=0 WIDTH=486 CELLPADDING=3 CELLSPACING=0>
+<tr><td BGCOLOR=yellow><font FACE="helvetica,arial,geneva"><b>The JavaScript Source:  Math Related:  Latitude-Longitude Converter</b>
+<p>Simply click inside the window below, use your cursor to highlight the script, and copy (type Control-c or Apple-c) the script into a new file in your text editor (such as Note Pad or Simple Text) and save (Control-s or Command-s).  The script is yours!!!
+<br><br></font></td></tr>
+<tr><td BGCOLOR=yellow ALIGN=CENTER>
+<form NAME="copy">
+
+<DIV align="center">
+<input type=button value="Highlight All" onClick="javascript:this.form.txt.focus();this.form.txt.select();">&nbsp;&nbsp;&nbsp;&nbsp;
+<INPUT TYPE="text" NAME="total" VALUE="Script Size:  16.48 KB" size=24>
+</DIV>
+
+<textarea NAME="txt" ROWS=20 COLS=75 WRAP=VIRTUAL>
+
+&lt;!-- TWO STEPS TO INSTALL LATITUDE-LONGITUDE CONVERTER:
+
+  1.  Copy the coding into the HEAD of your HTML document
+  2.  Add the last code into the BODY of your HTML document  --&gt;
+
+&lt;!-- STEP ONE: Paste this code into the HEAD of your HTML document  --&gt;
+
+&lt;HEAD&gt;
+
+&lt;script type="text/javascript"&gt;
+&lt;!--
+/* This script and many more are available free online at
+The JavaScript Source!! http://javascript.internet.com
+Created by: Joe Ho */
+
+function calc(Location) {
+  // Retrieve the DD/DMS option
+  for (var i=0;i&lt;Location.inputType.length;i++) {
+    if (Location.inputType[i].checked)
+    {
+      var inputed = Location.inputType[i].value;
+    }
+  }
+  if (inputed == "DD")
+  {
+    // Retrieve Lat and Lon information
+    var lat = Location.Latitude.value;
+    var lon = Location.Longitude.value;
+    if (lat==null)
+    var lat=0;
+    if (lon==null)
+            var lon=0;
+
+    // Check if any error occurred
+    if (isNaN(Location.Latitude.value) || isNaN(Location.Longitude.value)) {
+      alert("Latitude and Longitude must be numeric");
+    } else if (lat &lt; -90 || lat &gt; 90 || lon &lt; -180 || lon &gt; 180) {
+            alert("ERROR");
+    } else {
+      //Retrieve the latitude direction for Degrees Decimal
+      for (var i=0;i&lt;Location.LatDirect.length;i++) {
+        if (Location.LatDirect[i].checked)
+        {
+          var LatDirect = Location.LatDirect[i].value;
+        }
+      }
+
+      // If the user does not click direct button,
+      // then a positive latitude value regards North, negative latitude value regards South
+      if (LatDirect==null) {
+        if (lat&lt;0) {
+          LatDirect = "S";
+          Location.LatDirect[1].click();
+        }
+        else {
+          LatDirect ="N";
+          Location.LatDirect[0].click();
+        }
+      }
+
+      // Retrieve the longitude direction for Deg/Min/Sec
+      for (var i=0;i&lt;Location.LonDirect.length;i++) {
+        if (Location.LonDirect[i].checked)
+        {
+          var LonDirect = Location.LonDirect[i].value;
+        }
+      }
+
+      // If the user does not click direct button,
+      // then a positive latitude value regards East, negative latitude value regards West
+      if (LonDirect==null) {
+        if (lon&lt;0) {
+          LonDirect = "W";
+          Location.LonDirect[1].click();
+         }
+        else {
+          LonDirect ="E";
+          Location.LonDirect[0].click();
+        }
+      }
+
+      // Change to absolute value
+      lat = Math.abs(lat);
+      lon = Math.abs(lon);
+      Location.Latitude.value=lat;
+      Location.Longitude.value=lon;
+      setAllEnabled(Location);
+
+      // Convert to Degree Minutes Seconds Representation
+      LatDeg = Math.floor(lat);
+      LatMin = Math.floor((lat-LatDeg)*60);
+      LatSec =  (Math.round((((lat - LatDeg) - (LatMin/60)) * 60 * 60) * 100) / 100 ) ;
+      LonDeg = Math.floor(lon);
+      LonMin = Math.floor((lon-LonDeg)*60);
+      LonSec = (Math.round((((lon - LonDeg) - (LonMin / 60 )) * 60 * 60) * 100 ) / 100);
+
+      // Copy result to the board
+      Location.LatDeg.value=LatDeg;
+      Location.LatMin.value=LatMin;
+      Location.LatSec.value=LatSec;
+      Location.LonDeg.value=LonDeg;
+      Location.LonMin.value=LonMin;
+      Location.LonSec.value=LonSec;
+      if (LatDirect == "N") {
+        Location.LatDMSDirect[0].click();
+      } else {
+        Location.LatDMSDirect[1].click();
+      }
+      if (LonDirect == "E") {
+        Location.LonDMSDirect[0].click();
+      } else {
+        Location.LonDMSDirect[1].click();
+      }
+      clickedOption(Location);
+
+      // Find the farthest Point Location
+      farthestPoint(lat,lon,LatDeg,LonDeg,LatMin,LonMin,LatSec,LonSec,LatDirect,LonDirect);
+    }
+  } else if (inputed == "DMS") {
+
+    // Retrieve Lat and Lon information
+    var LatDeg = Location.LatDeg.value;
+    var LatMin = Location.LatMin.value;
+    var LatSec = Location.LatSec.value;
+    var LonDeg = Location.LonDeg.value;
+    var LonMin = Location.LonMin.value;
+    var LonSec = Location.LonSec.value;
+
+    // Assume the value to be zero if the user does not enter value
+    if (LatDeg==null)
+      LatDeg=0;
+    if (LatMin==null) {
+      LatMin=0;
+    }
+    if (LatSec==null) {
+      LatSec=0;
+    }
+    if (LonDeg==null)
+      LonDeg=0;
+    if (LonMin==null) {
+      LonMin=0
+    }
+    if (LonSec==null){
+      LonSec=0;
+    }
+
+    // Check if any error occurred
+    if (isNaN(Location.LatDeg.value) || isNaN(Location.LonDeg.value) || isNaN(Location.LatMin.value) || isNaN(Location.LonMin.value) || isNaN(Location.LatSec.value) || isNaN(Location.LonSec.value)) {
+      alert("Latitude and Longitude must be numeric");
+    } else if (LatDeg != Math.round(LatDeg) || LonDeg != Math.round(LonDeg) || LatMin != Math.round(LatMin) || LonMin != Math.round(LonMin)) {
+      alert("ERROR");
+    } else if (LatDeg &lt; -90 || LatDeg &gt; 90 || LonDeg &lt; -180 || LonDeg &gt; 180 || LatMin &lt; -60 || LatMin &gt; 60 || LonMin &lt; -60 || LonMin &gt; 60 || LatSec &lt; -60 || LatSec &gt; 60 || LonSec &lt; -60 || LonSec &gt; 60) {
+      alert("ERROR");
+    } else {
+    // If no error, then go on
+
+    // Retrieve the latitude direction for Degrees Decimal
+    for (var i=0;i&lt;Location.LatDMSDirect.length;i++) {
+      if (Location.LatDMSDirect[i].checked)
+      {
+        var LatDMSDirect = Location.LatDMSDirect[i].value;
+      }
+    }
+
+    // If the user does not click direct button,
+    // then a postive latitude value regards North, negative latitude value regards South
+    if (LatDMSDirect==null) {
+      if (LatDeg&lt;0 || Location.LatDeg.value=="-0") {
+        LatDMSDirect = "S";
+        Location.LatDMSDirect[1].click();
+      }
+      else {
+        LatDMSDirect ="N";
+        Location.LatDMSDirect[0].click();
+      }
+    }
+
+    // Retrieve the longitude direction for Deg/Min/Sec
+    for (var i=0;i&lt;Location.LonDMSDirect.length;i++) {
+      if (Location.LonDMSDirect[i].checked)
+      {
+        var LonDMSDirect = Location.LonDMSDirect[i].value;
+      }
+    }
+
+    // If the user does not click direct button,
+    // then a positive latitude value regards East, negative latitude value regards West
+    if (LonDMSDirect==null) {
+      if (LonDeg&lt;0 || Location.LonDeg.value=="-0") {
+        LonDMSDirect = "W";
+        Location.LonDMSDirect[1].click();
+      } else {
+        LonDMSDirect ="E";
+        Location.LonDMSDirect[0].click();
+      }
+    }
+
+    // Change to absolute value
+    LatDeg = Math.abs(LatDeg);
+    LonDeg = Math.abs(LonDeg);
+    LatMin = Math.abs(LatMin);
+    LonMin = Math.abs(LonMin);
+    LatSec = Math.abs(LatSec);
+    LonSec = Math.abs(LonSec);
+    setAllEnabled(Location);
+
+    // Convert to Decimal Degrees Representation
+    var lat = LatDeg + (LatMin/60) + (LatSec / 60 / 60);
+    var lon = LonDeg + (LonMin/60) + (LonSec / 60 / 60);
+    if ( lat &lt;= 90 && lon &lt;= 180 && lat &gt;=0 && lon &gt;= 0 )
+    {
+      // Copy the absolute value to the board
+      Location.LatDeg.value=LatDeg;
+      Location.LonDeg.value=LonDeg;
+      Location.LatMin.value=LatMin;
+      Location.LonMin.value=LonMin;
+      Location.LatSec.value=LatSec;
+      Location.LonSec.value=LonSec;
+
+      // Rounding off
+      lat = (Math.round(lat*1000000)/1000000);
+      lon = (Math.round(lon*1000000)/1000000);
+
+      // Copy result to the board
+      Location.Latitude.value=lat;
+      Location.Longitude.value=lon;
+      if (LatDMSDirect == "N") {
+        Location.LatDirect[0].click();
+      } else {
+        Location.LatDirect[1].click();
+      }
+      if (LonDMSDirect == "E") {
+        Location.LonDirect[0].click();
+      } else {
+        Location.LonDirect[1].click();
+      }
+        clickedOption(Location);
+        farthestPoint(lat,lon,LatDeg,LonDeg,LatMin,LonMin,LatSec,LonSec,LatDMSDirect,LonDMSDirect);
+      } else
+        alert("ERROR!!");
+    }
+  }
+}
+
+function clickedOption(Location) {
+        // Retrieve The DD/DMS Option
+        for (var i=0;i&lt;Location.inputType.length;i++) {
+                if (Location.inputType[i].checked)
+                {
+                        var inputed = Location.inputType[i].value;
+                }
+        }
+        changeOption(Location,inputed);
+}
+
+function resetForm(Location) {
+        changeOption(Location,"DD");
+}
+
+function changeOption(Location,inputed) {
+  if (inputed=="DD") {
+    with (Location) {
+      LatDeg.disabled=true;
+      LonDeg.disabled=true;
+      LatMin.disabled=true;
+      LonMin.disabled=true;
+      LatSec.disabled=true;
+      LonSec.disabled=true;
+      Latitude.disabled=false;
+      Longitude.disabled=false;
+      LatDirect[0].disabled=false;
+      LonDirect[0].disabled=false;
+      LatDirect[1].disabled=false;
+      LonDirect[1].disabled=false;
+      LatDMSDirect[0].disabled=true;
+      LonDMSDirect[0].disabled=true;
+      LatDMSDirect[1].disabled=true;
+      LonDMSDirect[1].disabled=true;
+    }
+  } else if (inputed =="DMS") {
+    with (Location){
+      Latitude.disabled=true;
+      Longitude.disabled=true;
+      LatDeg.disabled=false;
+      LonDeg.disabled=false;
+      LatMin.disabled=false;
+      LonMin.disabled=false;
+      LatSec.disabled=false;
+      LonSec.disabled=false;
+      LatDMSDirect[0].disabled=false;
+      LonDMSDirect[0].disabled=false;
+      LatDMSDirect[1].disabled=false;
+      LonDMSDirect[1].disabled=false;
+      LatDirect[0].disabled=true;
+      LonDirect[0].disabled=true;
+      LatDirect[1].disabled=true;
+      LonDirect[1].disabled=true;
+    }
+  }
+}
+
+function setAllEnabled(Location) {
+  with (Location) {
+    Latitude.disabled=false;
+    Longitude.disabled=false;
+    LatDeg.disabled=false;
+    LonDeg.disabled=false;
+    LatMin.disabled=false;
+    LonMin.disabled=false;
+    LatSec.disabled=false;
+    LonSec.disabled=false;
+    LatDMSDirect[0].disabled=false;
+    LonDMSDirect[0].disabled=false;
+    LatDMSDirect[1].disabled=false;
+    LonDMSDirect[1].disabled=false;
+    LatDirect[0].disabled=false;
+    LonDirect[0].disabled=false;
+    LatDirect[1].disabled=false;
+    LonDirect[1].disabled=false;
+  }
+}
+
+function farthestPoint(lat,lon,LatDeg,LonDeg,LatMin,LonMin,LatSec,LonSec,LatDirect,LonDirect) {
+  var farLat,farLon,farLat2,farLon2,farLatDeg,farLonDeg;
+  var farLatMin,farLonMin,farLatSec,farLonSec,farLatDirect,farLonDirect;
+  var dist;
+  if (LatDirect == "N") {
+    farLatDirect = "S";
+  } else {
+    farLatDirect = "N";
+  }
+  if (LonDirect == "E") {
+    farLonDirect = "W";
+  } else {
+    farLonDirect = "E";
+  }
+  farLat = lat;
+  farLatDeg = LatDeg;
+  farLatMin = LatMin;
+  farLatSec = LatSec;
+  farLon = 180 - Math.abs(lon);
+
+  // Method 1
+  farLonDeg = Math.floor(farLon);
+  farLonMin = Math.floor((farLon-farLonDeg)*60);
+  farLonSec = (Math.round((((farLon - farLonDeg) - (farLonMin / 60 )) * 60 * 60) * 100 ) / 100);
+
+  // Method 2
+  /*
+    farLonSec = 60 - LonSec;
+    if (farLonSec == 60) {
+      farLonSec=0;
+    }
+    if (farLonSec &gt;0) {
+      farLonMin = 60 - LonMin - 1;
+    } else {
+      farLonMin = 60 - LonMin ;
+    }
+    if (farLonMin ==60) {
+      farLonMin =0;
+    }
+    if (farLonMin &gt;0) {
+      farLonDeg = 180 - Math.abs(farLonDeg) - 1;
+    } else {
+      farLonDeg = 180 - Math.abs(farLonDeg);
+    }
+  */
+  farLon = Math.round(farLon*1000000)/1000000;
+  farLonSec = Math.round(farLonSec*100)/100;
+  elev = 200;
+  farElev = 200;
+  var dist = distance(lat,LatDirect,lon,LonDirect,elev,farLat,farLatDirect,farLon,farLonDirect,farElev);
+  var alertMsg="";
+  alertMsg+=("The location you entered is : " + "\n\n" +
+  "Latitude: " + lat + " " + LatDirect + "\n" + "Degrees: " + LatDeg + " Minutes: " + LatMin + " Seconds: " + LatSec + " " + LatDirect + "\n\n" +
+  "Longitude: " + lon + " " + LonDirect + "\n" + "Degrees: " + LonDeg + " Minutes: " + LonMin + " Seconds: " + LonSec + " " + LonDirect + "\n\n" +
+  "---------------------------------------------------------------" + "\n");
+
+  alertMsg+=("The farthest location from the point you entered is : " + "\n\n" +
+  "Latitude: " + farLat + " " + farLatDirect + "\n" + "Degrees: " + farLatDeg + " Minutes: " + farLatMin + " Seconds: " + farLatSec + " " + farLatDirect + "\n\n" +
+  "Longitude: " + farLon + " " + farLonDirect + "\n" + "Degrees: " + farLonDeg + " Minutes: " + farLonMin + " Seconds: " + farLonSec + " " + farLonDirect + "\n\n");
+
+  alertMsg+=("---------------------------------------------------------------" + "\n");
+  alertMsg+=("Distance: " + dist + " km ");
+
+  alert(alertMsg);
+}
+
+function distance(lat,LatDirect,lon,LonDirect,elev,lat2,ptDirect,lon2,ptLonDirect,ptElev) {
+  var radLat,radLon,radLat2,radLon2;
+  if (ptDirect == "S")
+    lat2 = lat2*-1;
+  if (ptLonDirect == "W")
+    lon2 = lon2*-1;
+  if (LatDirect == "S")
+    lat = lat*-1;
+  if (LonDirect == "W")
+    lon = lon*-1;
+  var radian = 180/Math.PI;
+  radLat=lat/radian;
+  radLon=lon/radian;
+  radLat2=lat2/radian;
+  radLon2=lon2/radian;
+  var dist = calcDistance(radLat,radLon,elev,radLat2,radLon2,ptElev);
+  dist = Math.round(dist*100)/100;
+  return dist;
+}
+
+
+// calculate the distance between two coordinates
+function calcDistance(lat1,long1,elev,lat2,long2,ptElev) {
+  var earthEquatorialRadius = 6378.14; // in kilometers
+  var earthFlattened = 1/298.257;
+  var exCentricityEarth = 0.08181922;
+  var radian = 180/Math.PI;
+  meanPosLat = (lat1+lat2)/2;
+  meanNegLat = (lat1-lat2)/2;
+  lambda = (long1-long2)/2;
+  with(Math) {
+    si = pow(sin(meanNegLat)*cos(lambda),2)+pow(cos(meanPosLat)*sin(lambda),2);
+    co = pow(cos(meanNegLat)*cos(lambda),2)+pow(sin(meanPosLat)*sin(lambda),2);
+    delta = atan(sqrt(si/co));
+    ra = sqrt(si*co)/delta;
+    di = 2*delta*earthEquatorialRadius;
+    ha =(3*ra-1)/2/co;
+    hb =(3*ra+1)/2/si;
+    distances = di*(1+earthFlattened*ha*pow(sin(meanPosLat)*cos(meanNegLat),2)-earthFlattened*hb*pow(cos(meanPosLat)*sin(meanNegLat),2));
+  }
+
+  // Taking elevation into consideration
+  var totalElev, elevDist
+  totalElevDist = Math.abs(elev - ptElev);
+
+  // Convert back to km
+  totalElevDist = totalElevDist / 1000;
+  elevDist = Math.sqrt((distances * distances) + (totalElevDist * totalElevDist));
+  return elevDist;
+}
+// --&gt;
+&lt;/script&gt;
+&lt;/HEAD&gt;
+
+&lt;!-- STEP TWO: Copy this code into the BODY of your HTML document  --&gt;
+
+&lt;BODY&gt;
+
+&lt;div id="demo"&gt;
+&lt;form name="Locations"&gt;
+&lt;input class="script" type="radio" name="inputType" value="DD" checked onclick="clickedOption(this.form)"&gt; &lt;strong&gt;Degrees Decimal&lt;/strong&gt;
+
+&lt;br&gt;Latitude&nbsp;&nbsp;&nbsp;: &lt;input class="script" name="Latitude" type="text" size="5"&gt;&nbsp;&nbsp;North &lt;input class="script" type="radio" name="LatDirect" value="N"&gt; South &lt;input class="script" type="radio" name="LatDirect" value="S"&gt;
+&lt;br&gt;Longitude: &lt;input class="script" name="Longitude" type="text" size="5"&gt;&nbsp;&nbsp;East&nbsp;&nbsp;&lt;input class="script" type="radio" name="LonDirect" value="E"&gt; West&nbsp;&nbsp;&lt;input class="script" type="radio" name="LonDirect" value="W"&gt;
+&lt;br&gt;
+
+&lt;br&gt;&lt;input class="script" type="radio" name="inputType" value="DMS" onclick="clickedOption(this.form)"&gt; &lt;strong&gt;Degrees, Minutes, &amp; Seconds&lt;/strong&gt;
+&lt;br&gt;&lt;strong&gt;Latitude:&lt;/strong&gt;
+&lt;br&gt;Degrees: &lt;input class="script" name="LatDeg" type="text" size="5" disabled&gt;&nbsp;&nbsp;Minutes: &lt;input class="script" name="LatMin" type="text" size="5" disabled&gt;&nbsp;&nbsp;Seconds: &lt;input class="script" name="LatSec" type="text" size="5" disabled&gt;
+&lt;br&gt;&nbsp;&nbsp;North &lt;input class="script" type="radio" name="LatDMSDirect" value="N" disabled&gt;&nbsp;&nbsp;South &lt;input class="script" type="radio" name="LatDMSDirect" value="S" disabled&gt;
+&lt;br&gt;&lt;strong&gt;Longitude:&lt;/strong&gt;
+&lt;br&gt;Degrees: &lt;input class="script" name="LonDeg" type="text" size="5" disabled&gt;&nbsp;&nbsp;Minutes: &lt;input class="script" name="LonMin" type="text" size="5" disabled&gt;&nbsp;&nbsp;Seconds: &lt;input class="script" name="LonSec" type="text" size="5" disabled&gt;
+&lt;br&gt;&nbsp;&nbsp;East&nbsp;&nbsp;&lt;input class="script" type="radio" name="LonDMSDirect" value="E" disabled&gt;&nbsp;&nbsp;&nbsp;&nbsp;West &lt;input class="script" type="radio" name="LonDMSDirect" value="W" disabled&gt;
+
+&lt;br&gt;&lt;br&gt;&lt;input class="script" value="Calculate" type="button" onclick="calc(this.form)"&gt;
+&lt;input class="script" name="Reset" type="reset" value="Clear" onclick="resetForm(this.form)"&gt;
+&lt;/form&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;center&gt;
+&lt;font face="arial, helvetica" size"-2"&gt;Free JavaScripts provided&lt;br&gt;
+by &lt;a href="http://javascriptsource.com"&gt;The JavaScript Source&lt;/a&gt;&lt;/font&gt;
+&lt;/center&gt;&lt;p&gt;
+
+&lt;!-- Script Size:  16.48 KB --&gt;</textarea><br><font FACE="helvetica,arial,geneva"><a href="http://javascript.internet.com/link-us.html">Did you use this script?&nbsp;&nbsp;Do you like this site?&nbsp;&nbsp;Please link to us!</a></font></td></tr>
+
+</table>
+</form>
+<!--content_stop-->
+
+<link rel="stylesheet" type="text/css" href="/styles/comments.css">
+<div class="comments_old">
+<script type="text/javascript">
+
+   function doReply(replyTo) {
+      if (document.forms["CommentEntryForm"]) {
+         document.forms["CommentEntryForm"].elements["reply_to"].value = replyTo;
+         window.location.hash = "#comment_entry_form";
+         if (document.forms["CommentEntryForm"].elements["user_name"].focus) {
+            document.forms["CommentEntryForm"].elements["user_name"].focus();
+         }
+         return false;
+      }
+      else {
+         return true;
+      }
+   }
+
+   jss_comWin = null;
+   function checkWin(winName) {
+      if ((!window.jss_comWin)       ||
+         (window.jss_comWin == null) ||
+         (window.jss_comWin.closed)) {
+         var features = "height=480,width=620,titlebar=no,resizable=yes,scrollbars=yes";
+         jss_comWin = window.open('',winName,features);
+      }
+      else if (window.jss_comWin.focus) {
+         jss_comWin.focus();
+      }
+   }
+
+
+   sc_captcha_to = null;
+   function check_captchas() {
+      if (!document.getElementById) return;
+      var captcha_image = document.getElementById('sc_captcha_img');
+      var captcha_audio = document.getElementById('sc_captcha_mp3');
+      var captcha_table = document.getElementById('captcha_table');
+      if (captcha_image               && 
+          captcha_audio               &&
+          captcha_table               &&
+          (captcha_table.style.display != 'block')) {
+         captcha_image.onerror = switch_captchas;
+         captcha_image.onabort = switch_captchas;
+         captcha_image.onload  = cancel_switch;
+         captcha_image.src     = "http://image.captchas.net/?client=LeeUnd&amp;random=010980665fa3bc2af73b814511f5405f&amp;alphabet=0123456789".replace(/&amp;/g, '&');
+         sc_captcha_to = window.setTimeout("switch_captchas()", 10000);
+         captcha_table.style.display = 'block';
+      }
+   }
+   function cancel_switch() {
+      window.clearTimeout(sc_captcha_to);
+      sc_captcha_to = null;
+   }
+   function switch_captchas() {
+      cancel_switch();
+      var captcha_image = document.getElementById('sc_captcha_img');
+      var captcha_audio = document.getElementById('sc_captcha_mp3');
+      if (captcha_image && captcha_audio) {
+         captcha_image.onerror = null;
+         captcha_image.onabort = null;
+         captcha_image.onload  = null;
+         captcha_image.src.replace('captchas.net', 'backup.captchas.net');
+         captcha_audio.href.replace('captchas.net', 'backup.captchas.net');
+      }
+   }
+
+
+// If this is a subsequent page of the comments display, 
+// be sure to automatically focus on the User Comments 
+// tab. 
+
+   if ((document.getElementsByTagName) &&
+       (window.location.search.indexOf('start_comment=') != -1)) {
+      var aDivs = document.getElementsByTagName('div');
+      for (var i=0; i<aDivs.length; i++) {
+         var theDiv = aDivs[i];
+         if (theDiv.title == "User Comments") {
+           if (theDiv.className) theDiv.className = theDiv.className + " tabbertabdefault";
+           else theDiv.className = "tabbertabdefault";
+         }
+      }
+   }
+</script>
+<style type="text/css">
+   .threadlevel1 {margin-left:0px}
+   .threadlevel2 {margin-left:10px; background-color:#FFFFCC}
+   .threadlevel3 {margin-left:20px}
+   .threadlevel4 {margin-left:30px; background-color:#FFFFCC}
+   .threadlevel5, .threadlevel6, .threadlevel7,
+   .threadlevel8, .threadlevel9, .threadlevel10 
+                 {margin-left:40px}
+   .commInf {display:inline}
+   .comment br {font-size:6px}
+   .opt {font-size: 10px;}
+</style>
+<fieldset class="comments">
+<span name="KonaFilter">
+<legend class="main">Add a comment, suggestion, or correction</legend>
+<form action="/cgi-bin/comments.pl" method="post" name="CommentEntryForm"
+      target="commentWindow" onsubmit="checkWin('commentWindow'); return true">
+   <input class="not" type="hidden" name="article_key" value="/math-related/latitude-longitude-converter.html" />
+
+   <input class="not" type="hidden" name="reply_to" value="" />
+<small>[For questions about usage, <span id="comment_usage_snippet">consult the <em>Notes</em> tab above or </span>visit the <a href="http://www.webdeveloper.com/forum/forumdisplay.php?f=3">JavaScript forum</a>. <em>Do not</em> include more than <em>two (2) lines</em> of code in your comments. If you have suggestions or corrections, you can <a href="http://javascript.internet.com/contribute/">submit them to us</a>.]</small><br><br>
+
+
+
+<label class="box" for="user_name"><a name="comment_entry_form">Name:</a></label>&nbsp;&nbsp;&nbsp;&nbsp;<input class="box" type="text" size="40" onfocus="check_captchas()" name="user_name" value="">
+<br class="left">
+<label class="box" for="user_email">E-mail:</label>&nbsp;&nbsp;&nbsp;<input class="box" type="text" size="40" name="user_email" value="">
+<br class="left">
+<label class="box" for="user_url">URL:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="box" type="text" size="40" name="user_url" value=""><br><em class="opt">[optional]</em>
+<br class="left">
+<label class="box" for="user_subj">Subject:</label>&nbsp;<input class="box" type="text" size="40" name="user_subj" value=""><br><em class="opt">[optional]</em>
+<br class="left">
+
+<label class="box" for="user_text">Comments:</label><textarea class="box" cols="60" rows="10" name="user_text" wrap="soft"></textarea>
+<br class="left">
+   <div id="captcha_table" style="display:none">
+      <table cellpadding="2" cellspacing="0" border="1">
+      <tr><td align="center" valign="middle">CAPTCHA Verification<br />
+Please enter the code displayed to the right in the box below:<br />
+<input type="text" size="10" name="captcha_word" value="" /><input type="hidden" name="captcha_hash" value="010980665fa3bc2af73b814511f5405f" /><input type="hidden" name="captcha_img" value="http://image.captchas.net/?client=LeeUnd&amp;random=010980665fa3bc2af73b814511f5405f&amp;alphabet=0123456789" /><input type="hidden" name="captcha_mp3" value="http://audio.captchas.net/?client=LeeUnd&amp;random=010980665fa3bc2af73b814511f5405f&amp;alphabet=0123456789" /></td>
+          <td align="center" valign="middle">
+      <img id="sc_captcha_img" src="/img/t.gif" width="240" height="80" alt="CAPTCHA Image" /><br />
+
+<a id="sc_captcha_mp3" href="http://audio.captchas.net/?client=LeeUnd&amp;random=010980665fa3bc2af73b814511f5405f&amp;alphabet=0123456789" target="_blank">Hear it!</a></td>
+      </tr>
+      </table></div>
+
+<p style="text-align: center;">
+<input type="submit" value="Review" name="action">&nbsp;
+<input type="submit" value="Add" name="action">&nbsp;
+<input type="submit" value="Clear" name="action"></p>
+</form>
+</span>
+</fieldset>
+<p style="text-align:center"><a href="/cgi-bin/comments.pl?action=rss&article_key=/math-related/latitude-longitude-converter.html">Comments feed <img src='/img/feed-icon-14x14.png' width='14' height='14' alt='Comment Feed RSS 2.0' border='0' /></a></p>
+
+
+</div>
+
+<p>
+
+<td>
+<!--   Begin 125X800 Ad Code  -->
+
+<span class='quad_F'>
+<script language="JavaScript">zzfocrender("203", "10665", "662691/662688/662676/662675/581034", "8", "120", "600", "", "", "");</script>
+<noscript>
+<a href="http://o1.qnsr.com/cgi/r?;n=203;c=662691/662688/662676/662675/581034;s=10665;x=2048;f=1069833734;u=j;z=20110310191712" target="_blank">
+<img border="0" width="120" height="600" src="http://o1.qnsr.com/cgi/x?;n=203;c=662691/662688/662676/662675/581034;s=10665;x=2048;f=1069833734;u=j;z=20110310191712" alt="Click here"></a>
+</noscript>
+</span>
+
+
+<!--   End 125X800 Ad Code  -->
+</td></tr>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Begin
+function getCookieVal (offset) {
+var endstr = document.cookie.indexOf(";", offset);
+if (endstr == -1)
+endstr = document.cookie.length;
+return unescape(document.cookie.substring(offset, endstr));
+}
+function GetCookie (name) {
+var arg = name + "=";
+var alen = arg.length;
+var clen = document.cookie.length;
+var i = 0;
+while (i < clen) {
+var j = i + alen;
+if (document.cookie.substring(i, j) == arg)
+return getCookieVal (j);
+i = document.cookie.indexOf(" ", i) + 1;
+if (i == 0)
+break;
+}
+return null;
+}
+function SetCookie (name, value) {
+var argv = SetCookie.arguments;
+var argc = SetCookie.arguments.length;
+var expires = (argc > 2) ? argv[2] : null;
+var path = "/"; //(argc > 3) ? argv[3] : null;
+var domain = (argc > 4) ? argv[4] : null;
+var secure = (argc > 5) ? argv[5] : false;
+document.cookie = name + "=" + escape (value) +
+((expires == null) ? "" : ("; expires=" +
+expires.toGMTString())) +
+((path == null) ? "" : ("; path=" + path)) +
+((domain == null) ? "" : ("; domain=" + domain)) +
+((secure == true) ? "; secure" : "");
+}
+
+var emailcookie = GetCookie('email_address');
+if (emailcookie == null) {
+emailcookie = 'your email here';
+}
+
+function chk(email, formname)
+{
+invalid = "";
+
+if (!email)
+invalid = "No email address found!  Try reloading the page then use the 'email a script' feature again.";
+
+else {
+
+if ( (email.indexOf("@") == -1) || (email.indexOf(".") == -1) )
+invalid += "\n\nInvalid email address.  Your email address is missing an '@' sign and a '.' in the domain name (like '.com').  Please check your address then submit again.";
+
+if (email.indexOf("youremailhere") > -1)
+invalid += "\n\nInvalid email address.  Make sure your email address included your username, the '@' sign, and the domain name (like '.com').";
+
+if (email.indexOf("\\") > -1)
+invalid += "\n\nEmail address contains an invalid back-slash (\\) character.  Remove the character and submit again.";
+
+if (email.indexOf("/") > -1)
+invalid += "\n\nEmail address contains an invalid forward-slash (/) character.  Remove the character and submit again.";
+
+if (email.indexOf("'") > -1)
+invalid += "\n\nEmail address contains an invalid apostrophe (') character.  Remove the character and submit again.";
+
+if (email.indexOf("zaz.com.br") > -1)
+invalid += "\n\nPlease do not use an email address that has an autoresponder set up for it.  Thanks.";
+
+if (email.indexOf("!") > -1)
+invalid += "\n\nEmail address contains an invalid exclamation point (!) character.  Remove the character or correct the email address then submit again.";
+
+if ( (email.indexOf(",") > -1) || (email.indexOf(";") > -1) )
+invalid += "\n\nPlease only enter one email address in the box at a time.  Remove the extra addresses and submit again.";
+
+if (email.indexOf("?subject") > -1)
+invalid += "\n\nPlease do not add '?subject=...' to your email address.  Scriptbot will send you the script with a pre-defined subject already.  Please remove the '?subject=...' from your email address and submit again.";
+}
+
+if (invalid == "")
+   {
+   var largeExpDate = new Date();
+   largeExpDate.setTime(largeExpDate.getTime() + (31 * 24 * 3600 * 1000));
+   SetCookie('email_address', email, largeExpDate);
+   if (formname == "scriptbot")
+      {
+      page = "http://javascript.internet.com/sent.html?" + email;
+      window.open(page, "AdWindow", "width=650,height=200");
+      }
+   return true;
+}
+else
+   {
+   alert("Oops, something is wrong...." + invalid);
+   return false;
+   }
+}
+
+function updateNewsletters() {
+with (document.forms["newslettersignup"]) {
+emailStr = email.value;
+var emailPat=/^(.+)@(.+)$/;
+var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]"; // remove   ( ) < > @ , ; : \ " . [ ]    */
+var validChars="\[^\\s" + specialChars + "\]";
+var quotedUser="(\"[^\"]*\")";
+var ipDomainPat=/^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
+var atom=validChars + '+';
+var word="(" + atom + "|" + quotedUser + ")";
+var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
+var domainPat=new RegExp("^" + atom + "(\\." + atom +")*$");
+var matchArray=emailStr.match(emailPat);
+if (matchArray==null) {
+alert("Email address seems incorrect (check @ and .'s)");
+return false;;
+}
+var user=matchArray[1];
+var domain=matchArray[2];
+if (user.match(userPat)==null) {
+alert("The username doesn't seem to be valid.");
+return false;
+}
+var IPArray=domain.match(ipDomainPat);
+if (IPArray!=null) {
+for (var i=1;i<=4;i++) {
+if (IPArray[i]>255) {
+alert("Destination IP address is invalid!");
+return false;
+      }
+   }
+}
+var domainArray=domain.match(domainPat);
+if (domainArray==null) {
+alert("The domain name doesn't seem to be valid.");
+return false;
+}
+var atomPat=new RegExp(atom,"g");
+var domArr=domain.match(atomPat);
+var len=domArr.length;
+if (domArr[domArr.length-1].length<2 || domArr[domArr.length-1].length>3) {
+alert("The address must end in a three-letter domain, or two letter country.");
+return false;
+}
+if (len<2) {
+var errStr="This address is missing a hostname!";
+alert(errStr);
+return false;
+}
+List_Name.value = newsletter.options[newsletter.selectedIndex].value
+		+ nltype.options[nltype.selectedIndex].value;
+
+   var largeExpDate = new Date();
+   largeExpDate.setTime(largeExpDate.getTime() + (31 * 24 * 3600 * 1000));
+   SetCookie('email_address', emailStr, largeExpDate);
+
+return true;
+   }
+}
+// End -->
+</script>
+
+<p>
+<center>
+
+<table cellpadding=0 cellspacing=0 border=0 width="620">
+<tr>
+<td align=left>
+
+<table cellpadding=0 cellspacing=0 border=1 bgcolor=#ffffcc>
+<tr><td align=center valign=middle>
+
+<table cellpadding=5 cellspacing=10 border=0 bgcolor=#ffffcc>
+<tr><td colspan=4 align=center valign=bottom>
+<font face="arial, helvetica" size="-1">Sign up for the Web Development Daily Newsletter</font></td></tr>
+<tr>
+<td>
+
+<form action="http://member.internet.com/subscribe.php" method=POST>
+<TABLE>
+  <TR>
+    <td>
+	<FONT SIZE="-1">
+	<div align="center"><input type=hidden name="list_names[]" value="dev-web-development-daily-html">
+
+
+	<br>
+	<div align="center"><!-- <input name="email" size="15" value="my@email">&nbsp;&nbsp; -->
+<!--	<input type="hidden" name="redirect_ok" value="http://e-newsletters.internet.com/thankyou_new.html">  -->
+	<input type="submit" name="Submit" value="Join"></div>
+    </td>
+  </TR>
+</TABLE>
+</form>
+
+</td>
+
+</tr>
+</table>
+<font face="arial, helvetica" size="-1"><a href="http://www.internet.com/corporate/privacy/privacypolicy.html">internet.com Privacy Policy</a></font>
+</td></tr></table>
+
+
+</TD>
+
+<td align=right>
+
+<form name="scriptbot" action="/cgi-bin/scriptbot.cgi" method="POST" onSubmit="return chk(document.scriptbot.email.value, 'scriptbot')">
+
+<input type=hidden name=filename value='latitude-longitude-converter.html'>
+
+<table border=1 cellspacing=0 cellpadding=20><tr bgcolor=#ebebeb>
+<td align=center><tt>We'll send this script to you!<p></tt>
+
+<SCRIPT>
+<!-- Begin
+document.write('<input type=text size=25 name=email value="'+emailcookie+'" onFocus="if(this.value==\'your email here\')this.value=\'\'\">');
+// End -->
+</SCRIPT>
+
+<input type=submit value="Send it!">
+<p><font size="-2">(just click "Send it!" once!)</font></td></tr>
+</table></form>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td align=right><font face="arial" size="-2"><div align=right><span class="address">
+[ <A HREF="http://javascript.internet.com/feedback.html" ONMOUSEOVER="window.status='Comments, questions, suggestions, or gripes, we want to hear from you!'; return true" ONMOUSEOUT="window.status=''; return true">Contact Us!</A> ]<BR>
+
+[ <A HREF="http://www.webdeveloper.com/forum/forumdisplay.php?f=3" ONMOUSEOVER="window.status='Visit our JavaScript Forum for assistance!'; return true" ONMOUSEOUT="window.status=' '; return true">JavaScript Forum</A> ]<br>
+
+[ <A HREF="http://javascript.internet.com/contribute/" ONMOUSEOVER="window.status='Submit your script creation to us and it could be featured on our site!'; return true" ONMOUSEOUT="window.status=''; return true">Submit Your Script!</A> ]<p>
+
+</span></div></font></td>
+</tr></table>
+
+<DIV ALIGN="CENTER">
+
+<!--   Begin 468X60 Ad Code (750X100 max)   -->
+
+
+<span class='quad_E'>
+<script language="JavaScript">zzfocrender("203", "10665", "662693/662688/662676/662675/581034", "14", "728", "90", "", "", "");</script>
+<noscript>
+<a href="http://o1.qnsr.com/cgi/r?;n=203;c=662693/662688/662676/662675/581034;s=10665;x=3584;f=40979465;u=j;z=20110310191712" target="_blank">
+<img border="0" width="728" height="90" src="http://o1.qnsr.com/cgi/x?;n=203;c=662693/662688/662676/662675/581034;s=10665;x=3584;f=40979465;u=j;z=20110310191712" alt="Click here"></a>
+</noscript>
+</span>
+
+
+
+<!--   End 468X60 Ad Code (750X100 max)   -->
+</DIV>
+
+
+<!-- Default Insight Tag -->
+
+<script type="text/javascript">
+  var _bizo_data_partner_id = "131";
+  var site_list = new Array("www.serverwatch.com", "www.smallbusinesscomputing.com", "www.hardwarecentral.com",
+                            "www.enterprisenetworkingplanet.com", "www.developer.com", "www.internetnews.com",
+                            "www.codeguru.com", "itmanagement.earthweb.com", "www.databasejournal.com",
+                            "www.esecurityplanet.com", "www.enterprisestorageforum.com", "www.cioupdate.com",
+                            "www.enterprisemobiletoday.com", "www.earthweb.com", "www.htmlgoodies.com",
+                            "www.webdeveloper.com", "www.vbforums.com", "search.internet.com",
+                            "www.linuxtoday.com", "flashkit.com", "e-newsletters.internet.com",
+                            "member.internet.com", "www.webopedia.com", "www.internet.com", "devx.com"
+                           );
+  var do_call = false;
+  for(var i = 0; i < site_list.length; i++) {
+     var txt=new RegExp(site_list[i]);
+     if (txt.test(document.location) == true) do_call = true;
+  }
+  if (do_call) {
+      var _bizo_p = (("https:" == document.location.protocol) ? "https://sjs." : "http://js.");
+      document.write(unescape("%3Cscript src='" + _bizo_p + "bizographics.com/convert_data.js?partner_id=" + _bizo_data_partner_id + "' type='text/javascript'%3E%3C/script%3E"));
+  }
+</script>
+<!-- Google Analytics -->
+<script src="/icom_includes/footers/scripts/ga.js"  type="text/javascript">
+</script>
+<script  type="text/javascript" >
+<!--     hide from no js browsers
+delete Array.prototype.itemValidation;
+delete Array.prototype.isArray;
+var superTracker = _gat._getTracker("UA-2838492-1");
+superTracker._initData();
+superTracker._trackPageview();
+
+-->
+</script>
+<script  type="text/javascript" >
+   var site_name =  location.hostname;
+   if ( site_name.indexOf("www.") != 0 ) {
+     site_name  = "www."+site_name ;
+   }
+   document.write("<SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='/icom_includes/footers/sites/"+ site_name +".js' TYPE='text/javascript'><\/SCR" + "IPT>");
+-->
+</script>
+<script  type="text/javascript" >
+<!--     hide from no js browsers
+   pageTracker._initData();
+   pageTracker._trackPageview();
+   // -->
+</script>
+<!-- End Google Analytics -->
+
+<style type="text/css">
+@charset "UTF-8";
+/* CSS Document */
+
+
+/* JOM CSS */
+
+#jomfooter {
+	border: 0;
+	margin: 5px;
+	padding: 5px;
+	}
+
+#jomfooter * {
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0;
+	margin: 0;
+	}
+
+#jomfooter img {
+	border: 0;
+	behavior: url('/icom_includes/footers/css/iepngfix.htc');
+	padding: 5px;
+	padding: expression('0');
+	}
+
+#jomfooter p {
+	font-size: 11px;
+	line-height: 20px;
+	margin: 10px;
+	}
+
+#jomfooter form b {
+	font-size: 12px;
+	}
+
+#jomfooter a {
+	text-decoration: underline;
+	}
+
+#jomfooter a:hover {
+	text-decoration: none;
+	}
+
+#jomfooter table td {
+	border: 0;
+	}
+
+
+/* GEMS Solutions CSS */
+
+#jomfooter #solsect {
+	margin: 0 auto;
+	padding: 10px 0;
+	width: 720px;
+	}
+
+#jomfooter #solsect .top {
+	background: url('/icom_includes/footers/soltopbg.gif') repeat-x #bbb;
+	height: 26px;
+	margin-bottom: 1px;
+	}
+
+#jomfooter #solsect .top a {
+	font-size: 16px;
+	font-weight: bold;
+	color:#333;
+	text-decoration:none;
+	margin-left: 5px;
+	padding: 0;
+	line-height: 25px;
+	}
+
+#jomfooter #solsect .top a:hover {
+	text-decoration: none;
+	}
+
+#jomfooter #solsect .solsectpad {
+	background: #fff;
+	}
+
+#jomfooter #solsect .solsectpad .main {
+	background:url('/icom_includes/footers/solmidbg.gif') repeat-x #e7e8e3;
+	padding: 5px;
+	margin-bottom: 1px;
+	}
+
+#jomfooter #solsect .solsectpad .main h2 {
+	font-size: 12px;
+	color: #000;
+	font-weight: normal;
+	padding-bottom: 3px;
+	}
+
+#jomfooter #solsect a {
+	color: #333;
+	font-size: 10px;
+	text-decoration: none;
+	line-height: 13px;
+	}
+
+#jomfooter #solsect a:hover {
+	text-decoration: underline;
+	}
+</style>
+
+
+
+<!-- Begin JOM Footer -->
+
+
+<div id="jomfooter" align="center">
+<p><a href="http://www.internet.com/"><img src="http://www.internet.com/icom_includes/footers/img/icom_logo_qsfooter.png" alt="Internet.com" width="240" height="40" hspace="0" border="0" /></a><br>
+    The Network for Technology Professionals</p>
+<form method="POST" action="http://search.internet.com/www.jupiterweb.com" target="_top">        
+      <input type="HIDDEN" name="IC_Summary" value="1">
+        <input type="HIDDEN" name="IC_StartNumber" value="0">
+        <input type="HIDDEN" name="IC_BatchSize" value="10">
+        <input type="HIDDEN" name="IC_RelevanceThreshold" value="50">
+
+        <input type="hidden" name="IC_QueryDatabase" value="all">
+        <strong>Search:</strong> 
+        <input type="text" name="IC_QueryText" size="45">
+
+        <input type="image" border="0" value="Find" name="SUBMIT" src="/icom_includes/footers/but_find.gif" width="41" height="20" align="absmiddle">
+  </form>
+    <p>
+        <a target="_blank" rel="nofollow" href="http://www.internet.com/Internetcom/Door/41188"> About Internet.com</a> 
+        <br>
+
+      <script type="text/javascript">
+            document.write(' Copyright ');
+            var today = new Date();
+            document.write(  + today.getFullYear());
+            document.write(' QuinStreet Inc. All Rights Reserved.');
+        </script>
+  <noscript>
+        Copyright 2010 QuinStreet Inc. All Rights Reserved.
+  </noscript>
+
+  </p>
+       <p> <a target="_blank" rel="nofollow" href="http://www.internet.com/Internetcom/Door/41187">Legal Notices</a>, <a target="_blank" rel="nofollow" href="http://www.internet.com/Internetcom/Door/41189#Licensing1">Licensing</a>, <a target="_blank" rel="nofollow" href="http://www.internet.com/Internetcom/Door/41189#Permissions">Permissions</a>, <a target="_blank" rel="nofollow" href="http://www.internet.com/Internetcom/Door/41186">Privacy  Policy</a>.
+        <br />
+
+        <a target="_blank" rel="nofollow" href="http://www.internet.com/mediakit/">Advertise</a> | <a target="_blank" rel="nofollow" href="http://e-newsletters.internet.com/">Newsletters</a> |  <a target="_blank" rel="nofollow" href="http://e-newsletters.internet.com/announcement_list.html">E-mail Offers</a>
+  </p>
+
+
+<!-- start solutions links section -->
+    <div id="solsect">
+
+        <div class="top" align="left"><a href="#">Solutions</a></div>
+        <div class="solsectpad">
+                        <div class="main" align="left">
+                                <h2>Whitepapers and eBooks</h2>
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td width="50%" valign="top" align="left">
+                                                        <a target="_blank" href="http://x.xertp.com/cgi/r?;n=203;c=785850;s=9272;x=7936;f=201103072213250;u=j;z=TIMESTAMP;q=1;site=footer">IBM eBook: Getting Started with DB2 Application Development</a><br>
+
+                                                                                                                                 <a target="_blank" href="http://b.breju.com/cgi/r?;n=203;c=785849;s=9272;x=7936;f=201103072200070;u=j;z=TIMESTAMP;q=1;site=footer">Intel Whitepaper: Achieving Long-term Business Value with Intel vPro Technology</a><br>
+                                                                                                                                 <a target="_blank" href="http://q.quiyp.com/cgi/r?;n=203;c=762423;s=9272;x=7936;f=201102091028140;u=j;z=TIMESTAMP;q=1;site=footer">See Great Software Built for Microsoft Windows 7</a><br>
+                                                                                                                                 <a target="_blank" href="http://clk.atdmt.com/MRT/go/302149984/direct;wi.1;hi.1/01/">5 Ways Site Pinning Will Transform Websites</a><br>
+                                                                               </td>
+                        <td width="10"> </td>
+                        <td width="50%" valign="top" align="left">
+                                                                                                                              <a target="_blank" href="http://www.devx.com/MS_PHP/Door/42951">PHP for Windows Showcase</a><br>
+
+                                                                                                                                 <a target="_blank" href="http://www.devx.com/MS_PHP/Door/42951">Resource: PHP for Windows Showcase</a><br>
+                                                                                                                                 <a target="_blank" href="http://clk.atdmt.com/MRT/go/303410240/direct;wi.1;hi.1/01/">Developer's Guide to Pinned Sites</a><br>
+                                                                                                                                 <a target="_blank" href="http://www.devx.com/solutions">MORE WHITEPAPERS, EBOOKS, AND ARTICLES</a><br>
+                                                                                                                             </td>
+                    </tr>
+                </table>
+            </div>
+
+                        <div class="main" align="left">
+                                <h2>Webcasts</h2>
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td width="50%" valign="top" align="left">
+                                                        <a target="_blank" href="http://p.pohik.com/cgi/r?;n=203;c=785848;s=9272;x=7936;f=201103072156290;u=j;z=TIMESTAMP;q=1;site=footer">Intel Video: Protect Lost or Stolen PCs</a><br>
+                                                                                                                                 <a target="_blank" href="http://z.zenaw.com/cgi/r?;n=203;c=717236;s=9272;x=7936;f=201012071406030;u=j;z=TIMESTAMP;site=footer">Software License Operations - Cleaning Up the Backoffice</a><br>
+
+                                                                               </td>
+                        <td width="10"> </td>
+                        <td width="50%" valign="top" align="left">
+                                                                                                                              <a target="_blank" href="http://www.devx.com/solutions">MORE WEBCASTS, PODCASTS, AND VIDEOS</a><br>
+                                                                                                                             </td>
+                    </tr>
+                </table>
+            </div>
+
+                        <div class="main" align="left">
+                                <h2>Downloads and eKits</h2>
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td width="50%" valign="top" align="left">
+                                                        <a target="_blank" href="http://x.xertp.com/cgi/r?;n=203;c=786156;s=9272;x=7936;f=201103081437310;u=j;z=TIMESTAMP;site=footer">Install Drupal for Windows</a><br>
+                                                                                                                                 <a target="_blank" href="http://c.cullr.com/cgi/r?;n=203;c=786155;s=9272;x=7936;f=201103081435590;u=j;z=TIMESTAMP;site=footer">Install Joomla! for Windows</a><br>
+
+                                                                                                                                 <a target="_blank" href="http://u.ugosy.com/cgi/r?;n=203;c=786154;s=9272;x=7936;f=201103081434380;u=j;z=TIMESTAMP;site=footer">Install WordPress for Windows</a><br>
+                                                                               </td>
+                        <td width="10"> </td>
+                        <td width="50%" valign="top" align="left">
+                                                                                                                              <a target="_blank" href="http://www.devx.com/devx/link/46509">Download a Free Trial of Adobe Flash Builder and Adobe Flex</a><br>
+                                                                                                                                 <a target="_blank" href="http://s.sigze.com/cgi/r?;n=203;c=785851;s=9272;x=7936;f=201103072215030;u=j;z=TIMESTAMP;q=1;site=footer">IBM Download: IBM DB2 Express-C and e-kit </a><br>
+                                                                                                                                 <a target="_blank" href="http://www.devx.com/solutions">MORE DOWNLOADS, EKITS, AND FREE TRIALS</a><br>
+
+                                                                                                                             </td>
+                    </tr>
+                </table>
+            </div>
+                        <div class="main" align="left">
+                                <h2>Tutorials and Demos</h2>
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+
+                        <td width="50%" valign="top" align="left">
+                                                        <a target="_blank" href="http://p.pohik.com/cgi/r?;n=203;c=785852;s=9272;x=7936;f=201103072216250;u=j;z=TIMESTAMP;q=1;site=footer">IBM Article: Best practices for DB2 for Linux, UNIX, and Windows </a><br>
+                                                                                                                                 <a target="_blank" href="http://www.internet.com/IBM_Competitive_Business/Link/44152/Exceptional-Web-Experiences">Exceptional Web Experiences</a><br>
+                                                                               </td>
+                        <td width="10"> </td>
+                        <td width="50%" valign="top" align="left">
+                                                                                                                              <a target="_blank" href="http://www.devx.com/HotList/Link/40644">Internet.com Hot List: Get the Inside Scoop on IT and Developer Products</a><br>
+
+                                                                                                                                 <a target="_blank" href="http://www.devx.com/solutions">MORE TUTORIALS, DEMOS AND STEP-BY-STEP GUIDES</a><br>
+                                                                                                                             </td>
+                    </tr>
+                </table>
+            </div>
+                    </div>
+    </div>
+<!-- end solutions links section -->
+
+</div>
+<!-- End JOM Footer -->
+
+</center>
+</div><!-- Default Insight Tag -->
+<script type="text/javascript">
+  var _bizo_data_partner_id = "131";
+</script>
+<script type="text/javascript">
+  var _bizo_p = (("https:" == document.location.protocol) ? "https://sjs." : "http://js.");
+  document.write(unescape("%3Cscript src='" + _bizo_p + "bizographics.com/convert_data.js?partner_id=" + _bizo_data_partner_id + "' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+</body></html>
+
+
+
+

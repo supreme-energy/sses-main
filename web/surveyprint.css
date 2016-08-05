@@ -1,0 +1,39 @@
+body {
+	font-size: 10pt;
+	font-family: Arial, Helvetica, sans-serif;
+}
+table.header {
+  text-align: left;
+  width: 100%;
+}
+img.logo {
+    -moz-border-radius: 5px 5px 5px 5px;
+	background-color: #ffffff;
+	border: 2px solid black;
+}
+h1 { font-size: 14pt; }
+td {
+  font-size: 10pt;
+  width: 2%;
+  text-align: left;
+}
+table.one {
+  width: 100%;
+	margin: 8 0;
+}
+td.one {
+  font-size: 10pt;
+  width: 50%;
+  text-align: left;
+	vertical-align: top;
+}
+table.two {
+  font-size: 10pt;
+	margin: 8 0;
+  width: 100%;
+}
+td.two {
+  text-align: left;
+	vertical-align: top;
+	padding: 0 0;
+}

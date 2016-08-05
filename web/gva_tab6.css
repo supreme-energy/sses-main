@@ -1,0 +1,126 @@
+body {
+	margin: 10px;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  font-size: 9pt;
+  color: black;
+  background-color: #307040;
+}
+input { font-size: .7em; }
+
+a { color: #000080; }
+a.tabs {text-decoration:none; color: #000;}
+a.tabsinactive {text-decoration:none; color: #777;}
+a.tabsinactive:hover {text-decoration:none; color: #000;}
+a.menu { font-size: 10pt; }
+table.tabs {
+	border-style: none;
+	border-width: 0px;
+	border-spacing: 0px;
+	color: #000;
+	text-align: left;
+	padding: 0px;
+	margin: 0;
+  	background-color: transparent;
+  }
+td.active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0;
+	border-bottom-color: rgb(240,230,200);
+  	background-color: rgb(240,230,200);
+	color: #000;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+td.inactive:hover {
+	background-color: #90d0a0;
+}
+td.inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0px;
+	background-color: #ddd;
+	color: #777;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+table.container {
+  -moz-border-radius: 10px 10px 10px 10px;
+  background-color: rgb(240,230,200);
+  border-color: #000;
+  border-style: solid;
+  border-width: 2px;
+  padding: 8;
+}
+table.tabcontainer {
+	-moz-border-radius: 0px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	text-align: left;
+	padding: 20px;
+  background-color: rgb(240,230,200);
+	width: 850;
+	margin: 0;
+  }
+td.right { text-align: right; padding: 4 0; }
+td.left { text-align: left; padding: 4 0; }
+td.container { vertical-align: top; padding: 4 0; }
+
+table.buttons {
+  -moz-border-radius: 5px 5px 5px 5px;
+	border: thin solid black;
+	color: #000;
+	text-align: left;
+	padding: 20;
+  background-color: #c0c0a0;
+}
+table.example {
+  -moz-border-radius: 5px 5px 5px 5px;
+	border: thin solid black;
+	color: #000;
+	text-align: left;
+	padding: 4;
+  background-color: #c0c0a0;
+	border-spacing: 0 0;
+}
+td.example {
+	font-size: 9pt;
+	background-color: white;
+	padding: 0 4;
+}
+td.examplered {
+	font-size: 10pt;
+	font-weight: bold;
+	background-color: white;
+	color: red;
+	padding: 0 0;
+	border: 2px solid black;
+}
+td.example:hover {
+	background-color: #808f80;
+}
+input.example {
+	font-size: 9pt;
+	background-color: white;
+	padding: 0 0;
+	border: none;
+	text-align: center;
+}
+input.example:hover {
+	font-size: 9pt;
+	padding: 0 0;
+	cursor: pointer;
+}

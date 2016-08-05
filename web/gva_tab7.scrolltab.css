@@ -1,0 +1,47 @@
+div.tableContainer {
+  -moz-border-radius: 5px 5px 5px 5px;
+  font-size: 12;
+  background-color: #c0c090;
+  margin: 4 0 5 5;
+  border: 1px solid black;
+  padding: 0;
+  border-spacing: 0;
+  text-align: center;
+  height: 422px;
+	clear: both;
+	overflow: auto;
+}
+div.tableContainer table {
+	float: left;
+}
+html>body div.tableContainer {
+	overflow: hidden;
+}
+html>body div.tableContainer table {
+	padding: 0 0;
+}
+html>body tbody.scrollContent {
+	display: block;
+	height: 390px;
+	overflow: auto;
+	width: 900;
+}
+tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+	/* border-style: none; */
+	padding: 0;
+}
+tbody.scrollContent tr.alternateRow td {
+	border-style: none;
+	padding: 0;
+}
+
+html>body thead.fixedHeader tr {
+	/* display: block */
+}
+html>body thead.fixedHeader td {
+	border:none;
+	background-color: transparent;
+	text-align: right;
+	font-size: 10;
+	padding: 0 2;
+}

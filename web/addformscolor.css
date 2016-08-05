@@ -1,0 +1,21 @@
+body {
+	margin: 10px;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  color: black;
+  background-color: #307040;
+	font-size: 10pt;
+}
+table {
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 2px;
+	background-color: rgb(240,230,200);
+	margin: 0;
+	font-size: 9pt;
+	border-spacing: 0;
+}

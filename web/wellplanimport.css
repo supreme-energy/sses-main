@@ -1,0 +1,23 @@
+body {
+	margin: 10px;
+  font-size: 10;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  color: black;
+  background-color: #307040;
+}
+table.container {
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	color: #000;
+	float: left;
+	text-align: left;
+  background-color: #c0c0a0;
+}
+table.group { 
+	-moz-border-radius: 10px 10px 10px 10px;
+  	background-color: rgb(240,230,200);
+	border: thin solid black;
+	font-size: 14;
+}

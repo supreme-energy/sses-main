@@ -1,0 +1,127 @@
+body {
+	margin: 10px;
+   font-family: Arial,Helvetica,"sans-serif",Tahoma;
+  font-size: 10pt;
+  color: black;
+  background-color: #307040
+}
+form {
+	padding: 0;
+	margin: 0;
+}
+td {
+	vertical-align: top;
+	text-align: left;
+	padding: 10;
+  font-size: 10pt;
+}
+a { color: #000080; }
+a.tabs {text-decoration:none; color: #000;}
+a.tabsinactive {text-decoration:none; color: #777;}
+a.tabsinactive:hover {text-decoration:none; color: #000;}
+a.menu { font-size: 10pt; }
+table.tabs {
+	border-style: none;
+	border-width: 0px;
+	border-spacing: 0px;
+	color: #000;
+	/* float: left; */
+	text-align: left;
+	padding: 0px;
+	margin: 0;
+  	background-color: transparent;
+  }
+td.active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0;
+	border-bottom-color: rgb(230,220,177);
+  	background-color: rgb(230,220,177);
+	color: #000;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+td.inactive:hover {
+	background-color: #90d0a0;
+}
+td.inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0px;
+	background-color: #ddd;
+	color: #777;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+table.container {
+  padding: 0;
+	width: 950px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	border: thin solid black;
+  background-color: #c0c0a0;
+}
+td.container {
+	vertical-align: top;
+	padding: 10 10;
+	font-size: 10pt;
+}
+
+table.container2 {
+	border: none;
+  background-color: #c0c0a0;
+	padding: 2 60;
+	width: 950px;
+}
+td.container2 {
+	border: none;
+	vertical-align: top;
+	padding: 10 10;
+	font-size: 10pt;
+	width: 33%;
+	}
+td.users {
+	border: none;
+	vertical-align: top;
+	padding: 4 10;
+	font-size: 10pt;
+	width: 33%;
+	}
+
+table.tabcontainer {
+	-moz-border-radius: 0px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 0px;
+  background-color: rgb(230,220,177);
+	width: 950px;
+	margin: 0;
+  }
+
+input.button {
+	border-color: black;
+  background-color: rgb(230,230,190);
+	border-style: outset;
+	padding: 2 4;
+	margin: 0 1;
+}
+input.button:hover {
+  background-color: #70b080;
+}
+input.button:active {
+  	background-color: rgb(128,128,128);
+}

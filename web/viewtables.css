@@ -1,0 +1,65 @@
+body {
+	margin: 10px;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  color: black;
+  background-color: #307040;
+}
+table.tabcontainer {
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 2px;
+	background-color: rgb(240,230,200);
+	margin: 0;
+  }
+table.surveys {
+  -moz-border-radius: 5px 5px 5px 5px;
+  text-align: left;
+  background-color: rgb(240, 240, 200);
+  background-color: #307040;
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+	border: thin solid black;
+	width: 850px;
+	font-size: 8pt;
+}
+td.col1 {
+  text-align: right;
+	padding: 2;
+	background-color: rgb(230,240,230);;
+  border: none;
+	border-left: thin solid black;
+	border-bottom: thin solid black;
+}
+td.col2 {
+  text-align: right;
+	padding: 2;
+	background-color: rgb(240,240,220);;
+  border: none;
+	border-left: thin solid black;
+	border-bottom: thin solid black;
+}
+th.col1 {
+  border: thin solid black;
+	border-right: none;
+  text-align: center;
+  padding: 0;
+	background-color: rgb(230,240,230);;
+}
+th.col2 {
+  border: thin solid black;
+	border-right: none;
+  text-align: center;
+  padding: 0;
+	background-color: rgb(240,240,220);;
+}
+td {
+	vertical-align: top;
+	padding: 0;
+}

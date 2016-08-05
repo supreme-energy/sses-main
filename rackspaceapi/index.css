@@ -1,0 +1,77 @@
+body {
+  font-size: 12;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  color: black;
+  background-color: #307040;
+  padding: 0 0 0 20;
+  }
+h1 {
+	line-height: 50%;
+	font-size: 20pt;
+}
+h2 {
+	line-height: 50%;
+	font-size: 22pt;
+}
+table.container {
+	font-size: 12;
+}
+td.header {
+	-moz-border-radius: 10px 10px 10px 10px;
+	color: black;
+	border-color: #000;
+	border-style: solid;
+	border-width: 3px;
+	padding: 0 8 0 8;
+	font-size: 14pt;
+	font-weight: bold;
+ 	background-color: rgb(215,210,180);
+}
+td.logo {
+	-moz-border-radius: 10px 10px 10px 10px;
+	color: black;
+	border-color: #000;
+	border-style: solid;
+	border-width: 3px;
+	padding: 0 8 0 8;
+	font-size: 14pt;
+	font-weight: bold;
+ 	background-color: rgb(215,210,180);
+	text-align: center;
+}
+td.info {
+	border: thin solid black;
+	background-color: white;
+	padding: 4 8;
+	width: 30%;
+	font-size: 10pt;
+}
+td.container {
+	-moz-border-radius: 10px 10px 10px 10px;
+	color: black;
+	border-color: #000;
+	border-style: solid;
+	border-width: 3px;
+	padding: 8 8 8 8;
+	font-size: 14pt;
+	font-weight: bold;
+  background-color: rgb(215,210,180);
+}
+td.bg {
+ 	background-color: rgb(215,210,180);
+  border: thin solid black;
+}
+td.links {
+	-moz-border-radius: 10px 10px 10px 10px;
+	vertical-align: top;
+	color: black;
+	border: 3px solid black;
+	padding: 4 4 4 16;
+	font-size: 10pt;
+  background-color: #e0e0c0;
+  background-color: rgb(215,210,180);
+}
+img {
+	padding: 2;
+	margin: 0;
+}

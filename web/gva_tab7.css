@@ -1,0 +1,211 @@
+body {
+	margin: 10px;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  font-size: 9pt;
+  color: black;
+  background-color: #307040;
+}
+input { font-size: .9em; padding: 0; }
+
+input[type="text"].pretty {
+	height:20px;
+	border:1px solid gray;
+	padding-left:5px;
+}
+
+a { color: #000080; }
+a.tabs {text-decoration:none; color: #000;}
+a.tabsinactive {text-decoration:none; color: #777;}
+a.tabsinactive:hover {text-decoration:none; color: #000;}
+a.menu { font-size: 10pt; }
+table.tabs {
+	border-style: none;
+	border-width: 0px;
+	border-spacing: 0px;
+	color: #000;
+	text-align: left;
+	padding: 0px;
+	margin: 0;
+  	background-color: transparent;
+  }
+td.active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0;
+	border-bottom-color: rgb(240,230,200);
+  	background-color: rgb(240,230,200);
+	color: #000;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+td.inactive:hover {
+	background-color: #90d0a0;
+}
+td.inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0px;
+	background-color: #ddd;
+	color: #777;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+div.tabcontainer {
+	border:2px solid black;
+	border-top:none;
+	color:black;
+	text-align:left;
+	padding:20px;
+	background-color:rgb(240,230,200);
+	margin:0;
+}
+table.tabcontainer {
+	-moz-border-radius: 0px 10px 10px 10px;
+	border: 2px solid black;
+	border-top: none;
+	color: black;
+	text-align: left;
+	padding: 20px;
+  background-color: rgb(240,230,200);
+	margin: 0;
+	width: 850px;
+  }
+table.container {
+  -moz-border-radius: 10px 10px 10px 10px;
+  background-color: rgb(240,230,200);
+  padding: 8;
+}
+td.container {
+	vertical-align: top; padding: 4 0;
+}
+table.svys {
+  text-align: left;
+  background-color: #c0c0a0;
+  width:610px;
+  font-size: 10pt;
+  padding: 0;
+  border-collapse:collapse;
+}
+th.svysw {
+  text-align: center;
+  padding: 0 2;
+  background-color: #509060;
+  border:1px solid black;
+  width:14%;
+}
+td.svys {
+  background-color: #f0f0d0;
+  text-align: center;
+  border:1px solid black;
+  width:14%;
+}
+td.svyin {
+  background-color: #f0f0d0;
+  text-align: center;
+  border:1px solid black;
+  padding:0;
+  width:14%;
+}
+
+
+/* app tabs special */
+.apptabs {
+	width: 100%;
+}
+div.apptab_inactive:hover {
+	background-color: #90d0a0;
+	color: #000;
+}
+.apptab_inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #ddd;
+	color: #777;
+	float: left;
+	width: 110px;
+	cursor: default;
+	padding: 2px 4px;
+	font-size: 10pt;
+	text-align: center;
+}
+
+.apptab_active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 1px;
+	border-bottom-color: #c0c0a0;
+  background-color: #c0c0a0;
+	color: #000;
+	float: left;
+	width: 120px;
+	cursor: default;
+	padding: 2px 4px;
+	font-size: 10pt;
+	text-align: center;
+}
+
+.apptab_content {
+	border-color: #000;
+	border-style: solid;
+	border-width: 1px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 0px;
+	background-color: #c0c0a0;
+	width: 800px;
+}
+
+/* scroll table */
+div.tableContainer {
+	font-size: 12;
+	background-color: #c0c090;
+	margin: 4 0 5 5;
+	border: 1px solid black;
+	padding: 0;
+	border-spacing: 0;
+	text-align: center;
+}
+html>body div.tableContainer {
+}
+html>body div.tableContainer table {
+	padding: 0 0;
+}
+html>body tbody.scrollContent {
+	display: block;
+	overflow-y:auto;
+	height:400px;
+}
+tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+	/* border-style: none; */
+	padding: 0;
+}
+tbody.scrollContent tr.alternateRow td {
+	border-style: none;
+	padding: 0;
+}
+
+html>body thead.fixedHeader tr {
+	/* display: block */
+}
+html>body thead.fixedHeader td {
+	border:none;
+	background-color: transparent;
+	text-align: right;
+	font-size: 10;
+	padding: 0 2;
+}

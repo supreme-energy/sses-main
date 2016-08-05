@@ -1,0 +1,21 @@
+@font-face{
+	font-family:'Pictos';
+	src: url('pictos-web.eot');
+	src: local('@'), url('pictos-web.woff') format('woff'), url('pictos-web.ttf') format('truetype'), url('pictos-web.svg@webfontIyfZbseF') format('svg');
+	font-weight:normal;
+	font-style:normal;
+}
+
+.info_small:before, .info_small:before {
+	position: absolute;
+	top: 6px;
+	right: 0;
+	bottom: 0;
+	left: 0px;
+	text-align: left;
+	font-family: "Pictos";
+	content: "i";
+	font-size:1.3em;
+	line-height:5px;
+	
+}

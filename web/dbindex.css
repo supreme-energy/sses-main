@@ -1,0 +1,49 @@
+body {
+	margin: 10px;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  color: black;
+  background-color: #307040;
+}
+table.container {
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 2px;
+	background-color: rgb(240,230,200);
+	margin: 0;
+  }
+table.index {
+  text-align: left;
+  background-color: rgb(240, 240, 200);
+  background-color: #70b080;
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+	border: thin solid black;
+	width: 650px;
+}
+td.index {
+	border-top: thin solid black;
+	vertical-align: top;
+	padding: 4;
+}
+input {
+	font-size: 8pt;
+}
+td {
+	vertical-align: top;
+	padding: 4;
+}
+tr.row1 {
+	background-color: rgb(255,255,255);;
+	font-size: 10pt;
+}
+tr.row2 {
+	background-color: rgb(240,255,200);;
+	font-size: 10pt;
+}

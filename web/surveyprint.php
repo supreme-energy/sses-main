@@ -1,0 +1,188 @@
+<?php /*
+	Written by: Richard Gonsuron
+	Copyright: 2009, Supreme Source Energy Services, Inc.
+	All rights reserved.
+	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
+	or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
+*/ ?>
+<?
+require_once("dbio.class.php");
+$seldbname=$_GET['seldbname'];
+$db=new dbio($seldbname);
+$db->OpenDb();
+include("readwellinfo.inc.php");
+include("readappinfo.inc.php");
+$currdate=date('m/d/Y');
+?>
+<HTML>
+<FONT FACE="Arial, Helvetica, sans-serif">
+<HEAD>
+<link rel="stylesheet" type="text/css" href="surveyprint.css" />
+</HEAD>
+<BODY>
+<TABLE class="header">
+<TD class="one">
+	<IMG class='logo' SRC="logo.gif" WIDTH=75 HEIGHT=75>
+</TD>
+<TD class="one"><b>
+	<CENTER>
+	<H1><?echo $wellname?><BR> Survey Report</H1>
+	<B><?printf("Date: %s", $currdate);?></B>
+</TD>
+</TABLE>
+
+<TABLE class="one">
+<TR>
+<TD class="one">
+<B>Company: </B><?echo $opname;?><BR>
+<B>Well: </B><?echo $wellname;?><BR>
+<B>Field: </B><?echo $field;?><BR>
+<B>Location: </B><?echo $location;?><BR>
+<B>State/Prov: </B><?echo $stateprov;?><BR>
+<B>County: </B><?echo $county;?><BR>
+</TD>
+<TD class="one">
+<B>RigId: </B><?echo $rigid;?><BR>
+<B>API/UWI: </B><?echo $wellid;?><BR>
+<B>Job Number: </B><?echo $jobnumber;?><BR>
+<BR>
+<B>Proposed Azimuth: </B><?echo $propazm;?><BR>
+<B>North Reference: </B><?echo $correction;?>
+</TD>
+</TR>
+</TABLE>
+
+<TABLE class="two">
+<TR> 
+<TH ALIGN="left">Svy</TH>
+<TH ALIGN="left">Depth</TH>
+<TH ALIGN="left">Inc</TH>
+<TH ALIGN="left">Azm</TH>
+<TH ALIGN="left">CL</TH>
+<TH ALIGN="left">TVD</TH>
+<TH ALIGN="left">VS</TH>
+<TH ALIGN="left">NS</TH>
+<TH ALIGN="left">EW</TH>
+<?if($showxy==1) {?>
+<TH ALIGN="left">Northing</TH>
+<TH ALIGN="left">Easting</TH>
+<?}else{?>
+<TH ALIGN="left">CD</TH>
+<TH ALIGN="left">CA</TH>
+<?}?>
+<TH ALIGN="left">DL</TH>
+<TH ALIGN="left">TF</TH>
+</TR>
+
+<?
+$db->DoQuery("SELECT * FROM surveys ORDER BY md ASC");
+$num=$db->FetchNumRows(); 
+$lastdepth=0;
+for($i=0; $i < $num; $i++) {
+	$db->FetchRow();
+	$md=sprintf("%.2f", $db->FetchField("md"));
+	$inc=sprintf("%.2f", $db->FetchField("inc"));
+	$azm=sprintf("%.2f", $db->FetchField("azm"));
+	$tvd=sprintf("%.2f", $db->FetchField("tvd"));
+	$ns=sprintf("%.2f", $db->FetchField("ns"));
+	$ew=sprintf("%.2f", $db->FetchField("ew"));
+	$vs=sprintf("%.2f", $db->FetchField("vs"));
+	$ca=sprintf("%.2f", $db->FetchField("ca"));
+	$cd=sprintf("%.2f", $db->FetchField("cd"));
+	$dl=sprintf("%.2f", $db->FetchField("dl"));
+	$plan=sprintf("%.2f", $db->FetchField("plan"));
+	if($showxy==1) {
+		$cd=sprintf("%.0f", $survey_northing+$ns);
+		$ca=sprintf("%.0f", $survey_easting+$ew);
+	}
+	$tf='-';
+	?>
+	<TR> 
+	<TD class='two'><?if($plan==0) echo $i; else echo "BPrj";?></TD>
+	<TD class='two'><?echo "$md";?></TD>
+	<TD class='two'><?echo "$inc";?></TD>
+	<TD class='two'><?echo "$azm";?></TD>
+	<?
+	if($i>0) {
+		$courselen=$md-$lastdepth;
+		echo "<TD class='two'>$courselen</TD>";
+	}
+	else
+		echo "<TD class='two'></TD>";
+	$lastdepth=$md;
+	?>
+	<TD class='two'><?echo $tvd;?></TD>
+	<TD class='two'><?echo $vs;?></TD>
+	<TD class='two'><?echo $ns;?></TD>
+	<TD class='two'><?echo $ew;?></TD>
+	<TD class='two'><?echo $cd;?></TD>
+	<TD class='two'><?echo $ca;?></TD>
+	<TD class='two'><?if($i>0)echo $dl;else echo " ";?></TD>
+	<TD class='two'><?echo $tf;?></TD>
+	</TR>
+	<?
+} 
+
+$db->DoQuery("SELECT * FROM projections ORDER BY md ASC");
+$num=$db->FetchNumRows(); 
+for($i=0; $i < $num; $i++) {
+	$db->FetchRow();
+	$md=sprintf("%.2f", $db->FetchField("md"));
+	$inc=sprintf("%.2f", $db->FetchField("inc"));
+	$azm=sprintf("%.2f", $db->FetchField("azm"));
+	$tvd=sprintf("%.2f", $db->FetchField("tvd"));
+	$ns=sprintf("%.2f", $db->FetchField("ns"));
+	$ew=sprintf("%.2f", $db->FetchField("ew"));
+	$vs=sprintf("%.2f", $db->FetchField("vs"));
+	$ca=sprintf("%.2f", $db->FetchField("ca"));
+	$cd=sprintf("%.2f", $db->FetchField("cd"));
+	$dl=sprintf("%.2f", $db->FetchField("dl"));
+	$ptype='PA';
+	$ptype = strtoupper($db->FetchField('ptype'));
+	$tf = $db->FetchField('tf');
+	if(!$tf){
+		$tf='-';
+	}
+	
+	$pi=$i+1;
+	$courselen=$md-$lastdepth;
+	$lastdepth=$md;
+	if($showxy==1) {
+		$cd=sprintf("%.0f", $survey_northing+$ns);
+		$ca=sprintf("%.0f", $survey_easting+$ew);
+	}
+	?>
+	<TR> 
+	<TD class='two'><?echo "$ptype"."$pi";?></TD>
+	<TD class='two'><?echo $md;?></TD>
+	<TD class='two'><?echo $inc;?></TD>
+	<TD class='two'><?echo $azm;?></TD>
+	<TD class='two'><?echo $courselen;?></TD>
+	<TD class='two'><?echo $tvd;?></TD>
+	<TD class='two'><?echo $vs;?></TD>
+	<TD class='two'><?echo $ns;?></TD>
+	<TD class='two'><?echo $ew;?></TD>
+	<TD class='two'><?echo $cd;?></TD>
+	<TD class='two'><?echo $ca;?></TD>
+	<TD class='two'><?echo $dl;?></TD>
+	<TD class='two'><?echo $tf;?></TD>
+	</TR>
+	<?
+} 
+$db->CloseDb();
+?>
+<tr>
+<td colspan='12'>
+	<br><br>
+	<small>
+	<small>
+	Generated by: Subsurface Geological Tracking Analysis<br>
+	&#169; 2010-2011 Supreme Source Energy Services, Inc.
+	</small>
+	</small>
+</td>
+</tr>
+</TABLE>
+</BODY>
+</FONT>
+</HTML>

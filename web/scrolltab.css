@@ -1,0 +1,69 @@
+div.tableContainer {
+  -moz-border-radius: 5px 5px 5px 5px;
+  font-size: 12;
+  background-color: #c0c090;
+  margin: 4 0 5 5;
+  border: 1px solid black;
+  padding: 2;
+  border-spacing: 0;
+  text-align: center;
+  height: 320px;
+	clear: both;
+	overflow: auto;
+}
+div.tableContainer table {
+	float: left;
+}
+html>body div.tableContainer {
+	overflow: hidden;
+}
+html>body div.tableContainer table {
+}
+html>body thead.fixedHeader tr {
+	display: block
+}
+html>body tbody.scrollContent {
+	display: block;
+	height: 320px;
+	overflow: auto;
+	width: 700;
+}
+html>body thead.fixedHeader td {
+	-moz-border-radius: 5px 5px 5px 5px;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	background-color: rgb(252,248,230);
+	text-align: right;
+	font-size: 10;
+	padding: 0 4 0 14;
+	width: 90;
+}
+html>body thead.fixedHeader td + td {
+	padding: 0 4 0 4;
+}
+html>body thead.fixedHeader th {
+	-moz-border-radius: 5px 5px 5px 5px;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	background-color: rgb(252,248,230);
+	text-align: right;
+	font-size: 9;
+	padding: 0 4 0 14;
+	width: 90;
+}
+html>body thead.fixedHeader th + th {
+	padding: 0 4 0 4;
+}
+thead.fixedHeader tr {
+	position: relative
+}
+tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+	border-style: none;
+	padding: 0;
+}
+tbody.scrollContent tr.alternateRow td {
+	border-style: none;
+	padding: 0;
+}

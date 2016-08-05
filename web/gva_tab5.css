@@ -1,0 +1,131 @@
+div.tableContainer {
+  background-color: #c0c0a0;
+  border: thin solid black;
+  padding: 0;
+  margin: 0;
+  border-spacing: 0;
+  text-align: left;
+	clear: both;
+	overflow: auto;
+	height: 600;
+	width: 1150;
+}
+div.tableContainer table {
+	/* float: left;*/
+}
+html>body div.tableContainer table {
+}
+html>body tbody.scrollContent {
+	display: block;
+}
+tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+}
+tbody.scrollContent tr.alternateRow td {
+}
+
+body {
+	margin: 10px;
+  font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
+  font-size: 9pt;
+  color: black;
+  background-color: #307040;
+}
+input {
+	font-size: .7em;
+}
+
+a { color: #000080; }
+a.tabs {text-decoration:none; color: #000;}
+a.tabsinactive {text-decoration:none; color: #777;}
+a.tabsinactive:hover {text-decoration:none; color: #000;}
+a.menu { font-size: 10pt; }
+table.tabs {
+	border-style: none;
+	border-width: 0px;
+	border-spacing: 0px;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 0px;
+	margin: 0;
+  	background-color: transparent;
+  }
+td.active {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0;
+	border-bottom-color: rgb(240,230,200);
+  	background-color: rgb(240,230,200);
+	color: #000;
+	float: left;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+td.inactive:hover {
+	background-color: #90d0a0;
+}
+td.inactive {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-color: #000;
+	border-width: 2px;
+	border-style: solid;
+	border-spacing: 0px;
+	background-color: #ddd;
+	color: #777;
+	float: left;
+	width: 110px;
+	cursor: default;
+	padding: 2px;
+	font-size: 10pt;
+	text-align: center;
+}
+table.container {
+  -moz-border-radius: 10px 10px 10px 10px;
+  background-color: rgb(240,230,200);
+  border-color: #000;
+  border-style: solid;
+  border-width: 2px;
+  padding: 8;
+}
+table.tabcontainer {
+	-moz-border-radius: 0px 10px 10px 10px;
+	border-color: #000;
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	color: #000;
+	float: left;
+	text-align: left;
+	padding: 2px;
+  background-color: rgb(240,230,200);
+	width: 1020;
+	margin: 0;
+  }
+td.container { vertical-align: top; }
+
+table.buttons {
+  -moz-border-radius: 5px 5px 5px 5px;
+	border: thin solid black;
+	color: #000;
+	text-align: left;
+	padding: 2;
+  background-color: #c0c0a0;
+}
+input.button {
+	border-color: black;
+  background-color: rgb(230,230,190);
+	border-style: outset;
+	padding: 2 4;
+	margin: 0 1;
+}
+input.button:hover {
+  background-color: #70b080;
+}
+input.button:active {
+  	background-color: rgb(128,128,128);
+}
