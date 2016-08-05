@@ -10,6 +10,7 @@ if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname'
 $db= new dbio($seldbname);
 $db->OpenDb();
 $db->DoQuery("select * from wellinfo");
+$db->FetchRow();
 $ghoston=$db->FetchField("rt_ghost_stream");
 echo("ghost on value :".$ghoston);
 	try{
