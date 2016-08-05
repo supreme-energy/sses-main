@@ -11,7 +11,7 @@ $db= new dbio($seldbname);
 $db->OpenDb();
 $db->DoQuery("select * from wellinfo");
 $db->FetchRow();
-$ghoston=$db->FetchField("rt_ghost_stream");
+$ghoston=$db->FetchField("rt_stream_ghost");
 echo("ghost on value :".$ghoston);
 	try{
 	require 'HTTP/Upload.php';
