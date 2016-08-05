@@ -10,14 +10,19 @@ if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname'
 $db= new dbio($seldbname);
 $db->OpenDb();
 $sql = "update surveys set isghost=0 where isghost=1";
+echo($sql."<br>");
 $db->DoQuery($sql);
 $sql = "update welllogs set isghost=0 where isghost=1";
+echo($sql."<br>");
 $db->DoQuery($sql);
 $sql = "update appinfo set ghost_dip=0,ghost_fault=0";
+echo($sql."<br>");
 $db->DoQuery($sql);
 $sql ="update wellinfo set rt_stream_ghost=0 ";
+echo($sql."<br>");
 $db->DoQuery($sql);
 $sql = "delete from ghost_data";
+echo($sql."<br>");
 $db->DoQuery($sql);
 ?>
 <!doctype html>
@@ -40,7 +45,7 @@ function reloadAndClose(){
 	}
 	window.close();
 }	
-setTimeout(reloadAndClose, 100);
+//setTimeout(reloadAndClose, 100);
 </script>
 </head>
 </html>
