@@ -74,7 +74,7 @@ if($db->FetchRow()){
 			}
 			fclose($infile);
 			fseek($temp,0);
-			$sql_pa_ks = "select md,tvd,vs,plan from surveys order by id desc limit 2;";
+			$sql_pa_ks = "select md,tvd,vs,plan from surveys where isghost=0 order by id desc limit 2;";
 			$db->DoQuery($sql_pa_ks);
 			$pa=$db->FetchRow();
 			$ks=$db->FetchRow();

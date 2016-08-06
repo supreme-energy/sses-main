@@ -29,7 +29,7 @@ int bForceNoRotate=0;
 float cutinMD=0.0;
 float cutoffMD=99999.0;
 float hangoffDepth=0.0;
-
+int isghost=0;
 int fontSize=9;
 int lineWidth=1;
 float pointSize=.4;
@@ -472,6 +472,7 @@ void setupPage(void) {
 
 	// selected color
 	gnuplot_cmd(gplot, "set style line 3 lt 2 lc rgb 'red' lw %d pt 6 ps %f", lineWidth, pointSize);
+	gnuplot_cmd(gplot, "set style line 303 lt 2 lc rgb 'green' lw %d pt 6 ps %f", lineWidth, pointSize);
 	// selected point color
 	gnuplot_cmd(gplot, "set style line 4 lt 2 lc rgb 'dark-red' lw %d pt 6 ps %f", lineWidth, pointSize);
 
@@ -1102,6 +1103,7 @@ int main(int argc, char * argv[])
 				endd=atof(FetchField(res_set2, "endvs"));
 				smd=atof(FetchField(res_set2, "startmd"));
 				emd=atof(FetchField(res_set2, "endmd"));
+				isghost=atoi(FetchField(res_set2, "isghost"));
 				if(smd<startMD)	startMD=smd;
 				if(emd>endMD)	endMD=emd;
 				if(startd<minvs)	minvs=startd;
@@ -1326,7 +1328,11 @@ int main(int argc, char * argv[])
 		if(selfilename[0]>0) {
 			// printf("Plot selected dataset\n");
 			if(bDoControlLog!=0)	strcat(cmdstr, ",");
-			sprintf(plotstr, " '%s' with lines ls 3 t ''", selfilename[0]);
+			if(isghost==0){
+				sprintf(plotstr, " '%s' with lines ls 3 t ''", selfilename[0]);
+			} else {
+				sprintf(plotstr, " '%s' with lines ls 303 t ''", selfilename[0]);
+			}
 			strcat(cmdstr, plotstr);
 			sprintf(plotstr, ", '%s' with points ls 4 t ''", selfilename[0]);
 			strcat(cmdstr, plotstr);
