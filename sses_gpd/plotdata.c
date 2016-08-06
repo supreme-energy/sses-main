@@ -1103,7 +1103,12 @@ int main(int argc, char * argv[])
 				endd=atof(FetchField(res_set2, "endvs"));
 				smd=atof(FetchField(res_set2, "startmd"));
 				emd=atof(FetchField(res_set2, "endmd"));
-				isghost=atoi(FetchField(res_set2, "isghost"));
+
+				if(selfilename[0]>0) {
+					isghost=atoi(FetchField(res_set2, "isghost"));
+				} else{
+					isghost=0;
+				}
 				if(smd<startMD)	startMD=smd;
 				if(emd>endMD)	endMD=emd;
 				if(startd<minvs)	minvs=startd;
