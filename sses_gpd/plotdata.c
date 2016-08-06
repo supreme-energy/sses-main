@@ -471,7 +471,7 @@ void setupPage(void) {
 	gnuplot_cmd(gplot, "set style line 5 lt 2 lc rgb '#000060' lw %d pt 6 ps %f", lineWidth, pointSize);
 
 	// selected color
-	gnuplot_cmd(gplot, "set style line 3 lt 2 lc rgb 'red' lw %d pt 6 ps %f", lineWidth, pointSize);
+	gnuplot_cmd(gplot, "set style line 3 lt 2 lc rgb 'green' lw %d pt 6 ps %f", lineWidth, pointSize);
 	gnuplot_cmd(gplot, "set style line 303 lt 2 lc rgb 'green' lw %d pt 6 ps %f", lineWidth, pointSize);
 	// selected point color
 	gnuplot_cmd(gplot, "set style line 4 lt 2 lc rgb 'dark-red' lw %d pt 6 ps %f", lineWidth, pointSize);
