@@ -58,7 +58,7 @@ if($db->FetchRow()){
 					$idxval_a = array_slice($ar2,0,1);
 					$idxval=$idxval_a[0];
 					$value_name = implode("",array_slice($ar2,1,count($ar2)));
-					echo $value_name." : ".$idxval."<br>/n";
+					//echo $value_name." : ".$idxval."<br>/n";
 					
 					$ar_cols[$value_name]=($idxval-1);
 				}
@@ -94,9 +94,15 @@ if($db->FetchRow()){
 				if($tvd=="")	$tvd=0;
 				if($vs=="")	$vs=0;
 				if($value=="")	$value=0;
-				$sql = "INSERT INTO  ghost_data (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$md);";
-				echo $sql."<br>";
+				$sql = "select count(*) as cnt from ghost_data where md=$md and value=$val and tvd=$tvd and vs=$vs and depth=$md;";
 				$result=$db->DoQuery($sql);
+				if($db->FetchRow()){
+					if($db->FetchField('cnt')==0){
+						$sql = "INSERT INTO  ghost_data (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$md);";
+						$result=$db->DoQuery($sql);	
+					}
+				}
+				
 			}
 		} elseif ($file->isMissing()) {
 			

@@ -7,6 +7,10 @@
  */
 require_once("dbio.class.php");
 if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_POST['seldbname']) ? $_POST['seldbname'] : '');
+$md=(isset($_POST['md'])?$_POST['md']:0);
+$inc=(isset($_POST['inc'])?$_POST['inc']:0);
+$azm=(isset($_POST['azm'])?$_POST['azm']:0);
+
 $db= new dbio($seldbname);
 $db->OpenDb();
 $sql = "update surveys set isghost=0 where isghost=1;";
