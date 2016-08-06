@@ -1328,11 +1328,11 @@ int main(int argc, char * argv[])
 		if(selfilename[0]>0) {
 			// printf("Plot selected dataset\n");
 			if(bDoControlLog!=0)	strcat(cmdstr, ",");
-			//if(isghost==0){
-			//	sprintf(plotstr, " '%s' with lines ls 3 t ''", selfilename[0]);
-			//} else {
+			if(isghost==0){
+				sprintf(plotstr, " '%s' with lines ls 3 t ''", selfilename[0]);
+			} else {
 				sprintf(plotstr, " '%s' with lines ls 303 t ''", selfilename[0]);
-			//}
+			}
 			strcat(cmdstr, plotstr);
 			sprintf(plotstr, ", '%s' with points ls 4 t ''", selfilename[0]);
 			strcat(cmdstr, plotstr);

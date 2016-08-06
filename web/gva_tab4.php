@@ -426,7 +426,7 @@ if($viewallds>0) {
 			"-ci $cutinMD -co $cutoffMD " .
 			"-avg $dataavg -r $scaleright $logsw $addformsstr";
 	exec ($com." -w $pwidth -h $pheight -o $fn");
-	//echo ($com." -w $pwidth -h $pheight -o $fn");
+	echo ($com." -w $pwidth -h $pheight -o $fn");
 	exec ($com." -w $snapw -h $snaph -o $fnsnap");
 	//echo ($com." -w $snapw -h $snaph -o $fnsnap");
 	//&$retstr, &$retval);
