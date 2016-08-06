@@ -1104,11 +1104,9 @@ int main(int argc, char * argv[])
 				smd=atof(FetchField(res_set2, "startmd"));
 				emd=atof(FetchField(res_set2, "endmd"));
 
-				if(selfilename[0]>0) {
-					isghost=atoi(FetchField(res_set2, "isghost"));
-				} else{
-					isghost=0;
-				}
+
+
+
 				if(smd<startMD)	startMD=smd;
 				if(emd>endMD)	endMD=emd;
 				if(startd<minvs)	minvs=startd;
@@ -1163,6 +1161,7 @@ int main(int argc, char * argv[])
 					laststartd=startd; lastendd=endd;
 				}
 				strcpy(whatToPlot, FetchField(res_set2, "tablename"));
+
 				// printf("Plot: %s: ", whatToPlot);
 				i = atoi(FetchField(res_set2, "id"));
 				bias = atof(FetchField(res_set2, "scalebias"));
@@ -1179,9 +1178,11 @@ int main(int argc, char * argv[])
 				lastBot = atof(FetchField(res_set2, "bot"));
 				bias+=plotbias;
 				scale*=plotscale;
+				isghost=0;
 				// selected dataset
 				if(idWellLog>=0 && idWellLog==i) {
 					// printf("selected dataset\n");
+					isghost=atoi(FetchField(res_set2, "isghost"));
 					if(bDoControlLog) {
 						dataFNcount+=2;
 						strcpy(dataFN[dataFNcount], tmpnam(NULL));
