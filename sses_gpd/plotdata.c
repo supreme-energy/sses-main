@@ -1326,11 +1326,14 @@ int main(int argc, char * argv[])
 
 		// now we plot the selected DS
 		if(selfilename[0]>0) {
-			// printf("Plot selected dataset\n");
+			printf("Plot selected dataset\n");
+
 			if(bDoControlLog!=0)	strcat(cmdstr, ",");
 			if(isghost==0){
+				printf("Plot selected dataset not as ghost\n");
 				sprintf(plotstr, " '%s' with lines ls 3 t ''", selfilename[0]);
 			} else {
+				printf("Plot selected dataset as ghost\n");
 				sprintf(plotstr, " '%s' with lines ls 303 t ''", selfilename[0]);
 			}
 			strcat(cmdstr, plotstr);
