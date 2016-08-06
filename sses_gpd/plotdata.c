@@ -1337,6 +1337,7 @@ int main(int argc, char * argv[])
 				sprintf(plotstr, " '%s' with lines ls 3 t ''", selfilename[0]);
 			} else {
 				sprintf(plotstr, " '%s' with lines ls 303 t ''", selfilename[0]);
+				isghost=0;
 			}
 			strcat(cmdstr, plotstr);
 			sprintf(plotstr, ", '%s' with points ls 4 t ''", selfilename[0]);
