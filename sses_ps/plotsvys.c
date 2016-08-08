@@ -1834,6 +1834,12 @@ int main(int argc, char * argv[])
 	if(fstat.st_size>0) sprintf(plotstr[i++],", '%s' with labels font \"arial,18\" t ''",annofn);
 	stat(cpfn,&fstat);
 	if(fstat.st_size>0) sprintf(plotstr[i++],", '%s' with points ls 99 t ''",cpfn);
+	if(DoQuery(res_set,"select * from surveys where isghost=1")==0){
+		FetchRow(res_set);
+		float gtvd = atof(FetchField(res_set,"tvd"));
+		float gvs  = atof(FetchField(res_set,"vs"));
+		sprintf(plotstr[i++],", \"<echo '%f %f'\" with points ls 98 t 'Ghost'",gvs,gtvd);
+	}
 	if(vslon==1 && plotType==PLOTTYPE_LAT)
 	{
 		if(DoQuery(res_set,"select * from surveys where plan=1")==0)
