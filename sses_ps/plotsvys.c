@@ -1840,7 +1840,7 @@ int main(int argc, char * argv[])
 		FetchRow(res_set);
 		float gtvd = atof(FetchField(res_set,"tvd"));
 		float gvs  = atof(FetchField(res_set,"vs"));
-		sprintf(plotstr[i++],", \"<echo '%f %f'\" with points ls 8 t 'Ghost'",gvs,gtvd);
+		sprintf(plotstr[i++],", \"<echo '%f %f'\" with points ls 101 t 'Ghost'",gvs,gtvd);
 	}
 	if(vslon==1 && plotType==PLOTTYPE_LAT)
 	{
