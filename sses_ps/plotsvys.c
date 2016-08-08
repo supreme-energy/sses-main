@@ -1175,7 +1175,7 @@ void setStyles(void) {
 	}
 
 	gnuplot_cmd(gplot, "set style line 1 lt 2 lc rgb '#ff7070' lw 1 ");
-	gnuplot_cmd(gplot, "set style line 1 lt 97 lc rgb 'green' lw 1 ");
+	gnuplot_cmd(gplot, "set style line 1 lt 101 lc rgb 'green' lw 1 ");
 	// surveys
 	gnuplot_cmd(gplot, "set style line 2 lt 2 lc rgb 'black' lw 2 pt 2 ps .75 ");
 	gnuplot_cmd(gplot, "set style line 3 lt 0 lc rgb 'black' lw 1 ");
@@ -1839,7 +1839,7 @@ int main(int argc, char * argv[])
 		FetchRow(res_set);
 		float gtvd = atof(FetchField(res_set,"tvd"));
 		float gvs  = atof(FetchField(res_set,"vs"));
-		sprintf(plotstr[i++],", \"<echo '%f %f'\" with points ls 97 t 'Ghost'",gvs,gtvd);
+		sprintf(plotstr[i++],", \"<echo '%f %f'\" with points ls 8 t 'Ghost'",gvs,gtvd);
 	}
 	if(vslon==1 && plotType==PLOTTYPE_LAT)
 	{
