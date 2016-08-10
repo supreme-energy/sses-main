@@ -71,7 +71,7 @@ $cd=(($md-$mdks)*($cdpa-$cdks)/($mdpa-$mdks))+$cdks;
 $ca=(($md-$mdks)*($capa-$caks)/($mdpa-$mdks))+$caks;
 
 //$sql="insert into ghost_surveys (md,inc,azm,tvd,vs,ew,ns,cd,ca) values ($md,$inc,$azm,$tvd,$vs,$ew,$ns,$cd,$ca)";
-$sql="insert into surveys (md,inc,azm,tvd,vs,ew,ns,cd,ca,dip,fault,isghost) values ($md,$inc,$azm,$tvd,$vs,$ew,$ns,$cd,$ca,$dip,$fault,1)";
+$sql="insert into surveys (md,inc,azm,tvd,vs,ew,ns,cd,ca,dip,fault,new,isghost) values ($md,$inc,$azm,$tvd,$vs,$ew,$ns,$cd,$ca,$dip,$fault,false,1)";
 //echo $sql."<br>";
 $result=$db->DoQuery($sql);
 $sql = "INSERT INTO welllogs (tablename,startmd,endmd,startvs,endvs,starttvd,endtvd,startdepth,enddepth,dip,fault,scalebias,scalefactor,filter,scaleleft,scaleright,isghost) " .
