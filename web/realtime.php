@@ -58,7 +58,7 @@ if($db->FetchRow()){
 					$idxval_a = array_slice($ar2,0,1);
 					$idxval=$idxval_a[0];
 					$value_name = implode("",array_slice($ar2,1,count($ar2)));
-					//echo $value_name." : ".$idxval."<br>/n";
+					echo $value_name." : ".$idxval."<br>/n";
 					
 					$ar_cols[$value_name]=($idxval-1);
 				}
@@ -256,6 +256,7 @@ $(document).ready(function() {
 		<br>
 		<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 		<INPUT type="file" name="userfile" size="70">
+		Gamma Field:<input type="text" name="gammafield" value="">
 		<INPUT type="submit" value="Import">
 		</form>
 				</div>
