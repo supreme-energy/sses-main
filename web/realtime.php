@@ -85,16 +85,41 @@ if($db->FetchRow()){
 			$mdpa = $pa['md'];
 			$vspa = $pa['vs'];
 			$tvdpa = $pa['tvd'];
+			$smoothing_array=array();
+			$firstsmothing_val=0;
 			while (($data = fgetcsv($temp, 5000, ",")) !== FALSE) {
 				
 				$md=$data[$ar_cols["Depth"]];
-				echo $gammafield."<br>";
-				echo $ar_cols[$gammafield]."<br>";
-				$val=$data[$ar_cols[$gammafield]];
-				print_r($data);
-				break;
 				$tvd=(($md-$mdks)*($tvdpa-$tvdks)/($mdpa-$mdks))+$tvdks;
-				$vs=(($md-$mdks)*($vspa-$vsks)/($mdpa-$mdks))+$vsks;
+				$vs=(($md-$mdks)*($vspa-$vsks)/($mdpa-$mdks))+$vsks;			
+				$val=$data[$ar_cols[$gammafield]];
+				if($val <= 0){
+					array_push($smoothing_array,array($md,$tvd,$vs));
+					continue;
+				} else {
+					if(count($smoothing_array)>0){
+						$perincrement = ($eval-$firstsmothing_val)/count($smoothing_array);
+						
+						for($i=1;$i<(count($smoothing_array)+1);$i++){
+							$svals =$smoothing_array[$i-1];
+							$lmd =$svals[0];
+							$ltvd=$svals[1];
+							$lvs =$svals[2];
+							$lval = $firstsmothing_val+($i*$perincrement);
+							$sql = "select count(*) as cnt from ghost_data where md=$lmd and value=$lval and tvd=$ltvd and vs=$lvs and depth=$lmd;";
+							$result=$db->DoQuery($sql);
+							if($db->FetchRow()){
+								if($db->FetchField('cnt')==0){
+									$sql = "INSERT INTO  ghost_data (md,value,tvd,vs,depth) VALUES ($lmd,$lval,$ltvd,$lvs,$lmd);";
+									$result=$db->DoQuery($sql);	
+								}
+							}	
+						}
+					}
+					$firstsmothing_val=$val;
+					$smoothing_array=array();
+				}
+				
 				if($md=="")	$md=0;
 				if($tvd=="")	$tvd=0;
 				if($vs=="")	$vs=0;
