@@ -7,6 +7,7 @@
  */
 require_once("dbio.class.php");
 if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname']) ? $_GET['seldbname'] : '');
+if(!isset($gammafield) or $gammafield == '') $gammafield = (isset($_GET['gammafield']) ? $_GET['gammafield'] : 'Gamma');
 $db= new dbio($seldbname);
 $db->OpenDb();
 $db->DoQuery("select * from wellinfo");
@@ -87,7 +88,7 @@ if($db->FetchRow()){
 			while (($data = fgetcsv($temp, 5000, ",")) !== FALSE) {
 				
 				$md=$data[$ar_cols["Depth"]];
-				$val=$data[$ar_cols["Gamma"]];
+				$val=$data[$ar_cols[$gammafield]];
 				$tvd=(($md-$mdks)*($tvdpa-$tvdks)/($mdpa-$mdks))+$tvdks;
 				$vs=(($md-$mdks)*($vspa-$vsks)/($mdpa-$mdks))+$vsks;
 				if($md=="")	$md=0;
