@@ -59,7 +59,7 @@ if($db->FetchRow()){
 					$idxval_a = array_slice($ar2,0,1);
 					$idxval=$idxval_a[0];
 					$value_name = trim(implode(" ",array_slice($ar2,1,count($ar2))));
-					echo $value_name." : ".$idxval."<br>/n";
+					//echo $value_name." : ".$idxval."<br>/n";
 					
 					$ar_cols[$value_name]=($idxval-1);
 				}
@@ -88,7 +88,10 @@ if($db->FetchRow()){
 			while (($data = fgetcsv($temp, 5000, ",")) !== FALSE) {
 				
 				$md=$data[$ar_cols["Depth"]];
+				echo $gammafield;
 				$val=$data[$ar_cols[$gammafield]];
+				print_r($data);
+				break;
 				$tvd=(($md-$mdks)*($tvdpa-$tvdks)/($mdpa-$mdks))+$tvdks;
 				$vs=(($md-$mdks)*($vspa-$vsks)/($mdpa-$mdks))+$vsks;
 				if($md=="")	$md=0;
