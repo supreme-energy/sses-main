@@ -277,7 +277,7 @@ $db->FetchRow();
 if($scom = $db->FetchField("emailcomments")){
 	$savedcomments=$scom;
 }
-$db->CloseDb();
+
 $lateraltemplatestr = $curvedtemplatestr = '<table cellspacing="0" cellpadding="5px" style="width:350px;border:0;background-color:transparent">
 <tr>
 <td>Operator</td>
@@ -322,8 +322,8 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 	$inc_bit = sprintf("%.2f",$bprjinc);
 	$query = "select dip from surveys order by md desc offset 1 limit 1"; 
 	$db->DoQuery($query);
-	$db->FetchRow();
-	$dip_100 = $db->FetchField("dip");
+	$row = $db->FetchRow();
+	$dip_100 = $row['dip'];
 	$past_100 = 90+$dip_100;
 	$past_500 = 0;
 	$lateraltemplatestr.="<h3>" .
@@ -573,6 +573,7 @@ if($thetemplate == 'lateral')
 </select>
 <?php
 }
+$db->CloseDb();
 ?></div>
 
 <!--
