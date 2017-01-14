@@ -318,8 +318,8 @@ $lateraltemplatestr = $curvedtemplatestr = '<table cellspacing="0" cellpadding="
 $colora='#e6dcb1';
 $colorb='#307040';
 if($curvedsel==2){
-$tot_dl=0;
-$bot_dl=0;
+$tot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjtot - $bprjtvd))*5730;
+$bot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjbot - $bprjtvd))*5730;;
 $curvedtemplatestr.="<h3><span style='font-size:14px'>" .
 		"<strong>$tot_dl BUR needed to land at TOT, $bot_dl BUR needed to land at BOT, current survey BUR is $curdl" .
 		"</strong></span></h3>";
