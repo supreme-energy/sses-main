@@ -577,6 +577,13 @@ var laterselchange = function(v){
 	window.location=window.location+newsearch+"&msgtemplate="+v+"&lateralsel="+sel.options[sel.selectedIndex].value
 	
 }
+
+var curvedslechange =  function(v){
+	sel = $("#selcur")[0]
+	newsearch=window.location.search.replace("msgtemplate="+v,"")
+	window.location=window.location+newsearch+"&msgtemplate="+v+"&curvedsel="+sel.options[sel.selectedIndex].value
+	
+}
 function changeScreenSize(w,h) {
 	window.resizeTo( w,h )
 }
@@ -599,9 +606,9 @@ if($thetemplate == 'lateral')
 </select>
 <?php
 } else {?>
-	<select id='selcur'>
-		<option id='optcur1'<?php echo ($curvedsel == '1' ? ' selected' : '') ?>>Curved 1</option>
-		<option id='optcur2'<?php echo ($curvedsel == '2' ? ' selected' : '') ?>>Curved 2</option>
+	<select id='selcur' onchange="curvedslechange('curved')">
+		<option value=1 id='optcur1'<?php echo ($curvedsel == '1' ? ' selected' : '') ?>>Curved 1</option>
+		<option value=2 id='optcur2'<?php echo ($curvedsel == '2' ? ' selected' : '') ?>>Curved 2</option>
 	</select>
 <?}
 $db->CloseDb();
@@ -666,55 +673,6 @@ $db->CloseDb();
 
 <script>
 $(document).ready( function () {
-	console.log("document ready loading");
-	$('#optlat1').click(function() {
-		console.log("click 1");
-		if(window.location.search.indexOf('lateralsel')>=0) {
-			if(window.location.search.indexOf('lateralsel=1')>=0) {
-				return;
-			} else if (window.location.search.indexOf('lateralsel=2')>=0) {
-				newsearch = window.location.search.replace('lateralsel=2','lateralsel=1');
-			} else {
-				newsearch = window.location.search.replace('lateralsel=3','lateralsel=1');
-			}
-			window.location = window.location.pathname + newsearch;
-		} else {
-			window.location = window.location + '&lateralsel=1';
-		}
-	});
-	$('#optlat2').click(function() {
-		if(window.location.search.indexOf('lateralsel')>=0) {
-			if(window.location.search.indexOf('lateralsel=2')>=0) {
-				return;
-			} else if (window.location.search.indexOf('lateralsel=1')>=0) {
-				newsearch = window.location.search.replace('lateralsel=1','lateralsel=2');
-			} else {
-				newsearch = window.location.search.replace('lateralsel=3','lateralsel=2');
-			}
-			window.location = window.location.pathname + newsearch;
-		} else {
-			window.location = window.location + '&lateralsel=2';
-		}
-	});
-	$('#optlat3').click(function() {
-		if(window.location.search.indexOf('lateralsel')>=0) {
-			if(window.location.search.indexOf('lateralsel=3')>=0) {
-				return;
-			} else if (window.location.search.indexOf('lateralsel=1')>=0) {
-				newsearch = window.location.search.replace('lateralsel=1','lateralsel=3');
-			} else {
-				newsearch = window.location.search.replace('lateralsel=2','lateralsel=3');
-			}
-			window.location = window.location.pathname + newsearch;
-		} else {
-			window.location = window.location + '&lateralsel=3';
-		}
-	});
-	$('#optlat4').click(function() {
-		newsearch = window.location.search.replace('lateralsel<?=$lateralsel?>','')
-		console.log(newsearch)
-		window.location = window.location + '&lateralsel=4';
-	});	
 });
 var selected_element;
 var newdiv;
