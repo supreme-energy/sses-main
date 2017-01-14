@@ -662,6 +662,7 @@ $db->CloseDb();
 $(document).ready( function () {
 	console.log("document ready loading");
 	$('#optlat1').click(function() {
+		console.log("click 1");
 		if(window.location.search.indexOf('lateralsel')>=0) {
 			if(window.location.search.indexOf('lateralsel=1')>=0) {
 				return;
