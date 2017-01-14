@@ -309,9 +309,16 @@ $colorb='#307040';
 $curvedtemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES LANDING RECOMMENDATION</strong></span></h3>
 </td>
 </tr>';
+if($lateralsel != '3')
+{
 $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES RECOMMENDATION</strong></span></h3>
 </td>
 </tr>';
+} else{
+	"<h3>" .
+	"Currently -12.1' below the TOT and +17.9' above the BOT, current inc at bit is 100.3 and the past 100’ of the formation is XX.XX and the past 500’ of the formation is 94.72</td>" .
+	"</h3></td></tr>";
+}
 if($vslon){
 	$bitpostcl =$bprjtcl-$bprjtvd;
 	$ltvdvsl=($bprjvs - $vsland)*tan(($vsldip*(pi()/180)))+$bprjtvd+($bitpostcl);
@@ -322,18 +329,20 @@ if($vslon){
 	</tr>';
 }
 $lateraltemplatestr .= "<tr>\n";
-if($lateralsel == '3')
-{
-	$lateraltemplatestr .= "<td>SLD to " . sprintf('%.2f',$pamd) . ":</td>\n" .
-		"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$pacl) . " FT</td>\n" .
-		"<td colspan='2' style='background-color: ".$colora.";'>$patf</td>\n";
-}
-else
-{
-	$lateraltemplatestr .= "<td>Intersect PA1 at " . sprintf("%.2f",$pavs) . " VS:</td>\n" .
-		"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$patvd). " TVD </td>\n" .
-		"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$painc). "INC</td>\n" .
-		"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$padl). "/100DL</td>\n";
+if($lateralsel != '4'){
+	if($lateralsel == '3')
+	{
+		$lateraltemplatestr .= "<td>SLD to " . sprintf('%.2f',$pamd) . ":</td>\n" .
+			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$pacl) . " FT</td>\n" .
+			"<td colspan='2' style='background-color: ".$colora.";'>$patf</td>\n";
+	}
+	else
+	{
+		$lateraltemplatestr .= "<td>Intersect PA1 at " . sprintf("%.2f",$pavs) . " VS:</td>\n" .
+			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$patvd). " TVD </td>\n" .
+			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$painc). "INC</td>\n" .
+			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$padl). "/100DL</td>\n";
+	}
 }
 $lateraltemplatestr .= "</tr>\n";
 if($lateralsel == '2')
@@ -423,7 +432,9 @@ $templestr.='</table>
 ';
 
 $curvedtemplatestr.='</table></table>';
-$lateraltemplatestr.=$templestr;
+if($lateralsel != '4'){
+	$lateraltemplatestr.=$templestr;
+}
 
 $lateraltemplatestr.='<table style="border:0;width:719px;background-color:transparent" cellspacing="0" cellpadding="5">
 <tr>
@@ -540,6 +551,7 @@ if($thetemplate == 'lateral')
 <option id='optlat1'<?php echo ($lateralsel == '1' ? ' selected' : '') ?>>Lateral 1</option>
 <option id='optlat2'<?php echo ($lateralsel == '2' ? ' selected' : '') ?>>Lateral 2</option>
 <option id='optlat3'<?php echo ($lateralsel == '3' ? ' selected' : '') ?>>Lateral 3</option>
+<option id='optlat4'<?php echo ($lateralsel == '4' ? ' selected' : '') ?>>Lateral 4</option>
 </select>
 <?php
 }
