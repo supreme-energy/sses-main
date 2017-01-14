@@ -703,7 +703,8 @@ $(document).ready( function () {
 		}
 	});
 	$('#optlat4').click(function() {
-		window.location.search.replace('lateralsel<?=$lateralsel?>','')
+		newsearch = window.location.search.replace('lateralsel<?=$lateralsel?>','')
+		console.log(newsearch)
 		window.location = window.location + '&lateralsel=4';
 	});	
 });
