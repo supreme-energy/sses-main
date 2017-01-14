@@ -591,7 +591,7 @@ if($thetemplate == 'lateral')
 {
 ?>
 &nbsp;&nbsp;
-<select id='sellat' name="lateralsel" onchange="laterselchange('lateralsel')">
+<select id='sellat' name="lateralsel" onchange="laterselchange('lateral')">
 <option value=1 id='optlat1'<?php echo ($lateralsel == '1' ? ' selected' : '') ?>>Lateral 1</option>
 <option value=2 id='optlat2'<?php echo ($lateralsel == '2' ? ' selected' : '') ?>>Lateral 2</option>
 <option value=3 id='optlat3'<?php echo ($lateralsel == '3' ? ' selected' : '') ?>>Lateral 3</option>
