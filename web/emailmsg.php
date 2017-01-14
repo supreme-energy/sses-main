@@ -573,8 +573,8 @@ var directo = function(v) {
 }
 var laterselchange = function(v){
 	sel = $("#sellat")[0]
-	
-	console.log(sel.options[sel.selectedIndex].value)
+	newsearch=window.location.search.replace("msgtemplate="+v,"")
+	window.location=window.location+newseach+"&msgtemplate="+v+"&lateralsel="+sel.options[sel.selectedIndex]
 	
 }
 function changeScreenSize(w,h) {
