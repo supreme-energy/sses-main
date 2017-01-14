@@ -322,11 +322,12 @@ $tot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjtot - $
 $bot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjbot - $bprjtvd))*5730;;
 $curvedtemplatestr.="<h3><span style='font-size:14px'>" .
 		"<strong>$tot_dl BUR needed to land at TOT, $bot_dl BUR needed to land at BOT, current survey BUR is $curdl" .
-		"</strong></span></h3>";
-}
+		"</strong></span></h3></td></tr>";
+}else{
 $curvedtemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES LANDING RECOMMENDATION</strong></span></h3>
 </td>
 </tr>';
+}
 if($lateralsel != '4')
 {
 $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES RECOMMENDATION</strong></span></h3>
@@ -447,12 +448,15 @@ $templestr.='<table style="border:0;border-collapse:collapse;background-color:no
 </tr>
 <tr>';
 
+if($curvedsel!='2'){
 $curvedtemplatestr.=$templestr;
+}
 if($lateralsel != '4'){
 	$lateraltemplatestr.=$templestr;
 }
-
+if($curvedsel!='2'){
 $curvedtemplatestr.='<td style="text-align:right;padding:5px" nowrap>PA1-Geo Landing Target</td>';
+}
 if($lateralsel != '4'){
 	
 	$lateraltemplatestr.='<td style="text-align:right;padding:5px" nowrap>' . ($lateralsel == 3 ? 'SLD' : 'PA1-Geo') . ' Intersect</td>';
@@ -470,13 +474,16 @@ $templestr='<td style="text-align: center;border-bottom:solid black 1px;border-t
 <td style="text-align: center;color:white;border-bottom:solid black 1px;border-top:solid black 1px;border-right:solid black 1px;border-left:1px solid black; background-color:  '.$colorb.';">'.sprintf("%.2f",$pabot-$patvd).'</td>
 <td style="text-align: center;color:white;border-bottom:solid black 1px;border-top:solid black 1px;border-right:solid black 1px;border-left:1px solid black; background-color:  '.$colorb.';"></td>
 </tr>';
+if($curvedsel!='2'){
 $curvedtemplatestr.=$templestr;
 $curvedtemplatestr.='<tr><td style="text-align:left;padding:5px" nowrap colspan=2></td></tr>';
+}
 $templestr.='</table>
 </table>
 ';
-
+if($curvedsel!='2'){
 $curvedtemplatestr.='</table></table>';
+}
 if($lateralsel != '4'){
 	$lateraltemplatestr.=$templestr;
 }
