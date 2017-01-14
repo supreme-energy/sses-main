@@ -329,24 +329,24 @@ if($vslon){
 	</tr>';
 }
 if($lateralsel != '4'){
-$lateraltemplatestr .= "<tr>\n";
-
-	if($lateralsel == '3')
-	{
-		$lateraltemplatestr .= "<td>SLD to " . sprintf('%.2f',$pamd) . ":</td>\n" .
-			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$pacl) . " FT</td>\n" .
-			"<td colspan='2' style='background-color: ".$colora.";'>$patf</td>\n";
-	}
-	else
-	{
-		$lateraltemplatestr .= "<td>Intersect PA1 at " . sprintf("%.2f",$pavs) . " VS:</td>\n" .
-			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$patvd). " TVD </td>\n" .
-			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$painc). "INC</td>\n" .
-			"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$padl). "/100DL</td>\n";
-	}
-}
+	$lateraltemplatestr .= "<tr>\n";
+	
+		if($lateralsel == '3')
+		{
+			$lateraltemplatestr .= "<td>SLD to " . sprintf('%.2f',$pamd) . ":</td>\n" .
+				"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$pacl) . " FT</td>\n" .
+				"<td colspan='2' style='background-color: ".$colora.";'>$patf</td>\n";
+		}
+		else
+		{
+			$lateraltemplatestr .= "<td>Intersect PA1 at " . sprintf("%.2f",$pavs) . " VS:</td>\n" .
+				"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$patvd). " TVD </td>\n" .
+				"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$painc). "INC</td>\n" .
+				"<td style='background-color: ".$colora.";'>" . sprintf("%.2f",$padl). "/100DL</td>\n";
+		}
 $lateraltemplatestr .= "</tr>\n";
 }
+
 if($lateralsel == '2')
 {
 	$sval1 = sprintf('%.2f',round(floatval($curtcl),2));
