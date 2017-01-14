@@ -325,7 +325,16 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 	$row = $db->FetchRow();
 	$dip_100 = $row['dip'];
 	$past_100 = 90+$dip_100;
-	$past_500 = 0;
+	$query = "select dip from surveys order by md desc offset 1 limit 5"; 
+	$db->DoQuery($query);
+	$cnt=0;
+	$dip_500=0;
+	while($row = $db->FetchRow()){
+		$dip_500+=$row['dip'];
+		$cnt++;
+	}
+	$dip_500 = $dip_500/$cnt;
+	$past_500 = 90+$dip_500;
 	$lateraltemplatestr.="<h3>" .
 	"Currently $below_tot' $below_tot_text the TOT and $above_bot' $above_bot_text the BOT, current inc at bit is $inc_bit and the past 100’ of the formation is $past_100 and the past 500’ of the formation is $past_500</td>" .
 	"</h3></td></tr></table>";
