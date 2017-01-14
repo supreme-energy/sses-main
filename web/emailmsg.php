@@ -573,15 +573,17 @@ var directo = function(v) {
 }
 var laterselchange = function(v){
 	sel = $("#sellat")[0]
-	newsearch=window.location.search.replace("msgtemplate="+v,"")
-	window.location=window.location+newsearch+"&msgtemplate="+v+"&lateralsel="+sel.options[sel.selectedIndex].value
+	newsearch=window.location.replace("msgtemplate="+v,"")
+	newsearch=nesearch.replace("lateralsel=<?=$lateralsel?>","")
+	window.location=newsearch+"&msgtemplate="+v+"&lateralsel="+sel.options[sel.selectedIndex].value
 	
 }
 
 var curvedslechange =  function(v){
 	sel = $("#selcur")[0]
-	newsearch=window.location.search.replace("msgtemplate="+v,"")
-	window.location=window.location+newsearch+"&msgtemplate="+v+"&curvedsel="+sel.options[sel.selectedIndex].value
+	newsearch=window.location.replace("msgtemplate="+v,"")
+	newsearch=nesearch.replace("lateralsel=<?=$curvedsel?>","")
+	window.location=newsearch+"&msgtemplate="+v+"&curvedsel="+sel.options[sel.selectedIndex].value
 	
 }
 function changeScreenSize(w,h) {
