@@ -572,7 +572,7 @@ var directo = function(v) {
 	}
 }
 var laterselchange = function(v){
-	sel = $("sellat")[0]
+	sel = $("#sellat")[0]
 	
 	console.log(sel.options[sel.selectedIndex].value)
 	
