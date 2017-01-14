@@ -415,8 +415,11 @@ if($lateralsel != '4'){
 }
 
 $curvedtemplatestr.='<td style="text-align:right;padding:5px" nowrap>PA1-Geo Landing Target</td>';
-$lateraltemplatestr.='<td style="text-align:right;padding:5px" nowrap>' . ($lateralsel == 3 ? 'SLD' : 'PA1-Geo') . ' Intersect</td>';
-
+if($lateralsel != '4'){
+	
+	$lateraltemplatestr.='<td style="text-align:right;padding:5px" nowrap>' . ($lateralsel == 3 ? 'SLD' : 'PA1-Geo') . ' Intersect</td>';
+	
+}
 $templestr='<td style="text-align: center;border-bottom:solid black 1px;border-top:solid black 1px;border-left:1px solid black;">'.sprintf("%.2f",$pamd).'</td>
 <td style="text-align: center;border-bottom:solid black 1px;border-top:solid black 1px;border-left:1px solid black;">'.sprintf("%.2f",$painc).'</td>
 <td style="text-align: center;border-bottom:solid black 1px;border-top:solid black 1px;border-left:1px solid black;">'.sprintf("%.2f",$paazm).'</td>
