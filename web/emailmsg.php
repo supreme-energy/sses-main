@@ -395,14 +395,15 @@ if($lateralsel == '2')
 		"Current Survey's TCL: {$sval1}TVD @ {$sval2}VS {$sval3}dip</td></tr>\n";
 }
 $lateraltemplatestr .= "<tr><td colspan='4' rowspan='2'>";
-
+if($curvedsel!='2'){
 $curvedtemplatestr.='<tr>
 <td>GEO Landing Target</td>
 <td style="background-color: '.$colora.';">'.sprintf("%.2f",$pavs).' VS</td>
 <td style="background-color:'.$colora.';" colspan="1">'.sprintf("%.2f",$patvd).' TVD</td>' .
 		'<td style="background-color:'.$colora.';" colspan="1"><b>DOGLEG NEEDED&nbsp;: '.sprintf("%.2f",$padl).'</b></td>'.
-'</tr>
-<tr>
+'</tr>';
+}
+$curvedtemplatestr.='<tr>
 <td colspan="4" rowspan="2" style="padding:2px">';
 
 $templestr.='<table style="border:0;border-collapse:collapse;background-color:none;width:100%" cellspacing="0" cellpadding="8">
