@@ -315,7 +315,7 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 </td>
 </tr>';
 } else{
-	"<h3>" .
+	$lateraltemplatestr.="<h3>" .
 	"Currently -12.1' below the TOT and +17.9' above the BOT, current inc at bit is 100.3 and the past 100’ of the formation is XX.XX and the past 500’ of the formation is 94.72</td>" .
 	"</h3></td></tr>";
 }
@@ -410,7 +410,9 @@ $templestr.='<table style="border:0;border-collapse:collapse;background-color:no
 <tr>';
 
 $curvedtemplatestr.=$templestr;
-$lateraltemplatestr.=$templestr;
+if($lateralsel != '4'){
+	$lateraltemplatestr.=$templestr;
+}
 
 $curvedtemplatestr.='<td style="text-align:right;padding:5px" nowrap>PA1-Geo Landing Target</td>';
 $lateraltemplatestr.='<td style="text-align:right;padding:5px" nowrap>' . ($lateralsel == 3 ? 'SLD' : 'PA1-Geo') . ' Intersect</td>';
