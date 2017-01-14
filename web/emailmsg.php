@@ -315,8 +315,15 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 </td>
 </tr>';
 } else{
+	$below_tot =$bprjtvd - $bprjtot ;
+	$below_tot_text =($below_tot < 0 ? "below" : "above");
+	$above_bot = $bprjtvd - $bprjbot ;
+	$above_bot_text =($above_bot < 0 ? "below" : "above");
+	$inc_bit = $bprjinc;
+	$past_100 = 0;
+	$past_500 = 0;
 	$lateraltemplatestr.="<h3>" .
-	"Currently -12.1' below the TOT and +17.9' above the BOT, current inc at bit is 100.3 and the past 100’ of the formation is XX.XX and the past 500’ of the formation is 94.72</td>" .
+	"Currently $below_tot' $below_tot_text the TOT and $above_bot' $above_bot_text the BOT, current inc at bit is $inc_bit and the past 100’ of the formation is $past_100 and the past 500’ of the formation is $past_500</td>" .
 	"</h3></td></tr></table>";
 }
 if($vslon){
