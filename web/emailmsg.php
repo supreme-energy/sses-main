@@ -572,7 +572,7 @@ var directo = function(v) {
 	}
 }
 var laterselchange = function(v){
-	sel = $("sellat")
+	sel = $("sellat")[0]
 	console.log(sel.options[sel.selectedIndex].value)
 	
 }
@@ -591,10 +591,10 @@ if($thetemplate == 'lateral')
 ?>
 &nbsp;&nbsp;
 <select id='sellat' name="lateralsel" onchange="laterselchange('lateralsel')">
-<option id='optlat1'<?php echo ($lateralsel == '1' ? ' selected' : '') ?>>Lateral 1</option>
-<option id='optlat2'<?php echo ($lateralsel == '2' ? ' selected' : '') ?>>Lateral 2</option>
-<option id='optlat3'<?php echo ($lateralsel == '3' ? ' selected' : '') ?>>Lateral 3</option>
-<option id='optlat4'<?php echo ($lateralsel == '4' ? ' selected' : '') ?>>Lateral 4</option>
+<option value=1 id='optlat1'<?php echo ($lateralsel == '1' ? ' selected' : '') ?>>Lateral 1</option>
+<option value=2 id='optlat2'<?php echo ($lateralsel == '2' ? ' selected' : '') ?>>Lateral 2</option>
+<option value=3 id='optlat3'<?php echo ($lateralsel == '3' ? ' selected' : '') ?>>Lateral 3</option>
+<option value=4 id='optlat4'<?php echo ($lateralsel == '4' ? ' selected' : '') ?>>Lateral 4</option>
 </select>
 <?php
 } else {?>
