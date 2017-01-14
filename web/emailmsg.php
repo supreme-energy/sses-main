@@ -572,7 +572,9 @@ var directo = function(v) {
 	}
 }
 var laterselchange = function(v){
-	console.log("changing");
+	sel = $("sellat")
+	console.log(sel.options[sel.selectedIndex].value)
+	
 }
 function changeScreenSize(w,h) {
 	window.resizeTo( w,h )
