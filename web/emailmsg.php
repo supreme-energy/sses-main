@@ -318,7 +318,11 @@ $lateraltemplatestr = $curvedtemplatestr = '<table cellspacing="0" cellpadding="
 $colora='#e6dcb1';
 $colorb='#307040';
 if($curvedsel==2){
-$curvedtemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>XX BUR needed to land at TOT, XX BUR needed to land at BOT, current survey BUR is XX</strong></span></h3>';
+$tot_dl=0;
+$bot_dl=0;
+$curvedtemplatestr.="<h3><span style='font-size:14px'>" .
+		"<strong>$tot_dl BUR needed to land at TOT, $bot_dl BUR needed to land at BOT, current survey BUR is $curdl" .
+		"</strong></span></h3>";
 }
 $curvedtemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES LANDING RECOMMENDATION</strong></span></h3>
 </td>
