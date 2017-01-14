@@ -660,6 +660,7 @@ $db->CloseDb();
 
 <script>
 $(document).ready( function () {
+	console.log("document ready loading");
 	$('#optlat1').click(function() {
 		if(window.location.search.indexOf('lateralsel')>=0) {
 			if(window.location.search.indexOf('lateralsel=1')>=0) {
