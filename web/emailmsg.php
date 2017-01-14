@@ -228,7 +228,7 @@ if($botid){
 	$curbot =sprintf("%.2f", $db->FetchField("tot"));
 }
 $curdfp = GetLRDistanceFromWellPlan($db,$curmd,$curew,$curns);
-
+$curdip = $db->FetchField("dip");
 // get the next values for the projected path
 
 $query = "select * from surveys where plan = 1";
@@ -320,7 +320,7 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 	$above_bot = $bprjtvd - $bprjbot ;
 	$above_bot_text =($above_bot < 0 ? "below" : "above");
 	$inc_bit = $bprjinc;
-	$past_100 = 0;
+	$past_100 = 90+$curdip;
 	$past_500 = 0;
 	$lateraltemplatestr.="<h3>" .
 	"Currently $below_tot' $below_tot_text the TOT and $above_bot' $above_bot_text the BOT, current inc at bit is $inc_bit and the past 100’ of the formation is $past_100 and the past 500’ of the formation is $past_500</td>" .
