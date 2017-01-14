@@ -317,7 +317,7 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 } else{
 	$lateraltemplatestr.="<h3>" .
 	"Currently -12.1' below the TOT and +17.9' above the BOT, current inc at bit is 100.3 and the past 100’ of the formation is XX.XX and the past 500’ of the formation is 94.72</td>" .
-	"</h3></td></tr>";
+	"</h3></td></tr></table>";
 }
 if($vslon){
 	$bitpostcl =$bprjtcl-$bprjtvd;
