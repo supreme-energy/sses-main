@@ -169,6 +169,17 @@ if(isset($_GET['lateralsel']) and $lateralsel != $_GET['lateralsel'])
  	$lateralsel = $_GET['lateralsel'];
 }
 
+$db->DoQuery("select cvalue from adm_config where cname = 'curvedsel' limit 1");
+$curvedsel = '1';
+if($db->FetchRow()) $curvedsel = $db->FetchField('cvalue');
+else $db->DoQuery("insert into adm_config (cname,cvalue) values ('curvedsel','1')");
+
+if(isset($_GET['curvedsel']) and $curvedsel != $_GET['curvedsel'])
+{
+ 	$db->DoQuery("update adm_config set cvalue = '{$_GET['curvedsel']}' where cname = 'curvedsel'");
+ 	$curvedsel = $_GET['curvedsel'];
+}
+
 $query = "with s as (select dip from surveys where plan=0 order by md desc limit 3) select avg(dip) as davg from s";
 $query = "select * from projections order by MD asc limit 1";
 $db->DoQuery($query);
@@ -581,7 +592,12 @@ if($thetemplate == 'lateral')
 <option id='optlat4'<?php echo ($lateralsel == '4' ? ' selected' : '') ?>>Lateral 4</option>
 </select>
 <?php
-}
+} else {?>
+	<select id='selcur'>
+		<option id='optcur1'<?php echo ($curvedsel == '1' ? ' selected' : '') ?>>Curved 1</option>
+		<option id='optcur2'<?php echo ($curvedsel == '2' ? ' selected' : '') ?>>Curved 2</option>
+	</select>
+<?}
 $db->CloseDb();
 ?></div>
 
@@ -686,6 +702,10 @@ $(document).ready( function () {
 			window.location = window.location + '&lateralsel=3';
 		}
 	});
+	$('#optlat4').click(function() {
+		window.location.search.replace('lateralsel<?=$lateralsel?>','')
+		window.location = window.location + '&lateralsel=4';
+	});	
 });
 var selected_element;
 var newdiv;

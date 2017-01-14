@@ -37,4 +37,15 @@ if(isset($_GET['lateralsel']) and $lateralsel != $_GET['lateralsel'])
  	$db->DoQuery("update adm_config set cvalue = '{$_GET['lateralsel']}' where cname = 'lateralsel'");
  	$lateralsel = $_GET['lateralsel'];
 }
+
+$db->DoQuery("select cvalue from adm_config where cname = 'curvedsel' limit 1");
+$curvedsel = '1';
+if($db->FetchRow()) $curvedsel = $db->FetchField('cvalue');
+else $db->DoQuery("insert into adm_config (cname,cvalue) values ('curvedsel','1')");
+
+if(isset($_GET['curvedsel']) and $curvedsel != $_GET['curvedsel'])
+{
+ 	$db->DoQuery("update adm_config set cvalue = '{$_GET['curvedsel']}' where cname = 'curvedsel'");
+ 	$curvedsel = $_GET['curvedsel'];
+}
 ?>
