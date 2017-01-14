@@ -571,6 +571,9 @@ var directo = function(v) {
 		window.location=window.location+"&msgtemplate="+v;
 	}
 }
+var laterselchange = function(v){
+	console.log("changing");
+}
 function changeScreenSize(w,h) {
 	window.resizeTo( w,h )
 }
@@ -585,7 +588,7 @@ if($thetemplate == 'lateral')
 {
 ?>
 &nbsp;&nbsp;
-<select id='sellat' name="lateralsel">
+<select id='sellat' name="lateralsel" onchange="laterselchange('lateralsel')">
 <option id='optlat1'<?php echo ($lateralsel == '1' ? ' selected' : '') ?>>Lateral 1</option>
 <option id='optlat2'<?php echo ($lateralsel == '2' ? ' selected' : '') ?>>Lateral 2</option>
 <option id='optlat3'<?php echo ($lateralsel == '3' ? ' selected' : '') ?>>Lateral 3</option>
