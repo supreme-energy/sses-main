@@ -309,7 +309,7 @@ $colorb='#307040';
 $curvedtemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES LANDING RECOMMENDATION</strong></span></h3>
 </td>
 </tr>';
-if($lateralsel != '3')
+if($lateralsel != '4')
 {
 $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES RECOMMENDATION</strong></span></h3>
 </td>
@@ -328,8 +328,9 @@ if($vslon){
 	<td style="background-color: '.$colora.';" colspan="2">'.sprintf("%.2f",$ltvdvsl).' TVD</td>
 	</tr>';
 }
-$lateraltemplatestr .= "<tr>\n";
 if($lateralsel != '4'){
+$lateraltemplatestr .= "<tr>\n";
+
 	if($lateralsel == '3')
 	{
 		$lateraltemplatestr .= "<td>SLD to " . sprintf('%.2f',$pamd) . ":</td>\n" .
@@ -345,6 +346,7 @@ if($lateralsel != '4'){
 	}
 }
 $lateraltemplatestr .= "</tr>\n";
+}
 if($lateralsel == '2')
 {
 	$sval1 = sprintf('%.2f',round(floatval($curtcl),2));
