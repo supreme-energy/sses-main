@@ -98,7 +98,7 @@ else $cutoff=0;
 $retstr=array(); $retval=0;
 if($mintvd == "") {
 	$cmd = "./sses_ps -d $seldbname -p $projection -t lat -c $cutoff -o $fn -h 698 -w 1148";
-	//echo $cmd;
+	echo $cmd;
 	exec($cmd);
 }
 else
