@@ -119,7 +119,7 @@ else
 		$args=$args." -yscale $yscale";
 	}
 	$cmd = "./sses_ps -d $seldbname $args";
-	//echo $cmd;
+	echo $cmd;
 	exec($cmd,$retstr,$retval);
 //	echo "<p>retval = $retval</p>";
 //	echo '<pre>gva_tab5_funct.php: retstr='; print_r($retstr); echo '</pre>';
