@@ -334,9 +334,9 @@ $lateraltemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"
 </td>
 </tr>';
 } else{
-	$below_tot =$bprjtvd - $bprjtot ;
+	$below_tot = $bprjtot - $bprjtvd;
 	$below_tot_text =($below_tot < 0 ? "below" : "above");
-	$above_bot = $bprjtvd - $bprjbot ;
+	$above_bot = $bprjbot - $bprjtvd;
 	$above_bot_text =($above_bot < 0 ? "below" : "above");
 	$inc_bit = sprintf("%.2f",$bprjinc);
 	$query = "select dip from surveys order by md desc offset 1 limit 1"; 
