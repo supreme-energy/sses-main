@@ -16,6 +16,7 @@ $scalehi=$_POST['scalehi'];
 $logscale=$_POST['logscale']; if(strlen($logscale)<1)	$logscale=0;
 $color=$_POST['color'];
 $enabled = (isset($_POST['enabled'])&&$_POST['enabled']=='1')?1:0;
+$single_plot = (isset($_POST['singleplot'])&&$_POST['singleplot']=='1')?1:0;
 
 $badshit=array("#");
 $color=str_replace($badshit, "", $color);
@@ -25,7 +26,7 @@ $db=new dbio($seldbname);
 $db->OpenDb();
 if(strlen($seledata)>0) {
 	// echo "done";
-	$db->DoQuery("UPDATE edatalogs SET enabled=$enabled,colnum=$colnum,tablename='$tablename',label='$label',scalelo=$scalelo,scalehi=$scalehi,logscale=$logscale,color='$color' WHERE id=$seledata");
+	$db->DoQuery("UPDATE edatalogs SET single_plot=$single_plot,enabled=$enabled,colnum=$colnum,tablename='$tablename',label='$label',scalelo=$scalelo,scalehi=$scalehi,logscale=$logscale,color='$color' WHERE id=$seledata");
 }
 $db->CloseDb();
 header("Location: gva_tab6.php?seldbname=$seldbname&seledata=$seledata");

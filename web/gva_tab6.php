@@ -33,6 +33,7 @@ while($db->FetchRow()) {
 	$labels[]=$db->FetchField("label");
 	$colors[]=$db->FetchField("color");
 	$enabled=$db->FetchField("enabled");
+	$singleplot = $db->FetchField("single_plot");
 	if($seledata==$i) {
 		$colnum=$db->FetchField("colnum");
 		$label=$db->FetchField("label");
@@ -42,6 +43,7 @@ while($db->FetchRow()) {
 		$color=$db->FetchField("color");
 		$logscale=$db->FetchField("logscale");
 		$eshow = $db->FetchField("enabled");
+		$esingle = $db->FetchField("single_plot");
 	}
 	else if(!isset($seledata) && $enabled>0) {
 		$colnum=$db->FetchField("colnum");
@@ -53,6 +55,7 @@ while($db->FetchRow()) {
 		$logscale=$db->FetchField("logscale");
 		$seledata=$i;
 		$eshow=$enabled;
+		$esingle = $singleplot;
 	}
 }
 if(!isset($seledata))	$seledata=-1;
@@ -260,6 +263,12 @@ else
 	<div class="form-item">
 	<td class='right'> Enabled </td>
 	<td class='left'> <input type="checkbox" name="enabled" value="1" <? echo ($eshow=='1'?'checked':'')?> onchange="OnChangeEdata(this.form)"/> </td>
+	</div>
+	</tr>
+	<tr>
+	<div class="form-item">
+	<td class='right'> Single Plot </td>
+	<td class='left'> <input type="checkbox" name="singleplot" value="1" <? echo ($esingle=='1'?'checked':'')?> onchange="OnChangeEdata(this.form)"/> </td>
 	</div>
 	</tr>
 	<tr>
