@@ -802,6 +802,10 @@ if(!$dbu->ColumnExists('addforms', 'show_line')) {
 	logDoQuery($dbu,"alter table addforms add show_line varchar(8) not null default 'Yes'");
 }
 
+if(!$dbu->ColumnExists('edatalogs', 'single_plot')) {
+	logDoQuery($dbu,"alter table edatalogs add single_plot int not null default 0");
+}
+
 
 // logInfo("dbupdate: Finished");
 $dbu->CloseDb();
