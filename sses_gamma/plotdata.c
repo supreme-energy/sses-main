@@ -832,6 +832,7 @@ int main(int argc, char * argv[])
 		else
 			sprintf(cmdstr, "SELECT * FROM welllogs WHERE startvs>=%f AND endvs<=%f ORDER BY startmd;", startmd, endmd);
 	}
+	printf("2\n");
 	if (DoQuery(res_set2, cmdstr)) {
 		printf("%s: Error in select query for table %s\n",
 			argv[0], cmdstr);
@@ -839,6 +840,7 @@ int main(int argc, char * argv[])
 		CloseDb();
 		exit (-1);
 	}
+	printf("3\n");
 	if(FetchRow(res_set2)) {
 		startmd=atof(FetchField(res_set2, "startmd"));
 		endmd=atof(FetchField(res_set2, "endmd"));
@@ -870,6 +872,7 @@ int main(int argc, char * argv[])
 			// printf("tvd:%.2f depth:%.2f plotfault:%.2f\n", tvd, depth, plotfault);
 		}
 	}
+	printf("4\n");
 	FreeResult(res_set2);
 
 	// printf("startmd:%.2f endmd:%.2f dbfault:%.2f\n", startmd, endmd, dbfault);
@@ -883,6 +886,7 @@ int main(int argc, char * argv[])
 		CloseDb();
 		exit (-1);
 	}
+	printf("6\n");
 	minvs=mintvd=99999.0;
 	maxvs=maxtvd=-99999.0;
 	dataFNcount=0;
@@ -922,7 +926,7 @@ int main(int argc, char * argv[])
 		// printf("lastVS:%.2f lastTVD:%.2f lastDepth:%.2f\n", lastVS, lastTVD, lastDepth);
 		i++;
 	}
-
+	printf("7\n");
 	if(did_loop<=0){
 		strcpy(whatToPlot,"add_data_gamma_fb");
 
@@ -955,7 +959,7 @@ int main(int argc, char * argv[])
 	dataFNcount+=2;
 
 	FreeResult(res_set2);
-
+	printf("8\n");
 	if(bDoVS) {
 		readEdataInfo(argv[0]);
 		for(i=0;edatas[i].line!=0;i++){
