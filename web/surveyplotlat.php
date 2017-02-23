@@ -528,7 +528,7 @@ class PDF extends FPDF
 		//$this->Image($imgfn2, 10.0, $y3, 0.8, $h3);
 		$bottom_element_height=1.0;
 		if(count($additionlgraphs)>0){
-			$bottom_element_y = 7.0-(0.25)-(0.25*count($additionlgraphs));
+			$bottom_element_y = 7.0-(0.25)-(0.5*count($additionlgraphs));
 		} else {
 			$bottom_element_y = 7.0;
 		}
