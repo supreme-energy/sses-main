@@ -1573,6 +1573,9 @@ if($viewdspcnt > 0)
 		<!-- start of the gamma plot div -->
 		<div>
 		<img src='<?php echo $fn4 ?>' />
+		<?foreach ($additionlgraphs as $value){
+			echo "<br><IMG SRC='$value'>";
+		}?>
 		</div> <!-- end of the gamma plot div -->
 
 	</div>
