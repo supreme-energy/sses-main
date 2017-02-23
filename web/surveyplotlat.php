@@ -426,10 +426,11 @@ class PDF extends FPDF
 			$b=1;
 			$left=2.2;
 			$i=0;
+			$loopmod=0;
 			if(count($additionlgraphs)>0){
-				$this->hdrheight = $this->hdrheight-1.75-1.75*count($additionlgraphs);
+				$loopmod=1+count($additionlgraphs);
 			}
-			while($i<(37-(count($annos)+$this->projection_count))){
+			while($i<(37-$loopmod-(count($annos)+$this->projection_count))){
 				$this->Ln(); $this->hdrheight+=$h;
 				$i++;
 			}
