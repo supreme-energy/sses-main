@@ -1930,7 +1930,18 @@ int main(int argc, char * argv[])
 
 	// sample output:
 	// plot '/tmp/fileouDHv0' with lines ls 6 t 'Wellplan', '/tmp/fileVMZ5qX' with lines ls 30 t 'Witchita Albany', '/tmp/fileLKu0ny' with lines ls 31 t 'Dean', '/tmp/fileEZpVk9' with lines ls 32 t 'Wolfcamp A', '/tmp/filezRFQhK' with lines ls 33 t 'TOT', '/tmp/file4ImMel' with lines ls 34 t 'BOT', '/tmp/file0YYlPz' with lines ls 4 t 'TCL', '/tmp/fileorocum' with lines ls 12 t '', '/tmp/file7CwfBL' with lines ls 11 t '', '/tmp/fileEfCLCp' with lines ls 2 t 'Surveys', '/tmp/fileEfCLCp' with points ls 8 t '', '/tmp/file8DlwaN' with points ls 10 t 'Projected', '/tmp/filefgNs3n' with labels font "arial,18" t '', '/tmp/file5KkpWY' with points ls 99 t '', '/tmp/filew3SJdx' with lines ls 90 t '', '/tmp/filevQ7Ld8' with lines ls 91 t '', '/tmp/filewjKOdJ' with lines ls 92 t '', '/tmp/fileAwHRdk' with lines ls 93 t '', '/tmp/filepA1UdV' with lines ls 94 t ''
-	gnuplot_cmd(gplot, "set obj 350 rectangle from 1500.0,7725.0 to 1600.0,7650.0 front fc rgb \"gold\"");
+	if (DoQuery(res_set, "select * from nogo_zone where show_plot=1"))
+	{
+			fprintf(stderr, "plotsvys: Error in select query for nogo_zone\n");
+			exit -1;
+	}
+	int pos=350;
+	while(FetchRow(res_set)){
+		gnuplot_cmd(gplot, "set obj %i rectangle from %f,%f to %f,%f front fc rgb \"gold\"",pos,atof(FetchField(res_set,"minvs")),atof(FetchField(res_set,"mintvd")),atof(FetchField(res_set,"maxvs")),atof(FetchField(res_set,"maxtvd")));
+		pos++;
+	}
+
+	FreeResult(res_set);
 //	strcpy(cmdstr,"plot '");
 //	strcat(cmdstr,filldfn);
 //	strcat(cmdstr,"' using 1:2:3 with filledcurves lc rgb 'red' t 'Wellplan'");
