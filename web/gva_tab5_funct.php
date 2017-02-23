@@ -108,7 +108,10 @@ if($mintvd == "") {
 }
 else
 {
-	$height_mod = -25+count($additionlgraphs)*75;
+	$height_mod=0;
+	if(count($additionlgraphs)>0){
+		$height_mod = -25+count($additionlgraphs)*75;
+	}
 	$height_f = 598 - $height_mod;
 	$args=" -t lat";
 	$args=$args." -nodata";
