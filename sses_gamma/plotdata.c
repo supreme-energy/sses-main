@@ -418,7 +418,7 @@ void setScalingRotated(void) {
 	// gnuplot_cmd(gplot, "set key outside right bottom samplen 2.0 box");
 	// gnuplot_cmd(gplot, "set key out vert right top");
 	if(bDoVS) {
-		if(!bUseLogScale){
+		if(!bUseLogScale && singlePlot==0){
 			gnuplot_cmd(gplot,
 			"set label 1 \"%s\" at %f, %f, 0 left front textcolor rgb '#%s' offset character 1, -.7, 0",
 			"Gamma", startDepth, rightScale, lineColor);
