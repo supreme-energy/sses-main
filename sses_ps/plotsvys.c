@@ -2042,7 +2042,6 @@ int main(int argc, char * argv[])
 			while(FetchRow(res_set)) {
 				gamma_h=75.0;
 				edatalog_id=atoi( FetchField(res_set, "id") );
-				sprintf(outFilename_cur,"%s%s.png",outFilename, FetchField(res_set, "label"));
 				printf("running single_plot for into %s",outFilename_cur);
 				sprintf(cmdstr,
 							"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s -single %i",
@@ -2057,6 +2056,7 @@ int main(int argc, char * argv[])
 							minvs,
 							maxvs,
 							"307040",opts,edatalog_id);
+				printf("Gamma log bottom: %s\n", cmdstr);
 				i=system(cmdstr);
 			}
 		}
