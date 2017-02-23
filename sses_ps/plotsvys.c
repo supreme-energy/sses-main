@@ -2050,6 +2050,31 @@ int main(int argc, char * argv[])
 			"307040",opts);
 		printf("Gamma log bottom: %s\n", cmdstr);
 		i=system(cmdstr);
+		if(DoQuery(res_set,"select * from edatalogs where single_plot=1")==0)
+		{
+			int edatalog_id=0;
+			char outFilename_cur[4095];
+			while(FetchRow(res_set)) {
+				edatalog_id=atoi( FetchField(res_set, "id") );
+				sprintf(outFilename_cur,"%s%s.png",outFilename, FetchField(res_set, "label"));
+				printf("running single_plot for into %s",outFilename_cur);
+				sprintf(cmdstr,
+							"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s -single %i",
+							dbname,
+							// scaleright,
+							yfactor,
+							outFilename_cur,
+							100.0,
+							width,
+							minvs,
+							maxvs,
+							minvs,
+							maxvs,
+							"307040",opts,edatalog_id);
+				i=system(cmdstr);
+			}
+		}
+
 	}
 
 	// printf("controlTot:%.2f lastPrjTot:%.2f lastSvyTot:%.2f\n", controlTot, lastPrjTot, lastSvyTot);
