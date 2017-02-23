@@ -111,7 +111,7 @@ include "apptabs.inc.php";
 	<br>
 	<IMG SRC='<?echo $fn4;?>'>
 	<?foreach ($additionlgraphs as $value){
-		echo "<IMG SRC='$value'>";
+		echo "<br><IMG SRC='$value'>";
 	}?>
 	</td>
 <!--	<td style='padding: 0 4; vertical-align: top;'>
