@@ -103,7 +103,7 @@ else $cutoff=0;
 $retstr=array(); $retval=0;
 if($mintvd == "") {
 	$cmd = "./sses_ps -d $seldbname -p $projection -t lat -c $cutoff -o $fn -h 698 -w 1148";
-	echo $cmd;
+	//echo $cmd;
 	exec($cmd);
 }
 else
@@ -129,7 +129,7 @@ else
 		$args=$args." -yscale $yscale";
 	}
 	$cmd = "./sses_ps -d $seldbname $args";
-	echo $cmd;
+//	echo $cmd;
 	exec($cmd,$retstr,$retval);
 //	echo "<p>retval = $retval</p>";
 //	echo '<pre>gva_tab5_funct.php: retstr='; print_r($retstr); echo '</pre>';
