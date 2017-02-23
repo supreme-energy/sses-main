@@ -1573,11 +1573,11 @@ if($viewdspcnt > 0)
 		<!-- start of the gamma plot div -->
 		<div>
 		<img src='<?php echo $fn4 ?>' />
+		</div>
 		<?foreach ($additionlgraphs as $value){
-			echo "<br><IMG SRC='$value'>";
+			echo "<div><IMG SRC='$value'></div>";
 		}?>
-		</div> <!-- end of the gamma plot div -->
-
+ 		<!-- end of the gamma plot div -->
 	</div>
 
 	<!-- </div> end of the wellbore plots div -->
