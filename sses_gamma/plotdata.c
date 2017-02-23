@@ -26,6 +26,7 @@ int bNoMargin=0;
 int bDoVS=0;
 int fontSize=8;
 int lineWidth=1;
+int singlePlot=0;
 float pointSize=.4;
 int bNoDepth;
 int bAutoDepthScale=0;
@@ -462,7 +463,11 @@ void readAppinfo(char *progname) {
 
 void readEdataInfo(char *progname) {
 	static char str[1024];
-	sprintf(str, "SELECT * FROM edatalogs WHERE enabled=1 order by id asc;");
+	if(singlePlot==0){
+		sprintf(str, "SELECT * FROM edatalogs WHERE enabled=1 and single_plot=0 order by id asc;");
+	} else {
+		sprintf(str, "select * from edatalogs where id =%i",singlePlot);
+	}
 	if (DoQuery(res_set, str)) {
 		printf("%s: readEdataInfo: Error in select query for table %s\n",
 			progname, str);
@@ -760,6 +765,8 @@ int main(int argc, char * argv[])
 			bDoVS=1;
 		else if(!strcmp(argv[i], "-color"))
 			strcpy(lineColor, argv[++i]);
+		else if(!strcmp(argv[i],"-single"))
+			singlePlot = atoi(argv[++i]);
 		else {
 			printf("Error in parameter: %s\n", argv[i]);
 			barfAndDie(argv[0]);
@@ -888,6 +895,7 @@ int main(int argc, char * argv[])
 	}
 	int did_loop=0;
 	while(FetchRow(res_set2)) {
+		if(singlePlot!=0) break;
 		did_loop++;
 		strcpy(whatToPlot, FetchField(res_set2, "tablename"));
 		id = atoi(FetchField(res_set2, "id"));
