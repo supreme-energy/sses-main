@@ -117,7 +117,7 @@ else echo "<body onload=''>";
 		<option value='nogo' <?echo $nogo_sel?>>no go zones</option>
 	</select>
 	<div id="nogo_div_hidder_upper" style="<?echo $nogo_disp?>">
-		NO GO ZONE
+		<? require 'nogozone.php'?>
 	</div>
 	<div id="sgl_div_hidder_upper" style="<?echo $sgl_disp?>">
 		<form method='post' action='survey_label.php' name='label_settings' onsubmit='return false;'>
