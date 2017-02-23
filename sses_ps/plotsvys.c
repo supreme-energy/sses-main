@@ -1983,9 +1983,9 @@ int main(int argc, char * argv[])
 //		cmdstr[i - 2] = '\0';
 		printf("sses_ps: len=%ld cmdstr=%s\n",strlen(cmdstr),cmdstr);
 	}
-	strcat(cmdstr,",set obj 350 rectangle from 1500.00,7725.00 to 1600.00,7650 front fc rgb \"gold\" ");
-	gnuplot_cmd(gplot, cmdstr);
 
+	gnuplot_cmd(gplot, cmdstr);
+	gnuplot_cmd(gplot, "set obj 350 rectangle from 1500.00,7725.00 to 1600.00,7650 front fc rgb \"gold\"");
 //	if(fdi > 0 && strlen(filldfn) > 0)
 //	{
 //		strcpy(cmdstr,"set style fill transparent solid 0.4 noborder");
