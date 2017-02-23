@@ -1944,8 +1944,7 @@ int main(int argc, char * argv[])
 	}
 
 	// if we a plotting and the formation are more than one then create a fill between formations
-	printf("plotting rectangle");
-	strcat(cmdstr,"set object 2 rect from 10,10 to 20,20 fc rgb \"gold\", ");
+
 	if(strncmp(cmdstr,"plot ",4) == 0 && numforms > 1 && strlen(filldfn) > 0)
 	{
 		strcpy(tstr,"set style fill transparent solid 0.4 noborder");
@@ -1986,7 +1985,8 @@ int main(int argc, char * argv[])
 	}
 
 	gnuplot_cmd(gplot, cmdstr);
-
+	printf("plotting rectangle");
+	gnuplot_cmd(gplot,"set object 350 rect from 10,10 to 20,20 fc rgb \"gold\"");
 //	if(fdi > 0 && strlen(filldfn) > 0)
 //	{
 //		strcpy(cmdstr,"set style fill transparent solid 0.4 noborder");
