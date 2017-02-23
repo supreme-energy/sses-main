@@ -408,6 +408,7 @@ class PDF extends FPDF
 	}
 	
 	function ReportAnnos(){
+		global $additionlgraphs;
 		require_once 'classes/Annotation.class.php';
 		require_once 'annotation_lib.php';
 		if(!isset($anno_loader)){
@@ -425,6 +426,9 @@ class PDF extends FPDF
 			$b=1;
 			$left=2.2;
 			$i=0;
+			if(count($additionlgraphs)>0){
+				$this->hdrheight = $this->hdrheight-0.25+0.75*count($additionlgraphs);
+			}
 			while($i<(37-(count($annos)+$this->projection_count))){
 				$this->Ln(); $this->hdrheight+=$h;
 				$i++;
