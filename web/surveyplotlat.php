@@ -30,7 +30,7 @@ include('readappinfo.inc.php');
 $additionlgraphs = array();
 $db->DoQuery("select * from edatalogs where single_plot=1");
 while($db->FetchRow()){
-	array_push($additionlgraphs,sprintf("./tmp/%s_surveyplotlat.png%s.png", $seldbname,$db->FetchField("label")));
+	array_push($additionlgraphs,sprintf("tmp/%s_surveyplotlat.png%s.png", $seldbname,$db->FetchField("label")));
 }
 $db->CloseDb();
 $tofile=0;
@@ -615,10 +615,10 @@ if($tofile==0 && !$approve_send) {
 	header("Content-Transfer-Encoding: binary");
 	header("Content-Length: ".filesize($filename));
 	readfile("$filename");
-	if(file_exists($imgfn1)) unlink($imgfn1);
-	if(file_exists($imgfn2)) unlink($imgfn2);
-	if(file_exists($imgfn3)) unlink($imgfn3);
-	if(file_exists($imgfn4)) unlink($imgfn4);
+	#if(file_exists($imgfn1)) unlink($imgfn1);
+	#if(file_exists($imgfn2)) unlink($imgfn2);
+	#if(file_exists($imgfn3)) unlink($imgfn3);
+	#if(file_exists($imgfn4)) unlink($imgfn4);
 	exit(); 
     // header("Content-type: application/pdf");
     // header("Content-Transfer-Encoding: Binary");
@@ -626,8 +626,8 @@ if($tofile==0 && !$approve_send) {
     // header('Content-Disposition: attachment; filename="'.basename($filename).'"');
     // readfile("$filename");
 }
-if(file_exists($imgfn1)) unlink($imgfn1);
-if(file_exists($imgfn2)) unlink($imgfn2);
-if(file_exists($imgfn3)) unlink($imgfn3);
-if(file_exists($imgfn4)) unlink($imgfn4);
+#if(file_exists($imgfn1)) unlink($imgfn1);
+#if(file_exists($imgfn2)) unlink($imgfn2);
+#if(file_exists($imgfn3)) unlink($imgfn3);
+#if(file_exists($imgfn4)) unlink($imgfn4);
 ?>
