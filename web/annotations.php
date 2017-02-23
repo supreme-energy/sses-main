@@ -13,16 +13,27 @@
 	$db->OpenDb();
 	include "readappinfo.inc.php";
 	$db->CloseDb();
-	if($showing){
+	if($showing==1){
 		$anno_disp="display:none;";
 		$anno_sel = "";
 		$sgl_sel= "selected";
 		$sgl_disp = "display:block";
-	} else {
+		$nogo_disp = "display:none";
+		$nogo_sel="";	
+	} elseif($showing==2){
+		$anno_disp="display:none;";
+		$anno_sel = "";
+		$sgl_sel= "";
+		$sgl_disp = "display:none";
+		$nogo_disp = "display:block";
+		$nogo_sel="selected";	
+	}else {
 		$anno_disp = "display:block";
 		$anno_sel = "selected";
 		$sgl_sel= "";
 		$sgl_disp = "display:none;";
+		$nogo_disp = "display:none";
+		$nogo_sel="";
 	}
 ?>
 <!doctype html>
@@ -55,11 +66,19 @@
 			$('#annotations_div_hidder_upper').show()
 			$('#annotations_div_hidder_lower').show()
 			$('#annotations_table').show()
-		} else{
+			$('#nogo_div_hidder_upper').hide()
+		} else if($("#select_view").val()=='survey graph labels'){
 			$('#sgl_div_hidder_upper').show()
 			$('#annotations_table').hide()
 			$('#annotations_div_hidder_upper').hide()
 			$('#annotations_div_hidder_lower').hide()
+			$('#nogo_div_hidder_upper').hide()
+		}else{
+			$('#sgl_div_hidder_upper').hide()
+			$('#annotations_div_hidder_upper').hide()
+			$('#annotations_div_hidder_lower').hide()
+			$('#annotations_table').hide()
+			$('#nogo_div_hidder_upper').show()
 		}
 	}
 </script>
@@ -95,7 +114,11 @@ else echo "<body onload=''>";
 	<select id='select_view' onchange="update_showing()">
 		<option value='annotations' <?echo $anno_sel?>>annotations</option>
 		<option value='sgl' <?echo $sgl_sel?>>survey graph labels</option>
+		<option value='nogo' <?echo $nogo_sel?>>no go zones</option>
 	</select>
+	<div id="nogo_div_hidder_upper" style="<?echo $nogo_disp?>">
+		NO GO ZONE
+	</div>
 	<div id="sgl_div_hidder_upper" style="<?echo $sgl_disp?>">
 		<form method='post' action='survey_label.php' name='label_settings' onsubmit='return false;'>
 		<input type='hidden' name='seldbname' value='<?php echo $_REQUEST['seldbname']?>'>
