@@ -2040,7 +2040,7 @@ int main(int argc, char * argv[])
 
 	// if(strlen(whatToPlot) && (plotType==PLOTTYPE_LAT) ) {
 	// "./sses_dsp -d %s -r %f -o %s -w %f -h %f -s %f -e %f -rotate -nd -grid -nomargin -vs -pstart %f -pend %f -color %s",
-	float gamma_h=100;
+	float gamma_h=100.0;
 	if(plotType==PLOTTYPE_LAT)
 	{
 		if(DoQuery(res_set,"select * from edatalogs where single_plot=1")==0)
