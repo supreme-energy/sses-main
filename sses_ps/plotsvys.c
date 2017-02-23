@@ -1952,7 +1952,8 @@ int main(int argc, char * argv[])
 	}
 
 	// if we a plotting and the formation are more than one then create a fill between formations
-	strcat(cmdstr,"set object 2 rect from 1500,7600 to 1600,7800 fc rgb \"gold\", ");
+	printf("plotting rectangle");
+	strcat(cmdstr,"set object 2 rect from 10,10 to 20,20 fc rgb \"gold\", ");
 	if(strncmp(cmdstr,"plot ",4) == 0 && numforms > 1 && strlen(filldfn) > 0)
 	{
 		strcpy(tstr,"set style fill transparent solid 0.4 noborder");
