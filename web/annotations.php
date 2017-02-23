@@ -67,7 +67,7 @@
 			$('#annotations_div_hidder_lower').show()
 			$('#annotations_table').show()
 			$('#nogo_div_hidder_upper').hide()
-		} else if($("#select_view").val()=='survey graph labels'){
+		} else if($("#select_view").val()=='sgl'){
 			$('#sgl_div_hidder_upper').show()
 			$('#annotations_table').hide()
 			$('#annotations_div_hidder_upper').hide()
