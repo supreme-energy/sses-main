@@ -64,9 +64,9 @@ $args=$args." -nodata";
 $args=$args." -p $projection";
 $args=$args." -o $imgfn1";
 $height_mod=0;
-	if(count($additionlgraphs)>0){
-		$height_mod = -25+count($additionlgraphs)*75;
-	}
+//if(count($additionlgraphs)>0){
+//	$height_mod = -25+count($additionlgraphs)*75;
+//}
 $height = 598 - $height_mod;
 $width=1148;
 $args=$args." -h $height";
