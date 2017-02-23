@@ -67,9 +67,9 @@ $height_mod=0;
 	if(count($additionlgraphs)>0){
 		$height_mod = -25+count($additionlgraphs)*75;
 	}
-$height_f = 598 - $height_mod;
+$height = 598 - $height_mod;
 $width=1148;
-$args=$args." -h $height_f";
+$args=$args." -h $height";
 $args=$args." -w $width";
 $args=$args." -transparent -anno";
 echo "./sses_ps -d $seldbname $args";
