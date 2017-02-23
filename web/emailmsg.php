@@ -238,9 +238,37 @@ if($botid){
 	$db->FetchRow();
 	$curbot =sprintf("%.2f", $db->FetchField("tot"));
 }
+
 $curdfp = GetLRDistanceFromWellPlan($db,$curmd,$curew,$curns);
 $curdip = $db->FetchField("dip");
 // get the next values for the projected path
+$query = "select * from surveys where plan = 0 order by md desc limit 1 offset 1";
+$db->DoQuery($query);
+$db->FetchRow();
+$previd = $db->FetchField('id');
+$prevvs = $db->FetchField("vs");
+$prevtvd = $db->FetchField("tvd");
+$prevtcl = $db->FetchField("tot");
+$prevmd = $db->FetchField("md");
+$previnc = $db->FetchField("inc");
+$prevazm = $db->FetchField("azm");
+$prevdl = $db->FetchField("dl");
+$prevew = $db->FetchField("ew"); // current nort-south value
+$prevns = $db->FetchField("ns"); // current east-west value
+$prevtot='NF';
+$prevbot='NF';
+if($totid){
+	$query = "select tot from addformsdata where svyid=$previd and infoid=$totid;"; 
+	$db->DoQuery($query);
+	$db->FetchRow();
+	$prevtot =sprintf("%.2f", $db->FetchField("tot"));
+}
+if($botid){
+	$query = "select tot from addformsdata where svyid=$previd and infoid=$botid;";
+	$db->DoQuery($query);
+	$db->FetchRow();
+	$prevbot =sprintf("%.2f", $db->FetchField("tot"));
+}
 
 $query = "select * from surveys where plan = 1";
 $db->DoQuery($query);
@@ -319,9 +347,10 @@ $colora='#e6dcb1';
 $colorb='#307040';
 if($curvedsel==2){
 $tot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjtot - $bprjtvd))*5730;
-$bot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjbot - $bprjtvd))*5730;;
+$bot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjbot - $bprjtvd))*5730;
+$current_dl =((sin(($curinc/57.29577951))-sin(($previnc/57.29577951)))/($curtvd - $prevtvd))*5730;
 $curvedtemplatestr.="<h3><span style='font-size:14px'>" .
-		"<strong>$tot_dl BUR needed to land at TOT, $bot_dl BUR needed to land at BOT, current survey BUR is $curdl" .
+		"<strong>$tot_dl BUR needed to land at TOT, $bot_dl BUR needed to land at BOT, current survey BUR is $current_dl" .
 		"</strong></span></h3></td></tr>";
 }else{
 $curvedtemplatestr.='<h3><span style="text-decoration:underline;font-size:14px"><strong>SSES LANDING RECOMMENDATION</strong></span></h3>
