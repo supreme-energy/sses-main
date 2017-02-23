@@ -27,6 +27,11 @@ $db=new dbio($seldbname);
 $db->OpenDb();
 include('readwellinfo.inc.php');
 include('readappinfo.inc.php');
+$additionlgraphs = array();
+$db->DoQuery("select * from edatalogs where single_plot=1");
+while($db->FetchRow()){
+	array_push($additionlgraphs,sprintf("./tmp/%s_surveyplotlat.png%s.png", $seldbname,$db->FetchField("label")));
+}
 $db->CloseDb();
 $tofile=0;
 if(strlen($filename)>0 && !$approve_send) $tofile=1;
@@ -58,7 +63,11 @@ if(strlen($yscale))	$args=$args." -yscale $yscale";
 $args=$args." -nodata";
 $args=$args." -p $projection";
 $args=$args." -o $imgfn1";
-$height=598;
+$height_mod=0;
+	if(count($additionlgraphs)>0){
+		$height_mod = -25+count($additionlgraphs)*75;
+	}
+$height_f = 598 - $height_mod;
 $width=1148;
 $args=$args." -h $height";
 $args=$args." -w $width";
@@ -498,7 +507,7 @@ class PDF extends FPDF
 	
 	function PlotImage()
 	{
-		global $imgfn1, $imgfn2, $imgfn3, $imgfn4, $scaleright,$wb_show_forms,$refwellname;
+		global $imgfn1, $imgfn2, $imgfn3, $imgfn4, $scaleright,$wb_show_forms,$refwellname,$additionlgraphs;
 		// $this->Image($imgfn3, 0.2, $this->hdrheight+.07, 1.0, 3.84);
 		// $this->Image($imgfn1, 1.2, $this->hdrheight, 8.5, 4.0);
 		// $this->Image($imgfn2, 9.8, $this->hdrheight+.03, 0.8, 3.94);
@@ -513,6 +522,9 @@ class PDF extends FPDF
 		$fn5 = generatepdfimageleft('pdf',300,900,null,null,$wb_show_forms);
 		//$this->Image($imgfn2, 10.0, $y3, 0.8, $h3);
 		if(filesize($imgfn4)>0) $this->Image($imgfn4, 2.375, 7.0, 8.5, 1.0);
+		foreach($additionlgraphs as $value){
+			if(filesize($value)>0) $this->Image($value,2.375,7.0,8.5,0.75);
+		}
 		$this->Image($imgfn1, 2.375, $y2, 8.5, $h2);
 		if(filesize($fn5)>0) $this->Image($fn5, 0.1, $y1,2.2, 0);
 		
