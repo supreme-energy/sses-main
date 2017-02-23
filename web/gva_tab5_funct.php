@@ -108,12 +108,14 @@ if($mintvd == "") {
 }
 else
 {
+	$height_mod = count($additionlgraphs)*50;
+	$height_f = 598 - $height_mod;
 	$args=" -t lat";
 	$args=$args." -nodata";
 	$args=$args." -p $projection";
 	$args=$args." -o $fn";
 	// $args=$args." -h 698";
-	$args=$args." -h 598";
+	$args=$args." -h $height_f";
 	$args=$args." -w 1148";
 	$args=$args." -c 0";
 	if(strlen($mintvd))	$args=$args." -tvd1 $mintvd";
