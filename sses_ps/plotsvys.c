@@ -1994,7 +1994,8 @@ int main(int argc, char * argv[])
 
 	gnuplot_cmd(gplot, cmdstr);
 	printf("plotting rectangle\n\n");
-	gnuplot_cmd(gplot,"set obj 350 rect from -50,50 to 50,-50 fc rgb \"gold\"");
+	gnuplot_cmd(gplot,"set obj %d rect at %f,%f size %i, char 1",i+1,0.0,0.0,10);
+	//gnuplot_cmd(gplot,"set obj 350 rect from -50,50 to 50,-50 fc rgb \"gold\"");
 //	if(fdi > 0 && strlen(filldfn) > 0)
 //	{
 //		strcpy(cmdstr,"set style fill transparent solid 0.4 noborder");
