@@ -418,10 +418,12 @@ void setScalingRotated(void) {
 	// gnuplot_cmd(gplot, "set key outside right bottom samplen 2.0 box");
 	// gnuplot_cmd(gplot, "set key out vert right top");
 	if(bDoVS) {
-		if(!bUseLogScale && singlePlot==0){
-			gnuplot_cmd(gplot,
-			"set label 1 \"%s\" at %f, %f, 0 left front textcolor rgb '#%s' offset character 1, -.7, 0",
-			"Gamma", startDepth, rightScale, lineColor);
+		if(!bUseLogScale){
+			if(singlePlot==0){
+				gnuplot_cmd(gplot,
+						"set label 1 \"%s\" at %f, %f, 0 left front textcolor rgb '#%s' offset character 1, -.7, 0",
+						"Gamma", startDepth, rightScale, lineColor);
+			}
 		} else {
 			gnuplot_cmd(gplot,
 						"set label 1 \"%s\" at %f, %f, 0 left front textcolor rgb '#%s' offset character 1, -.7, 0",
@@ -430,12 +432,17 @@ void setScalingRotated(void) {
 		int lblcnt = 2;
 		int char_offset= -1;
 		for(i=0;edatas[i].line!=0;i++){
-
-			gnuplot_cmd(gplot,
-				"set label %i \"%s(%.1f)\" at %f, %f, 0 right front textcolor rgb '#%s' offset character %i, -.7, 0",
-				lblcnt,edatas[i].label,edatas[i].rightScale2, endDepth, rightScale, edatas[i].color,char_offset);
-			char_offset = -14*(i+1);
-			lblcnt++;
+			if(singlePlot==0){
+				gnuplot_cmd(gplot,
+					"set label %i \"%s(%.1f)\" at %f, %f, 0 right front textcolor rgb '#%s' offset character %i, -.7, 0",
+					lblcnt,edatas[i].label,edatas[i].rightScale2, endDepth, rightScale, edatas[i].color,char_offset);
+				char_offset = -14*(i+1);
+				lblcnt++;
+			} else {
+				gnuplot_cmd(gplot,
+										"set label 1 \"%s(%.1f)\" at %f, %f, 0 left front textcolor rgb '#%s' offset character 1, -.7, 0",
+										edatas[i].label,edatas[i].rightScale2, startDepth, rightScale, edatas[i].color);
+			}
 		}
 		// gnuplot_cmd(gplot, "set key default horizontal center top");
 	}
