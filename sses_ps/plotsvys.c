@@ -1940,6 +1940,9 @@ int main(int argc, char * argv[])
 		gnuplot_cmd(gplot, "set obj %i rectangle from %f,%f to %f,%f front fc rgb \"gold\"",pos,atof(FetchField(res_set,"minvs")),atof(FetchField(res_set,"mintvd")),atof(FetchField(res_set,"maxvs")),atof(FetchField(res_set,"maxtvd")));
 		pos++;
 	}
+	if (pos>350){
+		gnuplot_cmd(gplot, "plot 1e20 lc rgb 'gold' t 'No Go Zone'");
+	}
 
 	FreeResult(res_set);
 //	strcpy(cmdstr,"plot '");
