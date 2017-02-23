@@ -2042,6 +2042,7 @@ int main(int argc, char * argv[])
 			while(FetchRow(res_set)) {
 				gamma_h=75.0;
 				edatalog_id=atoi( FetchField(res_set, "id") );
+
 				printf("running single_plot for into %s",outFilename_cur);
 				sprintf(cmdstr,
 							"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s -single %i",
