@@ -522,10 +522,14 @@ class PDF extends FPDF
 		$fn5 = generatepdfimageleft('pdf',300,900,null,null,$wb_show_forms);
 		//$this->Image($imgfn2, 10.0, $y3, 0.8, $h3);
 		$bottom_element_height=1.0;
+		$bottom_element_y = 7.0;
+		$loopcnt = 0;
 		foreach($additionlgraphs as $value){
 			$bottom_element_height=0.75;
+			$bottom_element_y = 6.75;
+			$loopcnt++;
 			$h2 = $h2-$bottom_element_height;
-			if(filesize($value)>0) $this->Image($value,2.375,(7.0+$bottom_element_height),8.5,$bottom_element_height);
+			if(filesize($value)>0) $this->Image($value,2.375,($bottom_element_y+($loopcnt*$bottom_element_height)),8.5,$bottom_element_height);
 		}
 		
 		if(filesize($imgfn4)>0) $this->Image($imgfn4, 2.375, 7.0, 8.5,$bottom_element_height);
