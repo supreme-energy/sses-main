@@ -2040,29 +2040,15 @@ int main(int argc, char * argv[])
 
 	// if(strlen(whatToPlot) && (plotType==PLOTTYPE_LAT) ) {
 	// "./sses_dsp -d %s -r %f -o %s -w %f -h %f -s %f -e %f -rotate -nd -grid -nomargin -vs -pstart %f -pend %f -color %s",
-	
+	float gamma_h=100.0;
 	if(plotType==PLOTTYPE_LAT)
 	{
-		sprintf(cmdstr,
-			"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s",
-			dbname,
-			// scaleright, 
-			yfactor,
-			outFilename4,
-			100.0,
-			width,
-			minvs,
-			maxvs,
-			minvs,
-			maxvs,
-			"307040",opts);
-		printf("Gamma log bottom: %s\n", cmdstr);
-		i=system(cmdstr);
 		if(DoQuery(res_set,"select * from edatalogs where single_plot=1")==0)
 		{
 			int edatalog_id=0;
 			char outFilename_cur[4095];
 			while(FetchRow(res_set)) {
+				gamma_h=75.0;
 				edatalog_id=atoi( FetchField(res_set, "id") );
 				sprintf(outFilename_cur,"%s%s.png",outFilename, FetchField(res_set, "label"));
 				printf("running single_plot for into %s",outFilename_cur);
@@ -2072,7 +2058,7 @@ int main(int argc, char * argv[])
 							// scaleright,
 							yfactor,
 							outFilename_cur,
-							100.0,
+							gamma_h,
 							width,
 							minvs,
 							maxvs,
@@ -2082,6 +2068,21 @@ int main(int argc, char * argv[])
 				i=system(cmdstr);
 			}
 		}
+		sprintf(cmdstr,
+			"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s",
+			dbname,
+			// scaleright,
+			yfactor,
+			outFilename4,
+			gamma_h,
+			width,
+			minvs,
+			maxvs,
+			minvs,
+			maxvs,
+			"307040",opts);
+		printf("Gamma log bottom: %s\n", cmdstr);
+		i=system(cmdstr);
 
 	}
 
