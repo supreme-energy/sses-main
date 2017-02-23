@@ -30,7 +30,7 @@ include('readappinfo.inc.php');
 $additionlgraphs = array();
 $db->DoQuery("select * from edatalogs where single_plot=1");
 while($db->FetchRow()){
-	array_push($additionlgraphs,sprintf("tmp/%s_surveyplotlat.png%s.png", $seldbname,$db->FetchField("label")));
+	array_push($additionlgraphs,sprintf("tmp/%s.surveyplotlat.png%s.png", $seldbname,$db->FetchField("label")));
 }
 $db->CloseDb();
 $tofile=0;
@@ -69,10 +69,10 @@ $height_mod=0;
 	}
 $height_f = 598 - $height_mod;
 $width=1148;
-$args=$args." -h $height";
+$args=$args." -h $height_f";
 $args=$args." -w $width";
 $args=$args." -transparent -anno";
-// echo "./sses_ps -d $seldbname $args";
+echo "./sses_ps -d $seldbname $args";
 exec("./sses_ps -d $seldbname $args");
 // $retstr=array(); $retval=0;
 // exec("./sses_ps -d $seldbname $args", &$retstr, &$retval);
