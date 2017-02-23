@@ -1983,7 +1983,7 @@ int main(int argc, char * argv[])
 //		cmdstr[i - 2] = '\0';
 		printf("sses_ps: len=%ld cmdstr=%s\n",strlen(cmdstr),cmdstr);
 	}
-
+	strcat(cmdstr,"set obj 350 rectangle from 1500,7725 to 1600,7650 front fc rgb \"gold\", ");
 	gnuplot_cmd(gplot, cmdstr);
 
 //	if(fdi > 0 && strlen(filldfn) > 0)
