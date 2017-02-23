@@ -440,7 +440,7 @@ void setScalingRotated(void) {
 				lblcnt++;
 			} else {
 				gnuplot_cmd(gplot,
-							"set label %i \"%s(%.1f)\" at %f, %f, 0 right front textcolor rgb '#%s' offset character 1, -.7, 0",
+							"set label %i \"%s(%.1f)\" at %f, %f, 0 left front textcolor rgb '#%s' offset character 1, -.7, 0",
 							lblcnt,edatas[i].label,edatas[i].rightScale2, startDepth, rightScale, edatas[i].color);
 								lblcnt++;
 			}
