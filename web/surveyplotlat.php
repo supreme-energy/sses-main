@@ -526,7 +526,7 @@ class PDF extends FPDF
 		$loopcnt = 0;
 		foreach($additionlgraphs as $value){
 			$bottom_element_height=0.75;
-			$bottom_element_y = 6.75;
+			$bottom_element_y = 6.5;
 			$loopcnt++;
 			$h2 = $h2-$bottom_element_height;
 			if(filesize($value)>0) $this->Image($value,2.375,($bottom_element_y+($loopcnt*$bottom_element_height)),8.5,$bottom_element_height);
