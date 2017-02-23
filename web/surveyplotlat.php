@@ -532,7 +532,7 @@ class PDF extends FPDF
 			if(filesize($value)>0) $this->Image($value,2.375,($bottom_element_y+($loopcnt*$bottom_element_height)),8.5,$bottom_element_height);
 		}
 		
-		if(filesize($imgfn4)>0) $this->Image($imgfn4, 2.375, 7.0, 8.5,$bottom_element_height);
+		if(filesize($imgfn4)>0) $this->Image($imgfn4, 2.375,$bottom_element_y, 8.5,$bottom_element_height);
 		$h2 = $h2-$bottom_element_height;
 		$this->Image($imgfn1, 2.375, $y2, 8.5, $h2);
 		if(filesize($fn5)>0) $this->Image($fn5, 0.1, $y1,2.2, 0);
