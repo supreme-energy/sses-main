@@ -96,7 +96,26 @@ while($dbu->FetchRow()) {
 	elseif($tn=="ghost_projects") $ghostprojects=1;
 	elseif($tn=="ghost_data") $ghostdata=1;
 	elseif($tn=="nogo_zone") $nogo_zone=1;
+	elseif($tn=="nogo_point") $nogo_point=1;
 	
+}
+if($nogo_point==0){
+	logDoQuery($dbu,"CREATE TABLE nogo_point (
+    id integer NOT NULL,
+    vs double precision,
+    tvd double precision,
+    label TEXT DEFAULT '' NOT NULL,
+    show_plot smallint DEFAULT 0 NOT NULL,
+    show_report smallint DEFAULT 0 NOT NULL)");
+	logDoQuery($dbu,"CREATE SEQUENCE nogo_zone_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1");
+	logDoQuery($dbu,"ALTER TABLE ONLY nogo_zone ALTER COLUMN id SET DEFAULT nextval('nogo_zone_id_seq'::regclass)");
+	logDoQuery($dbu,"ALTER TABLE ONLY nogo_zone
+    ADD CONSTRAINT nogo_zone_pkey PRIMARY KEY (id)");
 }
 if($nogo_zone==0){
 	logDoQuery($dbu,"CREATE TABLE nogo_zone (
