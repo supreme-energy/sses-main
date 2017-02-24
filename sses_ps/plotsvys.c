@@ -1942,6 +1942,18 @@ int main(int argc, char * argv[])
 	}
 
 	FreeResult(res_set);
+	if (DoQuery(res_set, "select * from nogo_point where show_plot=1"))
+	{
+			fprintf(stderr, "plotsvys: Error in select query for nogo_zone\n");
+			exit -1;
+	}
+
+	while(FetchRow(res_set)){
+		gnuplot_cmd(gplot, "set label \"X-%s\" at %f,%f left front",FetchField(res_set,"label"),atof(FetchField(res_set,"vs")),atof(FetchField(res_set,"tvd")));
+
+	}
+
+	FreeResult(res_set);
 //	strcpy(cmdstr,"plot '");
 //	strcat(cmdstr,filldfn);
 //	strcat(cmdstr,"' using 1:2:3 with filledcurves lc rgb 'red' t 'Wellplan'");
@@ -1994,9 +2006,7 @@ int main(int argc, char * argv[])
 //		cmdstr[i - 2] = '\0';
 		printf("sses_ps: len=%ld cmdstr=%s\n",strlen(cmdstr),cmdstr);
 	}
-	if (pos>350){
-		strcat(cmdstr, ",1e20 lc rgb 'gold' lw 5 t 'No Go Zone'");
-	}
+
 
 	gnuplot_cmd(gplot, cmdstr);
 
