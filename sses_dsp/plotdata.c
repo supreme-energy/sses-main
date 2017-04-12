@@ -507,6 +507,7 @@ void buildLogdataFile(char *progname, char* tablename) {
 	double fdip;
 
 	sprintf(cmdstr, "SELECT * FROM \"%s\" ORDER BY md ASC;", tablename);
+	printf("%s: \n", cmdstr);
 	if (DoQuery(res_set, cmdstr)) {
 		printf("%s: Error in select query for table %s\n", progname, tablename);
 		FreeResult(res_set);
@@ -527,7 +528,9 @@ void buildLogdataFile(char *progname, char* tablename) {
 		tvd =  atof( FetchField(res_set, "tvd") );
 		vs = atof( FetchField(res_set, "vs") );
 		if(value<= -999.25)	continue;
-		value*=plotscale;
+		if(plotscale>0){
+			value*=plotscale;
+		}
 		value+=plotbias;
 		// tvd-=plotfault;
 		if(value<minVal)	minVal=value;
@@ -552,7 +555,7 @@ void buildLogdataFile(char *progname, char* tablename) {
 			// fprintf(out2, "%f %f\n", 0.0, depth); dataCnt[dataFNcount]++;
 			// fprintf(out2, "%f %f\n", rightScale*.98, depth); dataCnt[dataFNcount]++;
 		// }
-
+		printf("%f %f\n", depth, value);
 		if(plotrotate) {
 			fprintf(out1, "%f %f\n", depth, value); dataCnt[dataFNcount]++;
 			if(rightScale>0) {

@@ -70,6 +70,8 @@ $ghostsurveys=0;
 $ghostprojects = 0;
 $ghostdata = 0;
 $ghostwelllogs=0;
+$nogo_zone=0;
+$nog0_point=0;
 
 $dbu->DoQuery("SHOW TABLES");
 while($dbu->FetchRow()) {
