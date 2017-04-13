@@ -140,14 +140,17 @@ include("waitdlg.html");
 			<INPUT TYPE="submit" VALUE="Add Survey" NAME="AddNew">
 		</TD>
 		</FORM>
-		<TD>
+		<TD style='width:100px;height:45px;vertical-align:bottom'>
 
 			<FORM METHOD="get">
 			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 			<input type="Submit" style="vertical-align:center" value="Import CSV" OnClick="OnImportWellplan(this.form)">
 			</FORM>
 			
-		</TD>		
+		</TD>
+		<td  style='width:100px;height:45px;vertical-align:bottom'>
+			<button>Profile Lines</button>
+		</td>		
 		<TD>
 			<br>
 			<form style='padding:0 0; margin:0;' method='post' onchange='doSubmit(this.form);'>
