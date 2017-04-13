@@ -29,6 +29,7 @@ while($db->FetchRow()) {
 <title>Profile Lines</title>
 </HEAD>
 <BODY>
+<table class='tabcontainer' style="width:100%"><tr><td>
 Select Well: <select style='font-size: 10pt;' name='seldbname'>
 		<?
 		$cnt=count($dbnames);
@@ -40,5 +41,11 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 		?>
 		</select>
 		<button>Add</button>
+
+</td></tr>
+<tr><td>
+Already selected plots show here.
+</td></tr>
+</table>
 </BODY>
 </HTML>
