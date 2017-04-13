@@ -70,6 +70,9 @@ $ghostsurveys=0;
 $ghostprojects = 0;
 $ghostdata = 0;
 $ghostwelllogs=0;
+$nogo_zone=0;
+$nogo_point=0;
+$profile_lines = 0;
 
 $dbu->DoQuery("SHOW TABLES");
 while($dbu->FetchRow()) {
@@ -97,7 +100,26 @@ while($dbu->FetchRow()) {
 	elseif($tn=="ghost_data") $ghostdata=1;
 	elseif($tn=="nogo_zone") $nogo_zone=1;
 	elseif($tn=="nogo_point") $nogo_point=1;
+	elseif($tn=="profile_lines") $profile_lines=1;
 	
+}
+if($profiles_lines==0){
+	logDoQuery($dbu,"CREATE TABLE profile_lines (
+    id integer NOT NULL,
+    color text,
+    reference_database TEXT DEFAULT '' NOT NULL,
+    label TEXT DEFAULT '' NOT NULL,
+    show_plot smallint DEFAULT 0 NOT NULL,
+    show_report smallint DEFAULT 0 NOT NULL)");
+	logDoQuery($dbu,"CREATE SEQUENCE profile_lines_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1");
+	logDoQuery($dbu,"ALTER TABLE ONLY profile_lines ALTER COLUMN id SET DEFAULT nextval('profile_lines_id_seq'::regclass)");
+	logDoQuery($dbu,"ALTER TABLE ONLY profile_lines
+    ADD CONSTRAINT profile_lines_pkey PRIMARY KEY (id)");
 }
 if($nogo_point==0){
 	logDoQuery($dbu,"CREATE TABLE nogo_point (
