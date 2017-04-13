@@ -108,6 +108,11 @@ include("waitdlg.html");
 	<td>
 		<TABLE class='surveys' style='padding:2;'>
 		<INPUT TYPE="hidden" VALUE="0" NAME="plan">
+		<tr><td colspan=5>
+			<b><big><big>
+			<?echo "$wellname";?> Well Plan Surveys
+			</big></big></b>
+		</td></tr>
 		<TR>
 		<FORM ACTION="wellplanadd.php" METHOD="post">
 		<TD style='width:100px;height:45px;vertical-align:bottom'>
@@ -136,16 +141,13 @@ include("waitdlg.html");
 		</TD>
 		</FORM>
 		<TD>
-			<b><big><big>
-			<?echo "$wellname";?> Well Plan Surveys
-			</big></big></b>
+
 			<FORM METHOD="get">
 			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 			<input type="Submit" style="vertical-align:center" value="Import CSV" OnClick="OnImportWellplan(this.form)">
 			</FORM>
 			
-		</TD>
-		<td><button>Profile Lines</button></td>
+		</TD>		
 		<TD>
 			<br>
 			<form style='padding:0 0; margin:0;' method='post' onchange='doSubmit(this.form);'>
