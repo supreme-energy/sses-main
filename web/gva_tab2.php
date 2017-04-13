@@ -143,8 +143,9 @@ include("waitdlg.html");
 			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 			<input type="Submit" style="vertical-align:center" value="Import CSV" OnClick="OnImportWellplan(this.form)">
 			</FORM>
-			<button>Profile Lines</button>
+			
 		</TD>
+		<td><button>Profile Lines</button></td>
 		<TD>
 			<br>
 			<form style='padding:0 0; margin:0;' method='post' onchange='doSubmit(this.form);'>
