@@ -103,7 +103,7 @@ while($dbu->FetchRow()) {
 	elseif($tn=="profile_lines") $profile_lines=1;
 	
 }
-if($profiles_lines==0){
+if($profile_lines==0){
 	logDoQuery($dbu,"CREATE TABLE profile_lines (
     id integer NOT NULL,
     color text,
