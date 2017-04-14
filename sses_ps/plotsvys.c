@@ -474,7 +474,7 @@ void buildAdditionalFormationFiles(void)
 	for(i=0; addforms[i].totFile != NULL; i++) {
 		first=0;
 		if (addforms[i].is_profile_ln==1){
-			sprintf(query, "select * from %s.surveys order by md",addforms[i].reference_database)
+			sprintf(query, "select * from %s.surveys order by md",addforms[i].database_name);
 		} else {
 			sprintf(query, "select * from addformsdata where infoid=%ld and projid=-1 order by md",addforms[i].id);
 		}
@@ -492,7 +492,7 @@ void buildAdditionalFormationFiles(void)
 				thick=atof(FetchField(res_setAddForms, "thickness"));
 			} else {
 				tot=atof(FetchField(res_setAddForms, "tvd"));
-				thick=1.0
+				thick=1.0;
 			}
 			fault=atof(FetchField(res_setAddForms, "fault"));
 			
