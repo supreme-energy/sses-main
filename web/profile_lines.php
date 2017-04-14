@@ -30,6 +30,14 @@ $dbname_to_realname_map = array();
 <HEAD>
 <link rel="stylesheet" type="text/css" href="gva_tab2.css" />
 <link rel="stylesheet" type="text/css" href="waitdlg.css" />
+<link rel='stylesheet' type='text/css' href='projws.css'/>
+<link rel='stylesheet' type='text/css' href='themes/blue/style.css'/>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<link rel='stylesheet' type='text/css' href='jquery.timepicker.css'/>
+<script type="text/javascript" src='jquery.timepicker.js'></script>
+<script type="text/javascript" src='js/jquery.tablesorter.js'></script>
 <title>Profile Lines</title>
 <style>
 #selected_reference_table {
