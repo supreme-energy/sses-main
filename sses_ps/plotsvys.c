@@ -467,14 +467,20 @@ void buildAdditionalFormationFiles(void)
 		linestyle++;
 		i++;
 	}	
-
+	FreeResult(res_setAddForms);
 	if(forcedminvs<99900.0 && forcedminvs>-99900.0)	minvs=forcedminvs;
 
 	fdfirst=1;
 	for(i=0; addforms[i].totFile != NULL; i++) {
 		first=0;
 		if (addforms[i].is_profile_ln==1){
-			sprintf(query, "select * from %s.surveys order by md",addforms[i].database_name);
+			CloseDb();
+			if (OpenDb(argv[0], addforms[i].database_name, "umsdata", "umsdata") != 0)
+			{
+				fprintf(stderr, "Failed to open database\n");
+				exit(-1);
+			}
+			sprintf(query, "select * from surveys order by md");
 		} else {
 			sprintf(query, "select * from addformsdata where infoid=%ld and projid=-1 order by md",addforms[i].id);
 		}
@@ -530,6 +536,14 @@ void buildAdditionalFormationFiles(void)
 		gnuplot_cmd(gplot,"set obj %d rect at %f,%f size char strlen('%s')+2, char 1",i+1,firstvs+50.0,firsttot,addforms[i].label);
 		gnuplot_cmd(gplot,"set obj %d front clip lw 1.0 fc rgb 'white' fillstyle solid 1.00 border lt -1",i+1);
 		gnuplot_cmd(gplot, "set label %d \"%s\" at %f,%f front center textcolor rgb '#000000'",i+1,addforms[i].label,firstvs+50.0,firsttot);
+		if (addforms[i].is_profile_ln==1){
+			CloseDb();
+			if (OpenDb("sses_ps", dbname, "umsdata", "umsdata") != 0)
+			{
+				fprintf(stderr, "Failed to open database\n");
+				exit(-1);
+			}
+		}
 	}
 	
 
@@ -1606,6 +1620,7 @@ int main(int argc, char * argv[])
 		strcpy(addforms[i].tot_filename, "\0");
 		strcpy(addformsproj[i].tot_filename, "\0");
 		strcpy(addforms[i].bot_filename, "\0");
+		strcpy(addforms[i].database_name, "\0");
 		strcpy(addformsproj[i].bot_filename, "\0");
 		addforms[i].totFile=NULL;
 		addformsproj[i].totFile=NULL;
