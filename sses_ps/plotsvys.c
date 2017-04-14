@@ -475,7 +475,7 @@ void buildAdditionalFormationFiles(void)
 		first=0;
 		if (addforms[i].is_profile_ln==1){
 			CloseDb();
-			if (OpenDb(argv[0], addforms[i].database_name, "umsdata", "umsdata") != 0)
+			if (OpenDb("sses_ps", addforms[i].database_name, "umsdata", "umsdata") != 0)
 			{
 				fprintf(stderr, "Failed to open database\n");
 				exit(-1);
