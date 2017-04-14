@@ -460,7 +460,11 @@ void buildAdditionalFormationFiles(void)
 		strcpy( addforms[i].tot_filename, tmpnam(NULL));
 		strcpy( addforms[i].database_name, FetchField(res_setAddForms, "reference_database"));
 		addforms[i].totFile=fopen(addforms[i].tot_filename, "a+");
-		strcpy(show_line[i],FetchField(res_setAddForms,"show_plot"));
+		strcpy(bg_color[i],"a1a6a1");
+		strcpy(bg_percent[i],"0.4");
+		strcpy(pat_color[i],"61614d");
+		strcpy(pat_num[i],"0");
+		strcpy(show_line[i],"Yes");
 		// here is where we define the line width of the plots
 		gnuplot_cmd(gplot, "set style line %d lt 1 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
 		numforms++;
