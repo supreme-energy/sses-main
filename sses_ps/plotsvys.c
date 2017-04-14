@@ -3,7 +3,6 @@
 //	Version 2.4.2
 //	April 20, 2012
 //
-//	Modified by :  C. Bergman
 //	Purpose:       To display User-select5ed colors on survey graphs.
 
 #include <stdio.h>
@@ -82,8 +81,10 @@ float vsldip = 0.0;
 typedef struct t_addforms T_ADDFORMS;
 struct t_addforms {
 	unsigned long id;
+	unsigned int is_profile_ln;
 	char label[4095];
 	char color[128];
+	char database_name[128];
 	char tot_filename[L_tmpnam];
 	char bot_filename[L_tmpnam];
 	FILE *totFile;
@@ -428,6 +429,7 @@ void buildAdditionalFormationFiles(void)
 	while(FetchRow(res_setAddForms))
 	{
 		addforms[i].id=atol(FetchField(res_setAddForms, "id"));
+		addforms[i].is_profile_ln = 0;
 		strcpy( addforms[i].color, FetchField(res_setAddForms, "color") );
 		strcpy( addforms[i].label, FetchField(res_setAddForms, "label") );
 		strcpy( addforms[i].tot_filename, tmpnam(NULL));
@@ -444,13 +446,38 @@ void buildAdditionalFormationFiles(void)
 		i++;
 	}
 	FreeResult(res_setAddForms);
+	if (DoQuery(res_setAddForms, "select * profile_lines")) {
+		fprintf(stderr, "initAdditionalFormations: Error in select query\n");
+		CloseDb();
+		exit (-1);
+	}
+	while(FetchRow(res_setAddForms))
+	{
+		addforms[i].id=atol(FetchField(res_setAddForms, "id"));
+		addforms[i].is_profile_ln = 1;
+		strcpy( addforms[i].color, FetchField(res_setAddForms, "color") );
+		strcpy( addforms[i].label, FetchField(res_setAddForms, "label") );
+		strcpy( addforms[i].tot_filename, tmpnam(NULL));
+		strcpy( addforms[i].database_name, FetchField(res_setAddForms, "reference_database"));
+		addforms[i].totFile=fopen(addforms[i].tot_filename, "a+");
+		strcpy(show_line[i],FetchField(res_setAddForms,"show_plot"));
+		// here is where we define the line width of the plots
+		gnuplot_cmd(gplot, "set style line %d lt 1 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
+		numforms++;
+		linestyle++;
+		i++;
+	}	
 
 	if(forcedminvs<99900.0 && forcedminvs>-99900.0)	minvs=forcedminvs;
 
 	fdfirst=1;
 	for(i=0; addforms[i].totFile != NULL; i++) {
 		first=0;
-		sprintf(query, "select * from addformsdata where infoid=%ld and projid=-1 order by md",addforms[i].id);
+		if (addforms[i].is_profile_ln==1){
+			sprintf(query, "select * from %s.surveys order by md",addforms[i].reference_database)
+		} else {
+			sprintf(query, "select * from addformsdata where infoid=%ld and projid=-1 order by md",addforms[i].id);
+		}
 		if (DoQuery(res_setAddForms, query)) {
 			fprintf(stderr, "initAdditionalFormations: Error in select query\n");
 			CloseDb();
@@ -460,9 +487,15 @@ void buildAdditionalFormationFiles(void)
 		while(FetchRow(res_setAddForms))
 		{
 			vs=atof(FetchField(res_setAddForms, "vs"));
-			tot=atof(FetchField(res_setAddForms, "tot"));
+			if (addforms[i].is_profile_ln==0){
+				tot=atof(FetchField(res_setAddForms, "tot"));
+				thick=atof(FetchField(res_setAddForms, "thickness"));
+			} else {
+				tot=atof(FetchField(res_setAddForms, "tvd"));
+				thick=1.0
+			}
 			fault=atof(FetchField(res_setAddForms, "fault"));
-			thick=atof(FetchField(res_setAddForms, "thickness"));
+			
 
 			// start of section that stores data for filled curves
 
@@ -498,6 +531,7 @@ void buildAdditionalFormationFiles(void)
 		gnuplot_cmd(gplot,"set obj %d front clip lw 1.0 fc rgb 'white' fillstyle solid 1.00 border lt -1",i+1);
 		gnuplot_cmd(gplot, "set label %d \"%s\" at %f,%f front center textcolor rgb '#000000'",i+1,addforms[i].label,firstvs+50.0,firsttot);
 	}
+	
 
 	// close all the files that will plot the formations
 
