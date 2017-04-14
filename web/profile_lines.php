@@ -24,7 +24,7 @@ while($db->FetchRow()) {
 $db2 = new dbio($seldbname);
 $db2->OpenDb();
 $db2->DoQuery("select * from profile_lines;");
-$dbname_to_realname_map = [];
+$dbname_to_realname_map = array();
 ?>
 <HTML>
 <HEAD>
