@@ -31,6 +31,16 @@ $dbname_to_realname_map = array();
 <link rel="stylesheet" type="text/css" href="gva_tab2.css" />
 <link rel="stylesheet" type="text/css" href="waitdlg.css" />
 <title>Profile Lines</title>
+<style>
+#selected_reference_table {
+	width:100%;
+	border-collapse:separate;
+	background-color:#307040;
+}
+#selected_reference_table th {
+	text-align:left;
+}
+</style>
 </HEAD>
 <BODY>
 <table class='tabcontainer' style="width:100%"><tr><td>
