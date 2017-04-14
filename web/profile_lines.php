@@ -49,23 +49,28 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 
 </td></tr>
 <tr><td>
-<?php while($db2->FetchRow()){?>
-	<div style="clear:both;">
-		<div style="float:left">
-			<?= $db2->FetchField("reference_database")?>
-		</div>
-		<div style="float:left">
-			<?= $dbname_to_realname_map[$db2->FetchField("reference_database")]?>
-		</div>
-		<div style="float:left">
-			<?= $db2->FetchField("color")?>
-		</div>
-		<div style="float:right">
-			<button>update</button><br>
-			<button>delete</button>
-		</div>
-	</div>
-<?php }?>
+	<table id='selected_reference_table' class='tablesorter'>
+	<thead>
+	<tr>
+	<th class='surveys'>ID</th>
+	<th class='surveys'>Well Name</th>
+	<th class='surveys'>Line Color</th>
+	<td></td>
+	</tr>
+	</thead>
+	<tbody>
+	<?php while($db2->FetchRow()){?>
+		<tr>
+		<td><?= $db2->FetchField("reference_database")?></td>
+		<td><?= $dbname_to_realname_map[$db2->FetchField("reference_database")]?></td>
+		<td style='background-color:#<?=$db2->FetchField("color");?>'><?= $db2->FetchField("color")?></td>
+		<td><button>update</button><br>
+				<button>delete</button>
+		</td>
+	</tr>
+	<?php }?>
+	</tbody>
+	</table>
 </td></tr>
 </table>
 </BODY>
