@@ -73,7 +73,7 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 	<th class='surveys'>ID</th>
 	<th class='surveys'>Well Name</th>
 	<th class='surveys'>Line Color</th>
-	<td></td>
+	<th class='surveys'>Actions</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -82,8 +82,11 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 		<td><?= $db2->FetchField("reference_database")?></td>
 		<td><?= $dbname_to_realname_map[$db2->FetchField("reference_database")]?></td>
 		<td style='background-color:#<?=$db2->FetchField("color");?>'><?= $db2->FetchField("color")?></td>
-		<td><button>update</button><br>
-				<button>delete</button>
+		<td>
+		 <table>
+			<tr><td><button>update</button></td></tr>
+		    <tr><td><button>delete</button></td></tr>
+		 </table>
 		</td>
 	</tr>
 	<?php }?>
