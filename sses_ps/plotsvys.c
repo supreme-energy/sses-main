@@ -446,7 +446,7 @@ void buildAdditionalFormationFiles(void)
 		i++;
 	}
 	FreeResult(res_setAddForms);
-	if (DoQuery(res_setAddForms, "select * profile_lines")) {
+	if (DoQuery(res_setAddForms, "select * from profile_lines")) {
 		fprintf(stderr, "initAdditionalFormations: Error in select query\n");
 		CloseDb();
 		exit (-1);
