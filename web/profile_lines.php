@@ -21,6 +21,10 @@ while($db->FetchRow()) {
 		$lastid=$id;
 	}
 }
+$db2 = new dbio($seldbname);
+$db2->OpenDb();
+$db2->DoQuery("select * from profile_lines;");
+$dbname_to_realname_map = [];
 ?>
 <HTML>
 <HEAD>
@@ -34,6 +38,7 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 		<?
 		$cnt=count($dbnames);
 		for($i=0; $i<$cnt; $i++) {
+			$dbname_to_realname_map[$dbnames[$i]]=$realnames[$i];
 			echo "<option value='{$dbnames[$i]}'";
 			if($seldbname==$dbnames[$i])	echo " selected='selected'";
 			echo ">{$realnames[$i]}</option>";
@@ -44,7 +49,23 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 
 </td></tr>
 <tr><td>
-Already selected plots show here.
+<?php while($db2->FetchRow()){?>
+	<div style="clear:both;">
+		<div style="float:left">
+			<?= $db2->FetchField("reference_database")?>
+		</div>
+		<div style="float:left">
+			<?= $dbname_to_realname_map[$db2->FetchField("reference_database")]?>
+		</div>
+		<div style="float:left">
+			<?= $db2->FetchField("color")?>
+		</div>
+		<div style="float:right">
+			<button>update</button><br>
+			<button>delete</button>
+		</div>
+	</div>
+<?php }?>
 </td></tr>
 </table>
 </BODY>
