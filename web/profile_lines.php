@@ -49,10 +49,21 @@ $dbname_to_realname_map = array();
 	text-align:left;
 }
 </style>
+<script>
+function openColorChoiceWellPlan(rowform) { 
+    var phpcall="wellplancolorwp.php?seldbname="+rowform.seldbname.value+"&colorbot="+rowform.colorrawwp.value;
+    newwindow=window.open(phpcall,'ColorChoice', 'height=300,width=300,scrollbars=no');
+    if (window.focus) {newwindow.focus()}
+    // return false;
+	return ray.ajax();
+}
+</script>
 </HEAD>
 <BODY>
 <table class='tabcontainer' style="width:100%"><tr><td>
-Select Well: <select style='font-size: 10pt;' name='seldbname'>
+<form ACTION="profile_line_add.php">
+<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
+Select Well: <select style='font-size: 10pt;' name='dbname'>
 		<?
 		$cnt=count($dbnames);
 		for($i=0; $i<$cnt; $i++) {
@@ -64,7 +75,7 @@ Select Well: <select style='font-size: 10pt;' name='seldbname'>
 		?>
 		</select>
 		<button>Add</button>
-
+</form>
 </td></tr>
 <tr><td>
 	<table id='selected_reference_table' class='tablesorter'>
