@@ -466,7 +466,7 @@ void buildAdditionalFormationFiles(void)
 		strcpy(pat_num[i],"4");
 		strcpy(show_line[i],"Yes");
 		// here is where we define the line width of the plots
-		gnuplot_cmd(gplot, "set style line %d lt 1 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
+		gnuplot_cmd(gplot, "set style line %d lt 1 dt 3 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
 		numforms++;
 		linestyle++;
 		i++;
@@ -502,7 +502,7 @@ void buildAdditionalFormationFiles(void)
 				thick=atof(FetchField(res_setAddForms, "thickness"));
 			} else {
 				tot=atof(FetchField(res_setAddForms, "tvd"));
-				thick=5.0;
+				thick=1.0;
 			}
 			fault=atof(FetchField(res_setAddForms, "fault"));
 			
