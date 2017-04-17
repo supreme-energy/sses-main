@@ -19,7 +19,6 @@ if($db->FetchRow()){
 $result = json_encode("done");
 $request_back_to = str_replace("_add","",$_SERVER[REQUEST_URI]);
 $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$request_back_to";
-echo $actual_link
-#header("Location: http://www.yourwebsite.com/user.php"); /* Redirect browser */
-#exit();
+header("Location: $actual_link"); /* Redirect browser */
+exit();
 ?>
