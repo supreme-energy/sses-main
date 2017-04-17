@@ -63,6 +63,7 @@ function openColorChoiceWellPlan(rowform) {
 <table class='tabcontainer' style="width:100%"><tr><td>
 <form ACTION="profile_lines_add.php">
 <input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
+<input type="hidden" name="color" value="000000">
 Select Well: <select style='font-size: 10pt;' name='dbname'>
 		<?
 		$cnt=count($dbnames);
