@@ -5,6 +5,8 @@ if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname'
 if($seldbname == '') include('dberror.php');
 $dbname = $_GET['dbname'];
 $color  = $_GET['color'];
+$label  = $_GET['label'];
+
 if($color){
  $color = str_replace("#","",$color);
 }
@@ -13,10 +15,16 @@ $db->OpenDb();
 $sql = "select * from profile_lines where reference_database='$dbname'";
 $db->DoQuery($sql);
 if($db->FetchRow()){
- $sql = "update profile_lines set color='$color' where reference_database='$dbname'";
- $db->DoQuery($sql);
+ if($color){
+ 	$sql = "update profile_lines set color='$color' where reference_database='$dbname'";
+ 	$db->DoQuery($sql);
+ }
+ if($label){
+ 	$sql = "update profile_lines set label='$label' where reference_database='$dbname'";
+ 	$db->DoQuery($sql);
+ }
 } else{
- $sql = "insert into profile_lines (color,reference_database,show_plot,show_report) values ('$color','$dbname',1,1)";
+ $sql = "insert into profile_lines (color,reference_database,label,show_plot,show_report) values ('$color','$dbname','$dbname',1,1)";
  $db->DoQuery($sql);
 }
 $result = json_encode("done");
