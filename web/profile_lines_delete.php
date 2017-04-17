@@ -9,5 +9,8 @@ $db->OpenDb();
 $sql = "delete from profile_lines where reference_database='$dbname'";
 $db->DoQuery($sql);
 $result = json_encode("done");
-echo $result;
+$request_back_to = str_replace("_add","",$_SERVER[REQUEST_URI]);
+$actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$request_back_to";
+header("Location: $actual_link"); /* Redirect browser */
+exit();
 ?>
