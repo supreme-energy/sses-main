@@ -51,7 +51,7 @@ $dbname_to_realname_map = array();
 </style>
 <script>
 function openColorChoiceWellPlan(rowform) { 
-    var phpcall="wellplancolorwp.php?seldbname="+rowform.seldbname.value+"&colorbot="+rowform.color.value;
+    var phpcall="profile_lines_color.php?seldbname="+rowform.seldbname.value+"&dbname="+rowform.dbname.value+"&colorbot="+rowform.color.value;
     newwindow=window.open(phpcall,'ColorChoice', 'height=300,width=300,scrollbars=no');
     if (window.focus) {newwindow.focus()}
     // return false;
