@@ -109,7 +109,7 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 			<form action="profile_lines_add.php">
 			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 			<input type="hidden" name="dbname" value="<?= $db2->FetchField("reference_database")?>">
-			<input type="text" name="label" value="<?= $db2->FetchField("label")?>" onchange="this.form.submit()">
+			<input type="text" style="text-align:left;" name="label" value="<?= $db2->FetchField("label")?>" onchange="this.form.submit()">
 			</form>
 		</td>
 		<td>
