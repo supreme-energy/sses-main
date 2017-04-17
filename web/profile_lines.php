@@ -96,7 +96,10 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 		<td>
 		 <table>
 			<tr><td><button>update</button></td></tr>
-		    <tr><td><button>delete</button></td></tr>
+		    <tr><td><form action="profile_lines_delete.php">
+		    <input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
+		    <input type="hidden" name="dbname" value="<?= $db2->FetchField("reference_database")?>">
+		    <button>delete</button></form></td></tr>
 		 </table>
 		</td>
 	</tr>
