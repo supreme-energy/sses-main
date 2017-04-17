@@ -466,7 +466,7 @@ void buildAdditionalFormationFiles(void)
 		strcpy(pat_num[i],"4");
 		strcpy(show_line[i],"Yes");
 		// here is where we define the line width of the plots
-		gnuplot_cmd(gplot, "set style line %d lt 1 dt ".. " lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
+		gnuplot_cmd(gplot, "set style line %d lt 1 dt '.. ' lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
 		numforms++;
 		linestyle++;
 		i++;
