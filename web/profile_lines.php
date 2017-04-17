@@ -61,15 +61,15 @@ function openColorChoiceWellPlan(rowform) {
 </HEAD>
 <BODY>
 <table class='tabcontainer' style="width:100%"><tr><td>
-<form ACTION="profile_line_add.php">
+<form ACTION="profile_lines_add.php">
 <input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 Select Well: <select style='font-size: 10pt;' name='dbname'>
 		<?
 		$cnt=count($dbnames);
 		for($i=0; $i<$cnt; $i++) {
 			$dbname_to_realname_map[$dbnames[$i]]=$realnames[$i];
+			if($seldbname==$dbnames[$i]) continue;
 			echo "<option value='{$dbnames[$i]}'";
-			if($seldbname==$dbnames[$i])	echo " selected='selected'";
 			echo ">{$realnames[$i]}</option>";
 		}
 		?>
