@@ -96,6 +96,7 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 		 <form id="color_update_form_<?= $db2->FetchField("reference_database")?>" action="profile_lines_add.php">
 			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 			<input type="hidden" name="dbname" value="<?= $db2->FetchField("reference_database")?>">
+			<input type="text" value="hello" name="test">
 			<input type="text" readonly="true" size='7' name="color" 
 				value="<?= $db2->FetchField("color")?>" 
 				style="vertical-align:bottom;background-color:#<?= $db2->FetchField("color")?>;color:white;"
