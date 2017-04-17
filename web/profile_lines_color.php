@@ -21,7 +21,7 @@ $colorwp=$_GET['colorwp'];
 function OnSubmit(rowform) {
 	var opener = window.opener;
 	if(opener){
-		opener.document.forms['color_update_form_sgta_<?=$dbname?>'].color.value = document.forms.submit.colorwp.value
+		opener.document.forms['color_update_form_sgta_<?=$dbname?>'].color.value = rowform.colorwp.value
 		opener.document.forms['color_update_form_sgta_<?=dbname?>'].submit()
 	}else{
 
