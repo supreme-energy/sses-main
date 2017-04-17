@@ -866,6 +866,10 @@ if(!$dbu->ColumnExists('edatalogs', 'single_plot')) {
 	logDoQuery($dbu,"alter table edatalogs add single_plot int not null default 0");
 }
 
+if(!$dbu->ColumnExists('profile_lines', 'pattern')) {
+	logDoQuery($dbu,"alter table profile_lines add pattern text default '0'");
+}
+
 
 // logInfo("dbupdate: Finished");
 $dbu->CloseDb();

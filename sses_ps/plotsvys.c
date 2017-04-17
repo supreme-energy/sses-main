@@ -462,8 +462,8 @@ void buildAdditionalFormationFiles(void)
 		addforms[i].totFile=fopen(addforms[i].tot_filename, "a+");
 		strcpy(bg_color[i],"a1a6a1");
 		strcpy(bg_percent[i],"0.4");
-		strcpy(pat_color[i],"61614d");
-		strcpy(pat_num[i],"0");
+		strcpy(pat_color[i],FetchField(res_setAddForms, "color"));
+		strcpy(pat_num[i],"4");
 		strcpy(show_line[i],"Yes");
 		// here is where we define the line width of the plots
 		gnuplot_cmd(gplot, "set style line %d lt 1 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
