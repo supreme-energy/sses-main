@@ -92,7 +92,17 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 		<tr>
 		<td><?= $db2->FetchField("reference_database")?></td>
 		<td><?= $dbname_to_realname_map[$db2->FetchField("reference_database")]?></td>
-		<td style='background-color:#<?=$db2->FetchField("color");?>'><?= $db2->FetchField("color")?></td>
+		<td style='background-color:#<?=$db2->FetchField("color");?>'>
+		 <form id="color_update_form_<?= $db2->FetchField("reference_database")?>" action="profile_lines_add.php">
+			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
+			<input type="hidden" name="dbname" value="<?= $db2->FetchField("reference_database")?>">
+			<input type="text" readonly="true" size='7' id="color" name="color" 
+				value="<?= $db2->FetchField("color")?>" 
+				style="vertical-align:bottom;background-color:#<?= $db2->FetchField("color")?>;color:white;"
+				onclick='openColorChoiceWellPlan(this.form);'/> 
+			</form>
+		 
+		</td>
 		<td>
 		 <table>
 			<tr><td><button>update</button></td></tr>
