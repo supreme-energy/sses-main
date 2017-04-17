@@ -502,7 +502,7 @@ void buildAdditionalFormationFiles(void)
 				thick=atof(FetchField(res_setAddForms, "thickness"));
 			} else {
 				tot=atof(FetchField(res_setAddForms, "tvd"));
-				thick=1.0;
+				thick=5.0;
 			}
 			fault=atof(FetchField(res_setAddForms, "fault"));
 			
