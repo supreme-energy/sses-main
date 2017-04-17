@@ -5,6 +5,9 @@ if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname'
 if($seldbname == '') include('dberror.php');
 $dbname = $_GET['dbname'];
 $color  = $_GET['color'];
+if($color){
+ $color = str_replace("#","",$color);
+}
 $db=new dbio($seldbname);
 $db->OpenDb();
 $sql = "select * from profile_lines where reference_database='$dbname'";
