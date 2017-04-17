@@ -85,7 +85,7 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 	<th class='surveys'>ID</th>
 	<th class='surveys'>Well Name</th>
 	<th class='surveys'>Line Color</th>
-	<th class='surveys'>Pattern</th>
+	<th class='surveys'>Label</th>
 	<th class='surveys'>Actions</th>
 	</tr>
 	</thead>
@@ -106,16 +106,11 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 		 
 		</td>
 		<td>
-				      		<select id="pat_num_menu" name='pattern'>
-<?php
-for($j=0;$j<8;$j++)
-{
-	echo "                    <option value='{$j}' ";
-	//if(intval($pat_nums[$i]) == $j) echo "selected ";
-	echo "style='background-image:url(pattern0{$j}.jpg)'>Pattern {$j}</option>\n";
-}
-?>
-					</select>
+			<form action="profile_lines_add.php">
+			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
+			<input type="hidden" name="dbname" value="<?= $db2->FetchField("reference_database")?>">
+			<input type="text" name="label" value="<?= $db2->FetchField("label")?>" onchange="this.form.submit()">
+			</form>
 		</td>
 		<td>
 		 <table>
