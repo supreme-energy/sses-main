@@ -149,7 +149,7 @@ include("waitdlg.html");
 			
 		</TD>
 		<td  style='width:100px;height:45px;vertical-align:bottom'>
-			<button onClick="window.open('profile_lines.php?seldbname=<?echo $seldbname?>&title=Profile_Lines','popuppage','width=650,height=650,left=250,top=50');">Profile Lines</button>
+			<button onClick="window.open('profile_lines.php?seldbname=<?echo $seldbname?>&title=Profile_Lines','popuppage','width=650,height=650,left=250');">Profile Lines</button>
 		</td>		
 		<TD>
 			<br>
