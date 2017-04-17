@@ -85,6 +85,7 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 	<th class='surveys'>ID</th>
 	<th class='surveys'>Well Name</th>
 	<th class='surveys'>Line Color</th>
+	<th class='surveys'>Pattern</th>
 	<th class='surveys'>Actions</th>
 	</tr>
 	</thead>
@@ -103,6 +104,18 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 				onclick='openColorChoiceWellPlan(this.form);'/> 
 			</form>
 		 
+		</td>
+		<td>
+				      		<select id="pat_num_menu" name='pattern'>
+<?php
+for($j=0;$j<8;$j++)
+{
+	echo "                    <option value='{$j}' ";
+	//if(intval($pat_nums[$i]) == $j) echo "selected ";
+	echo "style='background-image:url(pattern0{$j}.jpg)'>Pattern {$j}</option>\n";
+}
+?>
+					</select>
 		</td>
 		<td>
 		 <table>
