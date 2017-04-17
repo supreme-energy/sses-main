@@ -35,7 +35,7 @@ function OnSubmit(rowform) {
 jQuery.js is not present. You must install jQuery in this folder for the color wheel to work.</div>
 <FORM name='submit' id='submit' method='post'>
 <table>
-<INPUT type='hidden' name='seldbname' id='seldbname' value='<?echo $seldbname;?>'>
+<INPUT type='hidden' name='seldbname' id='seldbname' value='<?echo $seldbname;?>' onSubmit="return false;">
 
 <tr>
 <td>
