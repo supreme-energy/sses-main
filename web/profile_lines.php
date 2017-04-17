@@ -23,7 +23,7 @@ while($db->FetchRow()) {
 }
 $db2 = new dbio($seldbname);
 $db2->OpenDb();
-$db2->DoQuery("select * from profile_lines;");
+$db2->DoQuery("select * from profile_lines order by id desc;");
 $dbname_to_realname_map = array();
 ?>
 <HTML>
@@ -97,7 +97,7 @@ Select Well: <select style='font-size: 10pt;' name='dbname'>
 			<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 			<input type="hidden" name="dbname" value="<?= $db2->FetchField("reference_database")?>">
 			<input type="text" readonly="true" size='7' name="color" 
-				value="<?= $db2->FetchField("color")?>" 
+				value="#<?= $db2->FetchField("color")?>" 
 				style="text-align:left;"
 				onclick='openColorChoiceWellPlan(this.form);'/> 
 			</form>
