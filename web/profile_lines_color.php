@@ -36,7 +36,7 @@ jQuery.js is not present. You must install jQuery in this folder for the color w
 <FORM name='submit' id='submit' method='post'>
 <table>
 <INPUT type='hidden' name='seldbname' id='seldbname' value='<?echo $seldbname;?>'>
-<INPUT type='hidden' name='colorwp'  id='colorwp ' value='<?echo $colorwp;?>'>
+
 <tr>
 <td>
 	<div id="picker"></div>
