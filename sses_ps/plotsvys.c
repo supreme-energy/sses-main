@@ -1230,7 +1230,6 @@ void setStyles(void) {
 	}
 
 	gnuplot_cmd(gplot, "set style line 1 lt 2 lc rgb '#ff7070' lw 1 ");
-
 	// surveys
 	gnuplot_cmd(gplot, "set style line 2 lt 2 lc rgb 'black' lw 2 pt 2 ps .75 ");
 	gnuplot_cmd(gplot, "set style line 3 lt 0 lc rgb 'black' lw 1 ");
@@ -1251,7 +1250,6 @@ void setStyles(void) {
 	// survey points
 	gnuplot_cmd(gplot, "set style line 8 lt 2 lc rgb '#0032FF' lw 1 pt 3 ps 1 ");
 	gnuplot_cmd(gplot, "set style line 99 lt 2 lc rgb 'red' lw 1 pt 3 ps 1.5 ");
-	gnuplot_cmd(gplot, "set style line 101 lt 2 lc rgb 'green' lw 1 pt 3 ps 1 ");
 	// gamma
 	gnuplot_cmd(gplot, "set style line 9 lt 2 lc rgb '#4040ff' lw 1");
 	// projections
@@ -1892,12 +1890,6 @@ int main(int argc, char * argv[])
 	if(fstat.st_size>0) sprintf(plotstr[i++],", '%s' with labels font \"arial,18\" t ''",annofn);
 	stat(cpfn,&fstat);
 	if(fstat.st_size>0) sprintf(plotstr[i++],", '%s' with points ls 99 t ''",cpfn);
-	if(DoQuery(res_set,"select * from surveys where isghost=1")==0){
-		FetchRow(res_set);
-		float gtvd = atof(FetchField(res_set,"tvd"));
-		float gvs  = atof(FetchField(res_set,"vs"));
-		sprintf(plotstr[i++],", \"<echo '%f %f'\" with points ls 101 t 'Ghost'",gvs,gtvd);
-	}
 	if(vslon==1 && plotType==PLOTTYPE_LAT)
 	{
 		if(DoQuery(res_set,"select * from surveys where plan=1")==0)
