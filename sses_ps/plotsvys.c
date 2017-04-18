@@ -529,13 +529,15 @@ void buildAdditionalFormationFiles(void)
 			if(fault > 0.1 || fault < -0.1)
 				fprintf(addforms[i].totFile, "%f %f\n", lastvs, lasttot+fault);
 			fprintf(addforms[i].totFile, "%f %f\n", vs, tot);
-			lastvs=vs;
-			lasttot=tot;
-			lastfault=fault;
-			if(vs>=minvs) {
-				if(!first) firstvs=vs;
-				if(first<2)	firsttot=tot;
-				first++;
+			if (addforms[i].is_profile_ln==0){
+				lastvs=vs;
+				lasttot=tot;
+				lastfault=fault;
+				if(vs>=minvs) {
+					if(!first) firstvs=vs;
+					if(first<2)	firsttot=tot;
+					first++;
+				}
 			}
 		}
 		fdfirst=0;
@@ -551,9 +553,6 @@ void buildAdditionalFormationFiles(void)
 				fprintf(stderr, "Failed to open database\n");
 				exit(-1);
 			}
-			lastvs=0.0;
-			lasttot=0.0;
-			lastfault=0.0;
 			
 		}
 	}
