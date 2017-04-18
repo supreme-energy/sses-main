@@ -416,36 +416,12 @@ void buildAdditionalFormationFiles(void)
 	int first;
 	char query[256];
 
-	if (DoQuery(res_setAddForms, "select * from addforms order by thickness")) {
-		fprintf(stderr, "initAdditionalFormations: Error in select query\n");
-		CloseDb();
-		exit (-1);
-	}
+
 
 	// based on the formations found create the files that will be used to plot later
 
 	i=0;
 	numforms=0;
-	while(FetchRow(res_setAddForms))
-	{
-		addforms[i].id=atol(FetchField(res_setAddForms, "id"));
-		addforms[i].is_profile_ln = 0;
-		strcpy( addforms[i].color, FetchField(res_setAddForms, "color") );
-		strcpy( addforms[i].label, FetchField(res_setAddForms, "label") );
-		strcpy( addforms[i].tot_filename, tmpnam(NULL));
-		addforms[i].totFile=fopen(addforms[i].tot_filename, "a+");
-		strcpy(bg_color[i],FetchField(res_setAddForms,"bg_color"));
-		strcpy(bg_percent[i],FetchField(res_setAddForms,"bg_percent"));
-		strcpy(pat_color[i],FetchField(res_setAddForms,"pat_color"));
-		strcpy(pat_num[i],FetchField(res_setAddForms,"pat_num"));
-		strcpy(show_line[i],FetchField(res_setAddForms,"show_line"));
-		// here is where we define the line width of the plots
-		gnuplot_cmd(gplot, "set style line %d lt 1 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
-		numforms++;
-		linestyle++;
-		i++;
-	}
-	FreeResult(res_setAddForms);
 	if (DoQuery(res_setAddForms, "select * from profile_lines")) {
 		fprintf(stderr, "initAdditionalFormations: Error in select query\n");
 		CloseDb();
@@ -472,6 +448,32 @@ void buildAdditionalFormationFiles(void)
 		i++;
 	}	
 	FreeResult(res_setAddForms);
+	if (DoQuery(res_setAddForms, "select * from addforms order by thickness")) {
+		fprintf(stderr, "initAdditionalFormations: Error in select query\n");
+		CloseDb();
+		exit (-1);
+	}
+	while(FetchRow(res_setAddForms))
+	{
+		addforms[i].id=atol(FetchField(res_setAddForms, "id"));
+		addforms[i].is_profile_ln = 0;
+		strcpy( addforms[i].color, FetchField(res_setAddForms, "color") );
+		strcpy( addforms[i].label, FetchField(res_setAddForms, "label") );
+		strcpy( addforms[i].tot_filename, tmpnam(NULL));
+		addforms[i].totFile=fopen(addforms[i].tot_filename, "a+");
+		strcpy(bg_color[i],FetchField(res_setAddForms,"bg_color"));
+		strcpy(bg_percent[i],FetchField(res_setAddForms,"bg_percent"));
+		strcpy(pat_color[i],FetchField(res_setAddForms,"pat_color"));
+		strcpy(pat_num[i],FetchField(res_setAddForms,"pat_num"));
+		strcpy(show_line[i],FetchField(res_setAddForms,"show_line"));
+		// here is where we define the line width of the plots
+		gnuplot_cmd(gplot, "set style line %d lt 1 lc rgb '#%s' lw 3 ", linestyle, addforms[i].color);
+		numforms++;
+		linestyle++;
+		i++;
+	}
+	FreeResult(res_setAddForms);
+
 	if(forcedminvs<99900.0 && forcedminvs>-99900.0)	minvs=forcedminvs;
 
 	fdfirst=1;
