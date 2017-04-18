@@ -476,6 +476,7 @@ void buildAdditionalFormationFiles(void)
 
 	fdfirst=1;
 	for(i=0; addforms[i].totFile != NULL; i++) {	
+		first=0;
 		if (addforms[i].is_profile_ln==1){
 			CloseDb();
 			if (OpenDb("sses_ps", addforms[i].database_name, "umsdata", "umsdata") != 0)
@@ -485,7 +486,6 @@ void buildAdditionalFormationFiles(void)
 			}
 			sprintf(query, "select * from surveys order by md");
 		} else {
-			first=0;
 			sprintf(query, "select * from addformsdata where infoid=%ld and projid=-1 order by md",addforms[i].id);
 		}
 		if (DoQuery(res_setAddForms, query)) {
@@ -493,7 +493,9 @@ void buildAdditionalFormationFiles(void)
 			CloseDb();
 			exit (-1);
 		}
-		fdi=fdi_start;
+		if (addforms[i].is_profile_ln==0){
+			fdi=fdi_start;
+		}
 		while(FetchRow(res_setAddForms))
 		{
 			vs=atof(FetchField(res_setAddForms, "vs"));
@@ -518,7 +520,9 @@ void buildAdditionalFormationFiles(void)
 				sprintf(tmpstr," %f",tot);
 				strcat(filldat[fdi],tmpstr);
 			}
-			fdi++; // record number of samples
+			if (addforms[i].is_profile_ln==0){
+			  fdi++; // record number of samples
+			}
 
 			// end of section that stores data for filled curves
 
@@ -531,9 +535,7 @@ void buildAdditionalFormationFiles(void)
 			if(vs>=minvs) {
 				if(!first) firstvs=vs;
 				if(first<2)	firsttot=tot;
-				if (addforms[i].is_profile_ln!=1){
-					first++;
-				}	
+				first++;
 			}
 		}
 		fdfirst=0;
