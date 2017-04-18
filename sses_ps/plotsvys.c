@@ -301,7 +301,7 @@ void buildAdditionalFormationFilesProj(void) {
 	// go through all the formations
 
 	fdfirst=1;
-	fdi_start = 0;// fdi; // the start now is where it fdi last ended
+	fdi_start =  fdi; // the start now is where it fdi last ended
 	for(i=0; addformsproj[i].totFile!=NULL; i++) {
 
 		// collect the last surveyed data (projection ID of -1)
