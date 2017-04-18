@@ -547,6 +547,9 @@ void buildAdditionalFormationFiles(void)
 				fprintf(stderr, "Failed to open database\n");
 				exit(-1);
 			}
+			lastvs=0.0;
+			lasttot=0.0;
+			lastfault=0.0;
 		}
 	}
 	
