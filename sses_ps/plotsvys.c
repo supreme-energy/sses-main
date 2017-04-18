@@ -521,15 +521,15 @@ void buildAdditionalFormationFiles(void)
 				strcat(filldat[fdi],tmpstr);
 			}
 			if (addforms[i].is_profile_ln==0){
-			  fdi++; // record number of samples
+			 fdi++; // record number of samples
 			}
 
 			// end of section that stores data for filled curves
 
-			if(fault > 0.1 || fault < -0.1)
+			if((fault > 0.1 || fault < -0.1) && addforms[i].is_profile_ln==0)
 				fprintf(addforms[i].totFile, "%f %f\n", lastvs, lasttot+fault);
 			fprintf(addforms[i].totFile, "%f %f\n", vs, tot);
-			if (addforms[i].is_profile_ln==0){
+			if(addforms[i].is_profile_ln==0){
 				lastvs=vs;
 				lasttot=tot;
 				lastfault=fault;
@@ -553,7 +553,6 @@ void buildAdditionalFormationFiles(void)
 				fprintf(stderr, "Failed to open database\n");
 				exit(-1);
 			}
-			
 		}
 	}
 	
