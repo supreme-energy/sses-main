@@ -475,8 +475,7 @@ void buildAdditionalFormationFiles(void)
 	if(forcedminvs<99900.0 && forcedminvs>-99900.0)	minvs=forcedminvs;
 
 	fdfirst=1;
-	for(i=0; addforms[i].totFile != NULL; i++) {
-		first=0;
+	for(i=0; addforms[i].totFile != NULL; i++) {	
 		if (addforms[i].is_profile_ln==1){
 			CloseDb();
 			if (OpenDb("sses_ps", addforms[i].database_name, "umsdata", "umsdata") != 0)
@@ -486,6 +485,7 @@ void buildAdditionalFormationFiles(void)
 			}
 			sprintf(query, "select * from surveys order by md");
 		} else {
+			first=0;
 			sprintf(query, "select * from addformsdata where infoid=%ld and projid=-1 order by md",addforms[i].id);
 		}
 		if (DoQuery(res_setAddForms, query)) {
@@ -531,7 +531,9 @@ void buildAdditionalFormationFiles(void)
 			if(vs>=minvs) {
 				if(!first) firstvs=vs;
 				if(first<2)	firsttot=tot;
-				first++;
+				if (addforms[i].is_profile_ln!=1){
+					first++;
+				}	
 			}
 		}
 		fdfirst=0;
@@ -550,6 +552,7 @@ void buildAdditionalFormationFiles(void)
 			lastvs=0.0;
 			lasttot=0.0;
 			lastfault=0.0;
+			
 		}
 	}
 	
