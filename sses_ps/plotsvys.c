@@ -510,15 +510,16 @@ void buildAdditionalFormationFiles(void)
 			
 
 			// start of section that stores data for filled curves
-
-			if(fdfirst && addforms[i].is_profile_ln==0)
-			{
-				sprintf(filldat[fdi],"%f %f",vs,tot);
-			}
-			else
-			{
-				sprintf(tmpstr," %f",tot);
-				strcat(filldat[fdi],tmpstr);
+			if(addforms[i].is_profile_ln==0){
+				if(fdfirst)
+				{
+					sprintf(filldat[fdi],"%f %f",vs,tot);
+				}
+				else
+				{
+					sprintf(tmpstr," %f",tot);
+					strcat(filldat[fdi],tmpstr);
+				}
 			}
 			if (addforms[i].is_profile_ln==0){
 			 fdi++; // record number of samples
