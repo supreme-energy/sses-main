@@ -511,7 +511,7 @@ void buildAdditionalFormationFiles(void)
 
 			// start of section that stores data for filled curves
 
-			if(fdfirst)
+			if(fdfirst && addforms[i].is_profile_ln==0)
 			{
 				sprintf(filldat[fdi],"%f %f",vs,tot);
 			}
@@ -540,8 +540,9 @@ void buildAdditionalFormationFiles(void)
 				}
 			}
 		}
-		fdfirst=0;
-
+		if(addforms[i].is_profile_ln==0){
+			fdfirst=0;
+		}
 		FreeResult(res_setAddForms);
 		gnuplot_cmd(gplot,"set obj %d rect at %f,%f size char strlen('%s')+2, char 1",i+1,firstvs+50.0,firsttot,addforms[i].label);
 		gnuplot_cmd(gplot,"set obj %d front clip lw 1.0 fc rgb 'white' fillstyle solid 1.00 border lt -1",i+1);
