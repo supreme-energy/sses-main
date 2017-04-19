@@ -324,9 +324,9 @@ void buildAdditionalFormationFilesProj(void) {
 
 			thick=atof(FetchField(res_setAddFormsProj, "thickness"));
 
-			if(fault>0.1 || fault<-0.1 ){
+			if((fault>0.1 || fault<-0.1) && lasttot!=0.0){
 
-				//fprintf(addformsproj[i].totFile, "%f %f\n", lastvs, lasttot+fault);
+				fprintf(addformsproj[i].totFile, "%f %f\n", lastvs, lasttot+fault);
 
 			}
 
