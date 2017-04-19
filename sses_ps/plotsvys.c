@@ -326,7 +326,7 @@ void buildAdditionalFormationFilesProj(void) {
 
 			if(fault>0.1 || fault<-0.1 ){
 
-				fprintf(addformsproj[i].totFile, "%f %f\n", lastvs, lasttot+fault);
+				//fprintf(addformsproj[i].totFile, "%f %f\n", lastvs, lasttot+fault);
 
 			}
 
@@ -380,7 +380,7 @@ void buildAdditionalFormationFilesProj(void) {
 			// start of section that stores data for filled curves
 
 			if(fault>0.1 || fault<-0.1 ){
-				fprintf(addformsproj[i].totFile, "%f %f\n", lastvs, lasttot+fault);
+				//fprintf(addformsproj[i].totFile, "%f %f\n", lastvs, lasttot+fault);
 			}
 			fprintf(addformsproj[i].totFile, "%f %f\n", vs, tot);
 
