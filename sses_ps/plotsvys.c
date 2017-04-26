@@ -500,12 +500,11 @@ void buildAdditionalFormationFiles(void)
 		{
 			vs=atof(FetchField(res_setAddForms, "vs"));
 			if (addforms[i].is_profile_ln==0){
-				tot=atof(FetchField(res_setAddForms, "tot"));
 				thick=atof(FetchField(res_setAddForms, "thickness"));
 			} else {
-				tot=atof(FetchField(res_setAddForms, "tvd"));
 				thick=1.0;
 			}
+			tot=atof(FetchField(res_setAddForms, "tot"));
 			fault=atof(FetchField(res_setAddForms, "fault"));
 			
 
