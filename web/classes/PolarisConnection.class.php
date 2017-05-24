@@ -169,6 +169,7 @@
 				print $body."<br><br>\n\n";
 			}
 			$resp = $this->retrieve_fromstore($body,'log');
+			return;
 			$data = array();
 			if($this->raw_request['debug']){
 				print_r($resp);
