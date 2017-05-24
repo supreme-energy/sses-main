@@ -502,7 +502,7 @@
    }
    
    function get_polaris_survey(){
-   		$body = '<trajectory uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'"><name/><trajectoryStation>' .
+   		$body = '<trajectory uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'"><trajectoryStation uid="">' .
 				'<md/>' .
 				'<incl/>' .
 				'<azi/>' .
