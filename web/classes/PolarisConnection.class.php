@@ -503,10 +503,6 @@
    
    function get_polaris_survey(){
    		$body = '<trajectory uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'"><name/><trajectoryStation uid="">' .
-				'<md/>' .
-				'<incl/>' .
-				'<azi/>' .
-				'<vertSect/>' .
 				'</trajectoryStation>' .
 				'</trajectory>';
 //		echo "<p>body=" . htmlspecialchars($body) . "</p>";
