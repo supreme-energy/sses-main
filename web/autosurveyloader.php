@@ -128,6 +128,50 @@ require_once('classes/PolarisConnection.class.php');
 	} else {
 		$cleanup_msg = "No clean up has occured";
 	}
+} else if($autorc_type=='welldata'){
+require_once('classes/PolarisConnection.class.php');
+ 	$autoimport_configured=true;
+ 	$query="select * from witsml_details";
+ 	$db->OpenDb();
+ 	$db->DoQuery($query);
+ 	$row = $db->FetchRow();
+ 	if($row){
+ 		$query= "update witsml_details set endpoint='$autorc_host',username='$autorc_username',password='$autorc_password'";
+ 	} else {
+ 		$query = "insert into witsml_details (endpoint,username,password) values ('$autorc_host','$autorc_username','$autorc_password')";
+ 	}
+ 	$db->DoQuery($query);
+ 	$query = "select * from witsml_details";
+	$db->DoQuery($query);
+	$row = $db->fetchRow();
+	$db->CloseDb();
+	if(!$row['wellid'] || !$row['boreid'] || !$row['logid']){
+		$next = array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"msg"=>'Connection not configured. Please configure the connection selecting a well, a well bore and a log.');;
+	} else {
+		$obj = new PolarisConnection($_REQUEST);
+		$obj->uidWell=$row['wellid'];
+		$obj->uidWellBore=$row['boreid'];
+		//$obj->logid=$row['logid'];
+		$next = $obj->load_next_survey($do_load);
+	}
+ 	
+	if($next['next_survey']){
+		$new_sdisp = "display:block";
+		$count_disp= "display:none";
+	} else {
+		$new_sdisp = "display:none";
+		$count_disp= "display:none";
+	}
+	if($next['cleanup_occured']===true){
+		$cleanup_msg = $next['cmes']." Please <a style='cursor:pointer' onclick=\"load_survey(false,true)\">click here if you want to cleanup</a>.";
+	}else if($next['cleanup_occured']){
+		if($next['cmes']){
+				$next['cmes'].="<br><br>";
+			}
+		$cleanup_msg = "An automatic survey clean up has occured.".$next['cmes']." If you want to review what data has been removed please <a onclick='load_del_group(".$next['cleanup_occured'].")' style='cursor:pointer'>click here.<script>reload_parent()</script>";
+	} else {
+		$cleanup_msg = "No clean up has occured";
+	}
 }
 ?>
 <!doctype html>
