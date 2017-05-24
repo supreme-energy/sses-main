@@ -6,5 +6,5 @@ require_once('../classes/PolarisConnection.class.php');
 header('Content-type: application/json');
 $obj= new PolarisConnection($_REQUEST);
 $obj->autorc_type=$autorc_type;
-$obj->$this->prepare_las_data(0,8000,1,false,false,false);
+$obj->prepare_las_data(0,8000,1,false,false,false);
 ?>
