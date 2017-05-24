@@ -353,6 +353,8 @@ include("waitdlg.html");
 		<table>
 			<tr><td>Type:</td><td>
 				<select name='connection_type' id='ac_con_type'>
+					<option value='welldata' <?php 
+						if(isset($autorc_type) and $autorc_type=='welldata'){echo 'selected';}?>>WellData</option>
 					<option value='rigminder' <?php 
 						if(isset($autorc_type) and $autorc_type=='rigminder'){echo 'selected';}?>>RigMinder</option>
 					<option value='polaris' <?php
