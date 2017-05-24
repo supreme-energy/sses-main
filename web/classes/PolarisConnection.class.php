@@ -502,13 +502,13 @@
    }
    
    function get_polaris_survey(){
-   		$body = '<trajectory uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'"><trajectoryStation uid="">' .
+   		$body = '<trajectorys uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'"><trajectory uid="">' .
 				'<md/>' .
 				'<incl/>' .
 				'<azi/>' .
 				'<vertSect/>' .
-				'</trajectoryStation>' .
-				'</trajectory>';
+				'</trajectory>' .
+				'</trajectorys>';
 //		echo "<p>body=" . htmlspecialchars($body) . "</p>";
 		$resp = $this->retrieve_fromstore($body,'trajectory');
 //		echo '<pre>resp='; print_r($resp); echo '</pre>';
