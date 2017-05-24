@@ -502,19 +502,19 @@
    }
    
    function get_polaris_survey(){
-   		$body = '<trajectory uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'" uid="">
-   				 <name/>' .
-				'<md/>' .
-				'<incl/>' .
-				'<azi/>' .
-				'<vertSect/>' .
+   		$body = '<trajectory uidWell="'.$this->uidWell.'" uidWellbore="'.$this->uidWellBore.'" uid=""><name />
+   				<trajectoryStation>' .
+				'<md uom="ft"></md>' .
+				'<incl uom="rad"></incl>' .
+				'<azi uom="rad"></azi>' .
+				'<vertSect uom="ft"></vertSect></trajectoryStation>' .
 				'</trajectory>';
 //		echo "<p>body=" . htmlspecialchars($body) . "</p>";
 		$resp = $this->retrieve_fromstore($body,'trajectory');
 //		echo '<pre>resp='; print_r($resp); echo '</pre>';
 		$surveys = array();
 		$xmlout = simplexml_load_string($resp['XMLout']);
-		foreach($xmlout->trajectory as $trajstat){
+		foreach($xmlout->trajectory->trajectoryStation as $trajstat){
 			
 			array_push($surveys,array('md'=>(string)$trajstat->md,'inc'=>(string)$trajstat->incl,'azm'=>(string)$trajstat->azi,'time'=>(string)$trajstat->dTimStn));
 			
