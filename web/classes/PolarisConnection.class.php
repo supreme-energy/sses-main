@@ -9,7 +9,7 @@
 	}
 	class PolarisConnection extends WitsmlData {
 		public $witsversion='1.3.1.1';
-		public $soapv=SOAP_1_1;
+		public $soapv=SOAP_1_2;
 		public $uidWell='785199b4-7eb1-4c97-a7ff-dfb273a1745f';
 		public $uidWellBore='432a3ed1-e5f0-46a9-9e01-d724cac083f1';
 		
