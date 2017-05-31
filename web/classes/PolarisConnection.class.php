@@ -305,8 +305,6 @@
 			if(!$this->current_r_survery || !$this->last_r_survey){
 				$this->simple_load_last_current();
 			}
-			echo "tvd smoothing range ".$this->last_r_survey['tvd'].",".$this->current_r_survey['tvd']."\n";
-
 
 			$tvdr = $this->smooth_range($this->last_r_survey['tvd'],$this->current_r_survey['tvd'],$smooth_range);
 			

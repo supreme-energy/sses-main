@@ -40,7 +40,7 @@ while($db->FetchRow()){
 		$botid = $db->FetchField('id');
 	}
 }
-$db->DoQuery("SELECT * FROM surveys ORDER BY md $surveysort;");
+$db->DoQuery("SELECT * FROM surveys ORDER BY plan $surveysort,md $surveysort;");
 $svy_total=$db->FetchNumRows(); 
 for ($i=0; $i<$svy_total; $i++) {
 	$db->FetchRow();
