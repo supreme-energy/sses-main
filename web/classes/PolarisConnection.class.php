@@ -38,6 +38,7 @@
 				if($grval!=''){
 					array_push($new_data_ar,$val);
 				}
+				
 			}
 			return $new_data_ar;
 		}
@@ -297,9 +298,14 @@
 			//echo "lenght before smoothig calls:".count($xmlout->log->logData->data);
 			
 			$use_data = $this->drop_empties($xmlout->log->logData,$cols);
-			$tvdr = $this->smooth_range($this->last_r_survey['tvd'],$this->current_r_survey['tvd'],count($use_data));
+			$smooth_range = count($use_data);
+			if(count($use_data)==0){
+				$smooth_range =count($xmlout->log->logData->data);
+			}
 			
-			$vsr  = $this->smooth_range($this->last_r_survey['vs'],$this->current_r_survey['vs'],count($use_data));
+			$tvdr = $this->smooth_range($this->last_r_survey['tvd'],$this->current_r_survey['tvd'],$smooth_range);
+			
+			$vsr  = $this->smooth_range($this->last_r_survey['vs'],$this->current_r_survey['vs'],$smooth_range);
 			$query= "select tablename from welllogs where endmd <= ".$this->last_r_survey['md']." order by endmd desc limit 1";
 			$this->db->DoQuery($query);
 			$row = $this->db->FetchRow();
@@ -323,6 +329,7 @@
 				$exploded = explode(',',$val);
 				$md =  $exploded[$cols['Mdepth'][2]-1];
 				if(!$md){$md = $exploded[$cols['DEPTH'][2]-1];}
+				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]-1];}
 				$val = round($grr[$curpos],2);
 				$vs = round($vsr[$curpos],2);
 				$tvd =$tvdr[$curpos];
@@ -356,6 +363,7 @@
 				$exploded = explode(',',$val);
 				$md =  $exploded[$cols['Mdepth'][2]-1];
 				if(!$md){$md = $exploded[$cols['DEPTH'][2]-1];}
+				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]-1];}
 				$val = round($grr[$curpos],2);
 				$vs = round($vsr[$curpos],2);
 				$tvd =$tvdr[$curpos];
