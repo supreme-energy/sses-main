@@ -302,6 +302,7 @@
 			if(count($use_data)==0){
 				$smooth_range =count($xmlout->log->logData->data);
 			}
+			echo "tvd smoothing range ".$this->last_r_survey['tvd'].",".$this->current_r_survey['tvd']."\n";
 			
 			$tvdr = $this->smooth_range($this->last_r_survey['tvd'],$this->current_r_survey['tvd'],$smooth_range);
 			
