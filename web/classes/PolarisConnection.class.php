@@ -642,10 +642,11 @@
    	$queryl = "select * from surveys  where plan=0 order by md desc limit 1";
    	$this->db->DoQuery($queryl);
    	$this->current_r_survey=$this->db->FetchRow();
-   	$querl = "select * from surveys  where plan=0 order by md desc limit 1 offset 1";
+   	$queryl = "select * from surveys  where plan=0 order by md desc limit 1 offset 1";
    	$this->db->DoQuery($queryl);
    	$this->last_r_survey=$this->db->FetchRow();
    }
+   
    function load_next_survey($load=false,$do_cleanup=false){
 			if($this->db_name){
 					$this->db->OpenDb();
