@@ -23,6 +23,8 @@ $db->DoQuery("UPDATE wellinfo SET pamethod='-1';");
 $db->DoQuery("delete from projections where ptype='rot' or ptype='sld'");
 
 if($autorc_type=='welldata'){
+	require_once('classes/PolarisConnection.class.php');
+	$witsml = new PolarisConnection($_REQUEST);
 	if($frow['md']>0 && $frow['md']<$md ){
 		$smd=$frow['md'];
 	} else{
