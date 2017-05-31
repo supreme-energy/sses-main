@@ -302,8 +302,12 @@
 			if(count($use_data)==0){
 				$smooth_range =count($xmlout->log->logData->data);
 			}
+			if(!$this->current_r_survery || !$this->last_r_survey){
+				$this->simple_load_last_current();
+			}
 			echo "tvd smoothing range ".$this->last_r_survey['tvd'].",".$this->current_r_survey['tvd']."\n";
-			
+
+
 			$tvdr = $this->smooth_range($this->last_r_survey['tvd'],$this->current_r_survey['tvd'],$smooth_range);
 			
 			$vsr  = $this->smooth_range($this->last_r_survey['vs'],$this->current_r_survey['vs'],$smooth_range);
@@ -633,6 +637,14 @@
    		$this->db->DoQuery($pterm_query);
    		$this->db->CloseDb();
    		return $loaded;
+   }
+   function simple_load_last_current(){
+   	$queryl = "select * from surveys  where plan=0 order by md desc limit 1";
+   	$this->db->DoQuery($queryl);
+   	$this->current_r_survey=$this->db->FetchRow();
+   	$querl = "select * from surveys  where plan=0 order by md desc limit 1 offset 1";
+   	$this->db->DoQuery($queryl);
+   	$this->last_r_survey=$this->db->FetchRow();
    }
    function load_next_survey($load=false,$do_cleanup=false){
 			if($this->db_name){
