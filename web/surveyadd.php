@@ -21,8 +21,11 @@ $frow = $db->FetchRow();
 $db->DoQuery("INSERT INTO surveys (md,inc,azm) VALUES ($md,$inc,$azm)");
 $db->DoQuery("UPDATE wellinfo SET pamethod='-1';");
 $db->DoQuery("delete from projections where ptype='rot' or ptype='sld'");
-
 if($autorc_type=='welldata'){
+	exec("./sses_gva -d $seldbname");
+	exec("./sses_cc -d $seldbname");
+	exec("./sses_cc -d $seldbname -p");
+	exec("./sses_af -d $seldbname");
 	require_once('classes/PolarisConnection.class.php');
 	$_REQUEST['debug']=true;
 	$witsml = new PolarisConnection($_REQUEST);
