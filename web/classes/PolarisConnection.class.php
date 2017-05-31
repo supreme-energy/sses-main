@@ -315,7 +315,9 @@
 			if($this->raw_request['debug']){
 				print_r($grr);
 			}
+			echo "reading data log";
 			foreach($xmlout->log->logData->data as $delement){
+				echo $delement;
 				$val = (string)$delement;
 				array_push($rawdata_ar,$val);
 				$exploded = explode(',',$val);
