@@ -22,7 +22,7 @@ $db->DoQuery("INSERT INTO surveys (md,inc,azm) VALUES ($md,$inc,$azm)");
 $db->DoQuery("UPDATE wellinfo SET pamethod='-1';");
 $db->DoQuery("delete from projections where ptype='rot' or ptype='sld'");
 
-if($autorc_type=='polaris'){
+if($autorc_type=='welldata'){
 	if($frow['md']>0 && $frow['md']<$md ){
 		$smd=$frow['md'];
 	} else{
