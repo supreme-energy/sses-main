@@ -347,7 +347,7 @@
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
-							echo $query."\n";
+							//echo $query."\n";
 							$result = $this->db->DoQuery($query);
 							if($result==FALSE) {
 							//	echo "rollback";

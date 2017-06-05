@@ -27,7 +27,6 @@ if($autorc_type=='welldata'){
 	exec("./sses_cc -d $seldbname -p");
 	exec("./sses_af -d $seldbname");
 	require_once('classes/PolarisConnection.class.php');
-	$_REQUEST['debug']=true;
 	$witsml = new PolarisConnection($_REQUEST);
 	if($frow['md']>0 && $frow['md']<$md ){
 		$smd=$frow['md'];
@@ -37,7 +36,6 @@ if($autorc_type=='welldata'){
 	$emd=$md;
 	$witsml->prepare_las_data($smd,$emd);
 }
-exit();
 exec("./sses_gva -d $seldbname");
 exec("./sses_cc -d $seldbname");
 exec("./sses_cc -d $seldbname -p");
