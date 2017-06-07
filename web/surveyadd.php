@@ -29,7 +29,7 @@ if($autorc_type=='welldata'){
 	require_once('classes/PolarisConnection.class.php');
 	$witsml = new PolarisConnection($_REQUEST);
 	if($frow['md']>0 && $frow['md']<$md ){
-		$smd=$frow['md'];
+		$smd=$frow['md']+1;
 	} else{
 		$smd=0;
 	}
