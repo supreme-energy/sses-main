@@ -11,7 +11,7 @@ ini_set('display_errors', '1');
 require_once 'sses_include.php';
 require_once 'gva_tab3_funct.php';
 require_once 'dbio.class.php';
-$debug = (isset($_POST['debug']) ? true : false);
+$debug = (isset($_REQUEST['debug']) ? true : false);
 if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname']) ? $_GET['seldbname'] : ''); 
 include("cleanoujia.php");
 if(!isset($noshowxy) or $noshowxy == '') $noshowxy = (isset($_GET['noshowxy']) ? $_GET['noshowxy'] : '');
