@@ -11,7 +11,7 @@ ini_set('display_errors', '1');
 require_once 'sses_include.php';
 require_once 'gva_tab3_funct.php';
 require_once 'dbio.class.php';
-
+$debug = (isset($_POST['debug']) ? true : false);
 if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_GET['seldbname']) ? $_GET['seldbname'] : ''); 
 include("cleanoujia.php");
 if(!isset($noshowxy) or $noshowxy == '') $noshowxy = (isset($_GET['noshowxy']) ? $_GET['noshowxy'] : '');
@@ -169,6 +169,11 @@ include("waitdlg.html");
 	</TR>
 	<TR>
 	<FORM action="surveyadd.php" method="post">
+	<?php 
+		if($debug){
+	?>
+		<input type="hidden" name="debug" value="true">
+	<?php } ?>
 	<input type="hidden" name="seldbname" value="<?echo "$seldbname";?>">
 	<TD><INPUT TYPE="text" VALUE="0" NAME="md" SIZE="6"></TD>
 	<TD><INPUT TYPE="text" VALUE="<?echo $inc?>" NAME="inc" SIZE="4"></TD>
