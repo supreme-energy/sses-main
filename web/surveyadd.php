@@ -11,6 +11,7 @@ $md=$_POST['md']; if($md=="") $md=0;
 $inc=$_POST['inc']; if($inc=="") $inc=0;
 $azm=$_POST['azm']; if($azm=="") $azm=0;
 $ret=(isset($_POST['ret']) ? $ret = $_POST['ret'] : 'gva_tab3.php');
+$debug = (isset($_POST['debug']) ? true : false);
 require_once("dbio.class.php");
 require_once("classes/WitsmlData.class.php");
 $db=new dbio($seldbname);
@@ -41,6 +42,8 @@ exec("./sses_cc -d $seldbname");
 exec("./sses_cc -d $seldbname -p");
 exec("./sses_af -d $seldbname");
 $db->CloseDb();
-header("Location: {$ret}?seldbname=$seldbname&sortdir=$sortdir");
-exit();
+if(!$debug){
+	header("Location: {$ret}?seldbname=$seldbname&sortdir=$sortdir");
+	exit();
+}
 ?>
