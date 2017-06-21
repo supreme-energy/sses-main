@@ -11,7 +11,7 @@ $md=$_POST['md']; if($md=="") $md=0;
 $inc=$_POST['inc']; if($inc=="") $inc=0;
 $azm=$_POST['azm']; if($azm=="") $azm=0;
 $ret=(isset($_POST['ret']) ? $ret = $_POST['ret'] : 'gva_tab3.php');
-$debug = (isset($_POST['debug']) ? true : false);
+$debug = (isset($_POST['debug']) ? true : true);
 require_once("dbio.class.php");
 require_once("classes/WitsmlData.class.php");
 $db=new dbio($seldbname);
