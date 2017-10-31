@@ -59,7 +59,7 @@ include("waitdlg.html");
 	<TABLE style='margin: 2 0; padding: 0 0;' class='container'>
 	<TR>
 	<TD>
-		<img src='logo.gif' width='76' height='74' align='left'>
+		<img src='digital_tools_logo.png' width='76' height='74' align='left'>
 	</TD>
 	<TD>
 		<H2 style='line-height: 1.0; font-style: italic; color: #040;'>Supreme Source Energy Services, Inc.</H2>

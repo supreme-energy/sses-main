@@ -19,7 +19,7 @@ require_once("version.php");
        <TD>
            <TABLE style='margin: 2 0; padding: 0 0;' class='container'>
 	           <TD> 
-		       <img src='logo.gif' width='76' height='74' align='left'>
+		       <img src='digital_tools_logo.png' width='76' height='74' align='left'>
 		       <H2 style='line-height: 2.0; font-style: italic; color: #040;' align='center'>Supreme Source Energy Services, Inc.</H2>
 		       <H1 style='line-height: 1.0;' align='center'>Subsurface Geological Tracking Analysis</H1>
 		       <p align="center">Version <?echo $version; ?> (<?echo $_SERVER['SERVER_NAME']?>:<?echo $_SERVER['SERVER_PORT']?> - <?echo $hostname?>)</p>

@@ -91,7 +91,7 @@ include("waitdlg.html");
 	<TABLE style='margin:2px 0;padding:0 0;border-collapse:collapse' class='container'>
 	<TR>
 	<TD style='vertical-align:middle;text-align:left;padding:0 10px'>
-		<img style='width:76px' src='logo.gif' />
+		<img style='width:76px' src='digital_tools_logo.png' />
 	</TD>
 	<TD style='vertical-align:middle;padding:5px 10px 10px 10px'>
 		<H2 style='line-height:0.6em;font-style:italic;color:#040;'>Supreme Source Energy Services, Inc.</H2>

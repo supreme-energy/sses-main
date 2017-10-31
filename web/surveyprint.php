@@ -22,7 +22,7 @@ $currdate=date('m/d/Y');
 <BODY>
 <TABLE class="header">
 <TD class="one">
-	<IMG class='logo' SRC="logo.gif" WIDTH=75 HEIGHT=75>
+	<IMG class='logo' SRC="digital_tools_logo.png" WIDTH=75 HEIGHT=75>
 </TD>
 <TD class="one"><b>
 	<CENTER>
