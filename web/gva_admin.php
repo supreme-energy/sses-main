@@ -1,9 +1,9 @@
 <?php /*
 	Written by: Mark Carrier
-	Copyright: 2011, Supreme Source Energy Services, Inc.
+	Copyright: 2011, Digital Oil Tools
 	All rights reserved.
-	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
-	or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
+	NOTICE: This file is solely owned by Digital Oil Tools You may NOT modify, copy,
+	or distribute this file in any manner without written permission of Digital Oil Tools
 */ ?>
 <?
 require_once("dbio.class.php");
@@ -63,7 +63,7 @@ include("waitdlg.html");
 		<img src='digital_tools_logo.png' width='76' height='74' align='left'>
 	</TD>
 	<TD>
-		<H2 style='line-height: 1.0; font-style: italic; color: #040;'>Supreme Source Energy Services, Inc.</H2>
+		<H2 style='line-height: 1.0; font-style: italic; color: #040;'>Digital Oil Tools</H2>
 		<H1 style='line-height: 0.3;'>Subsurface Geological Tracking Analysis</H1>
 		Version 2.4.1 (<?echo $_SERVER['SERVER_NAME']?>:<?echo $_SERVER['SERVER_PORT']?> - <?echo $hostname?>)
 	</TD>
@@ -279,7 +279,7 @@ include("waitdlg.html");
 	if($currtab==3) $tabs->active="Delete User";
 	$tabs->run();
 	?>
-	<br><center><small><small>&#169; 2010-2011 Supreme Source Energy Services, Inc.</small></small></center>
+	<br><center><small><small>&#169; 2010-2011 Digital Oil Tools</small></small></center>
 </TD>
 </TR>
 </TABLE>

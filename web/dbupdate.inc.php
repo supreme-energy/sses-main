@@ -25,11 +25,11 @@
 //           please see the Release Notes for Version 2.4.2. 
 //
 //	Written by: Richard Gonsuron
-//	Copyright: 2009, Supreme Source Energy Services, Inc.
+//	Copyright: 2009, Digital Oil Tools
 //	All rights reserved.
-//	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. 	You may NOT modify, copy,
+//	NOTICE: This file is solely owned by Digital Oil Tools 	You may NOT modify, copy,
 //	or distribute this file in any manner without written permission of
-//	Supreme Source Energy Services, Inc.
+//	Digital Oil Tools
 
 $response="";
 function logInfo($s) {

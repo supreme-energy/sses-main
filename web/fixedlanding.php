@@ -88,7 +88,7 @@ $disable_button = $vslon==0?'display:none':'display:inline';
 	<button onclick="window.close()">Close</button>
 </td></tr>
 </form>
-<tr><td colspan='4'><br><small><small>&#169; 2010-2011 Supreme Source Energy Services, Inc.</small></small></td></tr>
+<tr><td colspan='4'><br><small><small>&#169; 2010-2011 Digital Oil Tools</small></small></td></tr>
 </TABLE>
 </CENTER>
 <script>

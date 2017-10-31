@@ -60,7 +60,7 @@ $db->OpenDb();
 	<br>
 	<small>
 	<small>
-	&#169; 2010-2011 Supreme Source Energy Services, Inc.
+	&#169; 2010-2011 Digital Oil Tools
 	</small>
 	</small>
 </td>

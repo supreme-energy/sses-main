@@ -231,7 +231,7 @@ else echo "<body onload=''>";
 </td></tr>
 <tr>
 <td colspan='16'>
-	<br><center><small>&#169; 2010-2011 Supreme Source Energy Services, Inc.</small></center>
+	<br><center><small>&#169; 2010-2011 Digital Oil Tools</small></center>
 </td>
 </tr>
 </table>

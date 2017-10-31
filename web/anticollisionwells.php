@@ -366,7 +366,7 @@ if($anticollisionwell_id!==false){
 	</tr>
 <tr>
 <td>
-	<center><small><small>&#169; 2010-2011 Supreme Source Energy Services, Inc.</small></small></center>
+	<center><small><small>&#169; 2010-2011 Digital Oil Tools</small></small></center>
 </td>
 </tr>
 	</table>

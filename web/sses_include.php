@@ -1,9 +1,9 @@
 <?php
 //	Written by:  C. Bergman with Tyler Hall
-//	Copyright: 2012, Supreme Source Energy Services, Inc.
+//	Copyright: 2012, Digital Oil Tools
 //	All rights reserved.
-//	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
-//	or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
+//	NOTICE: This file is solely owned by Digital Oil Tools You may NOT modify, copy,
+//	or distribute this file in any manner without written permission of Digital Oil Tools
 
 session_start();
 

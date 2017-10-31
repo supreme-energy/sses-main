@@ -1,9 +1,9 @@
 <?php
 //	Written by: Richard Gonsuron
-//	Copyright: 2009, Supreme Source Energy Services, Inc.
+//	Copyright: 2009, Digital Oil Tools
 //	All rights reserved.
-//	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
-//	or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
+//	NOTICE: This file is solely owned by Digital Oil Tools You may NOT modify, copy,
+//	or distribute this file in any manner without written permission of Digital Oil Tools
 
 error_reporting(E_ALL);
 ini_set('display_errors','1');
@@ -379,7 +379,7 @@ $db->CloseDb();
 	 style="<?= $wb_show_forms==1?'':'display:none'?>">Hide on Wellbore Side</button> 
 </div>
 <div>
-	<center><small>&#169; 2010-2011 Supreme Source Energy Services, Inc.</small></center>
+	<center><small>&#169; 2010-2011 Digital Oil Tools</small></center>
 </div>
 </div>
 <script language="javascript" type="text/javascript" src="waitdlg.js"></script>

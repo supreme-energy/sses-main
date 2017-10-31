@@ -1,9 +1,9 @@
 <?php
 // Written by: Richard R Gonsuron
-// Copyright: 2009, Supreme Source Energy Services, Inc.
+// Copyright: 2009, Digital Oil Tools
 // All rights reserved.
-// NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
-// or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
+// NOTICE: This file is solely owned by Digital Oil Tools You may NOT modify, copy,
+// or distribute this file in any manner without written permission of Digital Oil Tools
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -94,7 +94,7 @@ include("waitdlg.html");
 		<img style='width:76px' src='digital_tools_logo.png' />
 	</TD>
 	<TD style='vertical-align:middle;padding:5px 10px 10px 10px'>
-		<H2 style='line-height:0.6em;font-style:italic;color:#040;'>Supreme Source Energy Services, Inc.</H2>
+		<H2 style='line-height:0.6em;font-style:italic;color:#040;'>Digital Oil Tools</H2>
 		<H1 style='line-height:0.3em;'>Subsurface Geological Tracking Analysis</H1>
 		Version <?echo $version; ?> (<?echo $_SERVER['SERVER_NAME']?>:<?echo $_SERVER['SERVER_PORT']?> - <?echo $hostname?>)
 	</TD>
@@ -405,7 +405,7 @@ include("waitdlg.html");
 	if($currtab==6) $tabs->active="AutoRC";
 	$tabs->run();
 	?>
-	<br><center><small><small>&#169; 2010-2011 Supreme Source Energy Services, Inc.</small></small></center>
+	<br><center><small><small>&#169; 2010-2011 Digital Oil Tools</small></small></center>
 </TD>
 </TR>
 </TABLE>
