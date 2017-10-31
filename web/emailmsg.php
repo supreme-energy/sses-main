@@ -344,7 +344,7 @@ $lateraltemplatestr = $curvedtemplatestr = '<table cellspacing="0" cellpadding="
 <tr>
 <td colspan="4">';
 $colora='#e6dcb1';
-$colorb='#307040';
+$colorb='#2C4C69';
 if($curvedsel==2){
 $tot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjtot - $bprjtvd))*5730;
 $bot_dl=((sin(($painc/57.29577951))-sin(($bitprjinc/57.29577951)))/($bprjbot - $bprjtvd))*5730;
@@ -560,10 +560,10 @@ body {
 	margin:8px;
 	font-size:8pt;
 	color:black;
-	background-color: #307040;
+	background-color: #2C4C69;
 }
 #maindiv {
-	background-color: rgb(230,220,177);
+	background-color: rgb(255, 255, 252);
 	padding:0px 4px;
 	border:1px solid black;
 }
@@ -586,7 +586,7 @@ table {
 	color: #000;
 	text-align: left;
 	padding: 2px;
-	background-color: rgb(230,220,177);
+	background-color: rgb(255, 255, 252);
 	width: 800px;
 }
 .tempbut {

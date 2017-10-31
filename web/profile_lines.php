@@ -43,7 +43,7 @@ $dbname_to_realname_map = array();
 #selected_reference_table {
 	width:100%;
 	border-collapse:separate;
-	background-color:#307040;
+	background-color:#2C4C69;
 }
 #selected_reference_table th {
 	text-align:left;

@@ -21,7 +21,7 @@ $showxy=$_GET['showxy'];
 body {
 	font-family: Arial, Helvetica, sans-serif;
   color: black;
-  /*background-color: #307040; */
+  /*background-color: #2C4C69; */
   background-color: #b0b080;
 }
 input.button {

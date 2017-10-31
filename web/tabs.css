@@ -2,7 +2,7 @@
 	width: 100%;
 }
 div.apptab_inactive:hover {
-	background-color: #90d0a0;
+	background-color: #4679A7;
 	color: #000;
 }
 .apptab_inactive {
@@ -25,8 +25,8 @@ div.apptab_inactive:hover {
 	border-color: #000;
 	border-style: solid;
 	border-width: 1px;
-	border-bottom-color: #c0c0a0;
-  background-color: #c0c0a0;
+	border-bottom-color: #fffffc;
+  background-color: #fffffc;
 	color: #000;
 	float: left;
 	width: 120px;
@@ -46,7 +46,7 @@ div.apptab_inactive:hover {
 	float: left;
 	text-align: left;
 	padding: 0px;
-	background-color: #c0c0a0;
+	background-color: #fffffc;
 	width: 950px;
 	height: 380px;
 }

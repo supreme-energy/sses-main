@@ -60,7 +60,7 @@ body {
 	margin:10px;
 	font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
 	color:black;
-	background-color:#307040;
+	background-color:#2C4C69;
 	font-size:10pt;
 }
 table.tabcontainer {

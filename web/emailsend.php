@@ -133,7 +133,7 @@ body {
 	margin:10px;
 	font-size:10pt;
 	color:black;
-	background-color: #307040;
+	background-color: #2C4C69;
 }
 h2 {
 	font-size:1.5em;
@@ -141,7 +141,7 @@ h2 {
 </style>
 </head>
 <body>
-<div style='border:1px solid black;background-color:rgb(230,220,177)'>
+<div style='border:1px solid black;background-color:rgb(255, 255, 252)'>
 <div style='padding:5px'>
 <h2>Sending report via email</h2>
 <p style='padding:10px 0'>

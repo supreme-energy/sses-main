@@ -11,7 +11,7 @@
 #anno_table {
 	width:100%;
 	border-collapse:separate;
-	background-color:#307040;
+	background-color:#2C4C69;
 }
 #anno_table th {
 	text-align:left;

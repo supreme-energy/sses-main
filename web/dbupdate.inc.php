@@ -875,7 +875,7 @@ if(!$dbu->ColumnExists('profile_lines', 'pattern')) {
 $dbu->CloseDb();
 
 if(strlen($response)>0) { ?>
-	<BODY style='background-color: rgb(230,220,177);'>
+	<BODY style='background-color: rgb(255, 255, 252);'>
 	<H2>Database has been updated with the following changes:</H2>
 	<?echo "<pre>$response</pre>"; ?>
 	<A href='gva_tab1.php?seldbname=<?echo $seldbname;?>'>Click To Continue</A>

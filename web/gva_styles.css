@@ -3,7 +3,7 @@ body {
   font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
   font-size: 10pt;
   color: black;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 h1.header {
 	padding: 0;
@@ -106,7 +106,7 @@ td.app {
 	padding: 4;
 	border-spacing: 0;
 	width: 0;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 
 
@@ -143,7 +143,7 @@ td.active {
 	text-align: center;
 }
 td.inactive:hover {
-	background-color: #90d0a0;
+	background-color: #4679A7;
 }
 td.inactive {
 	-moz-border-radius: 5px 5px 0px 0px;

@@ -3,7 +3,7 @@ body {
   font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
   font-size: 9pt;
   color: black;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 input { font-size: .7em; }
 
@@ -38,7 +38,7 @@ td.active {
 	text-align: center;
 }
 td.inactive:hover {
-	background-color: #90d0a0;
+	background-color: #4679A7;
 }
 td.inactive {
 	-moz-border-radius: 5px 5px 0px 0px;
@@ -85,7 +85,7 @@ table.buttons {
 	color: #000;
 	text-align: left;
 	padding: 20;
-  background-color: #c0c0a0;
+  background-color: #fffffc;
 }
 table.example {
   -moz-border-radius: 5px 5px 5px 5px;
@@ -93,7 +93,7 @@ table.example {
 	color: #000;
 	text-align: left;
 	padding: 4;
-  background-color: #c0c0a0;
+  background-color: #fffffc;
 	border-spacing: 0 0;
 }
 td.example {

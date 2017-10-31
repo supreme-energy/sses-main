@@ -3,7 +3,7 @@ body {
   /* font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;*/
 	font-family: Arial, Helvetica, sans-serif;
   color: black;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 form {
 	padding: 0 0;
@@ -41,8 +41,8 @@ td.active {
 	border-width: 2px;
 	border-style: solid;
 	border-spacing: 0;
-	border-bottom-color: rgb(230,220,177);
-  background-color: rgb(230,220,177);
+	border-bottom-color: rgb(255, 255, 252);
+  background-color: rgb(255, 255, 252);
 	color: #000;
 	float: left;
 	width: 100px;
@@ -52,7 +52,7 @@ td.active {
 	text-align: center;
 }
 td.inactive:hover {
-	background-color: #90d0a0;
+	background-color: #4679A7;
 }
 td.inactive {
 	-moz-border-radius: 5px 5px 0px 0px;
@@ -90,7 +90,7 @@ table.tabcontainer {
 	float: left;
 	text-align: left;
 	padding: 4px;
-  background-color: rgb(230,220,177);
+  background-color: rgb(255, 255, 252);
 	width: 100%;
 	height: 95%;
   }
@@ -100,7 +100,7 @@ table.container {
   border-spacing: 0;
   padding: 2 10 2 10;
 	border: thin solid black;
-  background-color: #c0c0a0;
+  background-color: #fffffc;
 }
 table.buttons {
   -moz-border-radius: 5px 5px 5px 5px;
@@ -108,8 +108,8 @@ table.buttons {
 	color: #000;
 	text-align: left;
 	padding: 2;
-  background-color: #307040;
-  background-color: #c0c0a0;
+  background-color: #2C4C69;
+  background-color: #fffffc;
 }
 input.button {
 	border-color: black;
@@ -145,7 +145,7 @@ table.surveys {
 	padding:4px;
 	margin:0;
 	border-style: none;
-	background-color: #c0c0a0;
+	background-color: #fffffc;
 	width: 100%;
 }
 table.surveys td {

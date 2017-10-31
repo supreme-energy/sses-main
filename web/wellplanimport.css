@@ -3,7 +3,7 @@ body {
   font-size: 10;
   font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
   color: black;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 table.container {
 	-moz-border-radius: 10px 10px 10px 10px;
@@ -13,7 +13,7 @@ table.container {
 	color: #000;
 	float: left;
 	text-align: left;
-  background-color: #c0c0a0;
+  background-color: #fffffc;
 }
 table.group { 
 	-moz-border-radius: 10px 10px 10px 10px;

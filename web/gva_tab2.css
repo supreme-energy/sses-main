@@ -3,7 +3,7 @@ body {
    font-family: Arial,Helvetica,"sans-serif",Tahoma;
   font-size: 10pt;
   color: black;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 h2 {
 	margin: 0 0;
@@ -48,8 +48,8 @@ td.active {
 	border-width: 2px;
 	border-style: solid;
 	border-spacing: 0;
-	border-bottom-color: rgb(230,220,177);
-  	background-color: rgb(230,220,177);
+	border-bottom-color: rgb(255, 255, 252);
+  	background-color: rgb(255, 255, 252);
 	color: #000;
 	width: 100px;
 	cursor: default;
@@ -58,7 +58,7 @@ td.active {
 	text-align: center;
 }
 td.inactive:hover {
-	background-color: #90d0a0;
+	background-color: #4679A7;
 }
 td.inactive {
 	-moz-border-radius: 5px 5px 0px 0px;
@@ -84,7 +84,7 @@ table.tabcontainer {
 	text-align: left;
 	padding: 2px;
 	margin: 0;
-  background-color: rgb(230,220,177);
+  background-color: rgb(255, 255, 252);
   }
 table.container {
   -moz-border-radius: 5px 5px 5px 5px;
@@ -92,7 +92,7 @@ table.container {
   padding: 4;
   margin: 0;
 	border: thin solid black;
-  background-color: #c0c0a0;
+  background-color: #fffffc;
 	height: 80px;
 }
 
@@ -101,7 +101,7 @@ table.surveys {
   text-align: left;
   border-spacing: 0;
   border: thin solid black;
-  background-color: #c0c0a0;
+  background-color: #fffffc;
   width: 700px;
   font-size: 10pt;
 	padding: 0;

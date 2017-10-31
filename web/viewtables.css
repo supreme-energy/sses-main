@@ -2,7 +2,7 @@ body {
 	margin: 10px;
   font-family: Helvetica, "Arial sans-serif", Arial, sans-serif;
   color: black;
-  background-color: #307040;
+  background-color: #2C4C69;
 }
 table.tabcontainer {
 	-moz-border-radius: 10px 10px 10px 10px;
@@ -21,7 +21,7 @@ table.surveys {
   -moz-border-radius: 5px 5px 5px 5px;
   text-align: left;
   background-color: rgb(240, 240, 200);
-  background-color: #307040;
+  background-color: #2C4C69;
   border-spacing: 0;
   padding: 0;
   margin: 0;
