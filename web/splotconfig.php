@@ -71,7 +71,7 @@ table.tabcontainer {
 	border-collapse:collapse;
 }
 table.tabcontainer th {
-	background-color: #509060;
+	background-color: #497daa;
 }
 table.tabcontainer td {
 	padding:5px 25px;
