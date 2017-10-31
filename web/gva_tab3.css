@@ -137,7 +137,7 @@ input.edit:hover {
 	margin: 0 0;
   font-size: 8pt;
   width: 100%;
-  background-color: #b0d0b0;
+  background-color: #6a9ecc;
 }
 table.surveys {
 	text-align:left;
@@ -172,7 +172,7 @@ th.rot {
 	border-right: none;
 	text-align: center;
 	padding: 0;
-	background-color: #b0d0b0;
+	background-color: #6a9ecc;
 }
 td.surveys {
 	text-align:right;

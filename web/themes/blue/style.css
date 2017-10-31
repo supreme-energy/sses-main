@@ -1,14 +1,14 @@
 /* tables */
 table.tablesorter {
 	font-family:arial;
-	background-color: 307040;
+	background-color: #2C4C69;
 	margin:10px 0pt 15px;
 	font-size: 10pt;
 	width: 100%;
 	text-align: left;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-	background-color: #DCEBC8;
+	background-color: #4B7EAA;
 	border: 1px solid black;
 	font-size: 10pt;
 	padding: 4px;
@@ -29,7 +29,7 @@ table.tablesorter tbody tr:nth-child(odd) td {
 	background-color:#FAFAC8;
 }
 table.tablesorter tbody tr:nth-child(even) td {
-	background-color:#DCEBC8;
+	background-color:#4B7EAA;
 }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(asc.gif);
