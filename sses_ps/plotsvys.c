@@ -191,6 +191,19 @@ void CheckForValidKey(void) {
 
 /*****************************************************************************/
 
+void RemoveSpaces(char* source)
+{
+  char* i = source;
+  char* j = source;
+  while(*j != 0)
+  {
+    *i = *j++;
+    if(*i != ' ')
+      i++;
+  }
+  *i = 0;
+}
+
 void readAppinfo(char *progname) {
 	if (DoQuery(res_set2, "SELECT * FROM appinfo;")) {
 		fprintf(stderr, "%s: readAppInfo: Error in select query\n", progname);
@@ -2123,9 +2136,12 @@ int main(int argc, char * argv[])
 		{
 			int edatalog_id=0;
 			char outFilename_cur[4095];
+			char cur_label[1025];
 			while(FetchRow(res_set)) {
 				gamma_h=75.0;
 				edatalog_id=atoi( FetchField(res_set, "id") );
+				cur_label =  FetchField(res_set, "label")
+				RemoveSpaces(cur_label)
 				sprintf(outFilename_cur,"%s%s.png",outFilename, FetchField(res_set, "label"));
 				sprintf(cmdstr,
 							"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s -single %i",
