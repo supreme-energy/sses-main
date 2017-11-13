@@ -2142,7 +2142,7 @@ int main(int argc, char * argv[])
 				edatalog_id=atoi( FetchField(res_set, "id") );
 				cur_label =  FetchField(res_set, "label");
 				RemoveSpaces(cur_label);
-				sprintf(outFilename_cur,"%s%s.png",outFilename, FetchField(res_set, "label"));
+				sprintf(outFilename_cur,"%s%s.png",outFilename, cur_label);
 				sprintf(cmdstr,
 							"./sses_gamma -d %s -r %f -o %s -w %f -h %f -s %f -e %f -pstart %f -pend %f -color %s -rotate -grid -vs -nd %s -single %i",
 							dbname,
