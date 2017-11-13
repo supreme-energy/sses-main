@@ -2136,7 +2136,7 @@ int main(int argc, char * argv[])
 		{
 			int edatalog_id=0;
 			char outFilename_cur[4095];
-			char cur_label*;
+			char* cur_label;
 			while(FetchRow(res_set)) {
 				gamma_h=75.0;
 				edatalog_id=atoi( FetchField(res_set, "id") );
