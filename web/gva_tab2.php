@@ -84,9 +84,13 @@ else {
 }
 
 $fn=sprintf("./tmp/%s_gva_tab2.png", $seldbname);
-exec ("./sses_cc -d $seldbname -w");
+$cmd = "./sses_cc -d $seldbname -w";
+exec ($cmd);
+echo $cmd. "\n";
 $logsw=""; if($uselogscale>0)	$logsw="-log";
-exec("./sses_pd -T $tablename -d $seldbname -o $fn -w 340 -h 750 -s $startmd -e $endmd -r $scaleright $logsw");
+$cmd = "./sses_pd -T $tablename -d $seldbname -o $fn -w 340 -h 750 -s $startmd -e $endmd -r $scaleright $logsw";
+exec($cmd);
+echo $cmd. "\n";
 ?>
 <HTML>
 <HEAD>
@@ -289,7 +293,7 @@ include("waitdlg.html");
 			</TR>
 		<? ++$i;
 		}
-		$db->CloseDb();
+		
 		?>
 		</TABLE>
 	</td>
@@ -365,6 +369,7 @@ include("waitdlg.html");
 	</tr>
 	</table>
 	<left>
+	<?php include("control_log_gva_tab2.php");?>
 	<img src='<?echo $fn;?>' style='border: thin solid black'>
 	</left>
 </td>
@@ -479,6 +484,7 @@ function saveRefFilename(val){
 	xmlhttp.send();
 	return false;
 }
+<?php $db->CloseDb();?>
 
 </SCRIPT>
 <script language="javascript" type="text/javascript" src="waitdlg.js"></script>
