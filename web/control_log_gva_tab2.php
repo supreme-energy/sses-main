@@ -53,7 +53,8 @@ var trace1 = {
   y: <?php echo '[' . implode(',', $x_plot) . ']'?>,
   x: <?php echo '[' . implode(',', $y_plot) . ']'?>,
   type: 'scatter',
-  showlegend: false
+  showlegend: false,
+  name: 'Control Log'
 };
 
 

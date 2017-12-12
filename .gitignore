@@ -1,0 +1,4 @@
+web/*.phar
+web/tmp
+web/error.log
+*/*.o

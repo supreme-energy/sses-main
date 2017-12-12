@@ -1082,8 +1082,7 @@ include 'waitdlg.html';
 <?php if($viewrotds==1) echo $scaleright; else echo ' '; ?>
 </td>
 
-<td colspan='2' class="container" align='left' style='background-color:white;'>
-
+<td colspan='2' class="container" align='left' style='background-color:white;width: 800px;'>
 	<form name='pointform' method='post'>
 	<div class='transbox'>
 <!--
@@ -1104,6 +1103,7 @@ else
 $timelog[] = array(microtime(),'before the chart');
 ?>
 	<table border='0' cellpadding='0' cellspacing='0'>
+	
 <?php if($dscache_freeze > 0 and $fn2 != '') { ?>
 	<tbody class='scrollContent' STYLE='background: url(<?php echo "$fn2?$random"?>) no-repeat center center;'>
 <?php } else { ?>
@@ -1149,6 +1149,7 @@ $timelog[] = array(microtime(),'after the chart');
 	</div> <!-- end of div class tablecontainer -->
 	</div> <!-- end of div class transbox -->
 	</form> <!-- end of pointform --> 
+	<?php include 'sgta_modeling_gva_tab4.php' ?> 
 </td>
 
 <td class="container" align='left'>
