@@ -50,12 +50,13 @@ class PlotObject {
 }
 
 class SgtaModelingTab4 {
-	function __construct($request, $tableid,$plotbias,$tcl) {
+	function __construct($request, $tableid,$plotbias,$tcl, $rightscale) {
 		$this->db_name = $request['seldbname'];
 		$this->db=new dbio("$this->db_name");
 		$this->db->OpenDb();
 		$this->plotbias = $plotbias;
 		$this->secttot = $tcl;
+		$this->rightscale = $rightscale;
 		$this->prepare_control_log_plot();
 		$this->prepare_current_data_plot($tableid);
 		$this->wellogplots = Array();
@@ -88,7 +89,7 @@ class SgtaModelingTab4 {
 		$table_info  = $this->db->FetchRow();
 		$this->db->DoQuery("Select * from wld_$tableid order by md;");
 		while($this->db->FetchRow()){
-			array_push($cur_x_plot, $this->db->FetchField("md"));
+			array_push($cur_x_plot, $this->db->FetchField("depth"));
 			$val = $this->db->FetchField("value");
 			$val *= $table_info['scalefactor'];
 			$val += $table_info['scalebias'] + $this->plotbias;
@@ -110,7 +111,10 @@ class SgtaModelingTab4 {
 			$x_plot = Array();
 			$y_plot = Array();
 			while($this->db2->FetchRow()){
-				array_push($x_plot, $this->db2->FetchField("md"));
+				array_push($x_plot, $this->db2->FetchField("depth"));
+				$val = $this->db->FetchField("value");
+				$val *= $this->db->FetchField('scalefactor');
+				$val += $this->db->FetchField('scalebias') + $this->plotbias;
 				array_push($y_plot, $this->db2->FetchField("value"));
 			}
 			$log = new PlotObject($x_plot,$y_plot);

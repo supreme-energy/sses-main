@@ -13,7 +13,7 @@
 	$controlbot = $db->FetchField("bot");
 	
 	
-	$graph_obj = new SgtaModelingTab4($_REQUEST,$tableid, $plotbias,$secttot);
+	$graph_obj = new SgtaModelingTab4($_REQUEST,$tableid, $plotbias,$secttot, $scaleright);
 ?>
 <script>
 var layout = {
@@ -31,7 +31,7 @@ var layout = {
 		  },
 		  yaxis: {
 			autorange: false,
-            range: [<?php echo $endmd + 10 ?>, <?php echo $startmd-10 ?>],
+            range: [ <?php echo $plotend ?>, <?php echo $plotstart ?>],
             tickangle: -45,
 			ticklen: 10,
 			tickmode: 'linear',
