@@ -14,6 +14,7 @@
 	
 	
 	$graph_obj = new SgtaModelingTab4($_REQUEST,$tableid, $plotbias,$secttot, $scaleright);
+
 ?>
 <script>
 var layout = {
@@ -31,7 +32,7 @@ var layout = {
 		  },
 		  yaxis: {
 			autorange: false,
-            range: [ <?php echo $plotend ?>, <?php echo $plotstart ?>],
+            range: [ <?php echo ($graph_obj->cur_depth_max + ($zoom*2))?>, <?php echo ($graph_obj->cur_depth_min - ($zoom*2)) ?>],
             tickangle: -45,
 			ticklen: 10,
 			tickmode: 'linear',
@@ -40,15 +41,15 @@ var layout = {
 	      },
 	      yaxis2:{
 			autorange: false,
-			range: [<?php echo $endtvd + 10 ?>,<?php echo $starttvd-10 ?>],
+			range: [<?php echo ($graph_obj->cur_tvd_max + ($zoom*2))?>, <?php echo ($graph_obj->cur_tvd_min - ($zoom*2)) ?>],
 			overlaying: 'y',
 			side: 'right'
 		  }
 		};
 var tcl = {
 		x: [0, <?php echo $scaleright?>],
-		y: [<?php echo $secttot ?>, <?php echo $secttot ?>],
-		axis: 'y2',
+		y: [<?php echo $graph_obj->cur_tcl ?>, <?php echo  $graph_obj->cur_tcl ?>],
+		yaxis: 'y2',
 		name: 'TCL',
 		line: {
 			color: 'black'
@@ -77,15 +78,22 @@ var data = [tcl]
 <?php foreach($graph_obj->addformplots as $log){?>
 data.push(<?php $log->to_js()?>)
 <?php }?>
-<?php foreach($graph_obj->wellogplots as $log){?>
-  data.push(<?php $log->to_js()?>)
-<?php }?>
+<?php 
+if($viewallds >= 1){
+foreach($graph_obj->wellogplots as $log){?>	
+	<?php 
+	
+	if ($viewallds==1 || ($log->min_md > ($startmd-$viewallds))){?>
+    data.push(<?php $log->to_js()?>)
+    <?php }?>
+<?php }
+}?>
 data.push(<?php echo $graph_obj->current_dataset->to_js()?>)
 data.push(<?php echo $graph_obj->control_log->to_js()?>)
 
 
 </script>
-<div id='well_log_plot' '></div>
+<div id='well_log_plot' style="<?php if($viewrotds>=1){ ?>transform: rotate(-90deg);<?php }?>"></div>
 <script>
 Plotly.newPlot('well_log_plot', data, layout);
 </script>

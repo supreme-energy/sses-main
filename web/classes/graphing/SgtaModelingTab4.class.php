@@ -1,10 +1,12 @@
 <?php
 
 class PlotObject {
-	function __construct($x,$y){
+	function __construct($x,$y,$max_md = 0,$min_md = 0){
 		$this->orientation= 'v';		
 		$this->x = $y;
 		$this->y = $x;
+		$this->max_md = $max_md;
+		$this->min_md = $min_md;
 	}
 	
 	function set_line_color($lc){
@@ -41,7 +43,7 @@ class PlotObject {
 		      x: ".'[' . implode(',', $this->x) . ']'.",
 		      type: 'scatter',
 		      showlegend: ". ($this->show_ledgend ? "true" : "false") .","
-		      .(isset($this->axis) ? "axis: '$this->axis',":"" ).
+		      .(isset($this->axis) ? "yaxis: '$this->axis',":"" ).
 		      "name: '".$this->name."',
 		      line: {
 			    color: '".$this->line_color."'
@@ -54,6 +56,11 @@ class SgtaModelingTab4 {
 		$this->db_name = $request['seldbname'];
 		$this->db=new dbio("$this->db_name");
 		$this->db->OpenDb();
+		$this->cur_depth_max = 0;
+		$this->cur_depth_min = 0;
+		$this->cur_tvd_max = 0;
+		$this->cur_tvd_min = 0;
+		$this->cur_tcl = 0;
 		$this->plotbias = $plotbias;
 		$this->secttot = $tcl;
 		$this->rightscale = $rightscale;
@@ -63,6 +70,7 @@ class SgtaModelingTab4 {
 		$this->addformplots = Array();
 		$this->prepare_visible_data_set_plot($tableid);
 		$this->prepare_addforms_plot();
+
 	}
 	
 	function prepare_control_log_plot(){
@@ -87,7 +95,18 @@ class SgtaModelingTab4 {
 		$cur_y_plot = Array();
 		$this->db->DoQuery("select * from welllogs where id = $tableid");
 		$table_info  = $this->db->FetchRow();
+		$this->cur_tcl = $this->db->FetchField('tot');
+		
+		$this->db->DoQuery("select max(depth) as maxdepth, min(depth) as mindepth, max(tvd) as maxtvd, min(tvd) as mintvd from wld_$tableid");
+		$this->db->FetchRow();
+
+		$this->cur_depth_max = $this->db->FetchField('maxdepth');
+		$this->cur_depth_min = $this->db->FetchField('mindepth');
+		$this->cur_tvd_max = $this->db->FetchField('maxtvd');
+		$this->cur_tvd_min = $this->db->FetchField('mintvd');
+
 		$this->db->DoQuery("Select * from wld_$tableid order by md;");
+		
 		while($this->db->FetchRow()){
 			array_push($cur_x_plot, $this->db->FetchField("depth"));
 			$val = $this->db->FetchField("value");
@@ -107,17 +126,19 @@ class SgtaModelingTab4 {
 		$this->db->DoQuery("select * from welllogs where tablename != 'wld_$tableid'");
 		while($this->db->FetchRow()){
 			$tablename = $this->db->FetchField('tablename');
+			
 			$this->db2->DoQuery("select * from $tablename order by md");
 			$x_plot = Array();
 			$y_plot = Array();
 			while($this->db2->FetchRow()){
 				array_push($x_plot, $this->db2->FetchField("depth"));
-				$val = $this->db->FetchField("value");
+				$val = $this->db2->FetchField("value");
 				$val *= $this->db->FetchField('scalefactor');
 				$val += $this->db->FetchField('scalebias') + $this->plotbias;
-				array_push($y_plot, $this->db2->FetchField("value"));
+				array_push($y_plot, $val);
 			}
-			$log = new PlotObject($x_plot,$y_plot);
+			
+			$log = new PlotObject($x_plot,$y_plot,$this->db->FetchField('endmd'),$this->db->FetchField('startmd'));
 			$log->set_line_color('#00008B');
 			$log->set_name($tablename);
 			$log->set_showledgend(false);
@@ -134,7 +155,7 @@ class SgtaModelingTab4 {
 			$infoid = $this->db->FetchField("id");
 			$this->db2->DoQuery("select thickness from addformsdata where infoid=$infoid order by md asc");
 			$this->db2->FetchRow();
-			$x = $this->secttot+$this->db2->FetchField("thickness");
+			$x = $this->cur_tcl+$this->db2->FetchField("thickness");
 			$log = new PlotObject(Array($x,$x),Array(0,300));
 			$log->set_line_color($this->db->FetchField("color"));
 			$log->set_name($this->db->FetchField("label"));
