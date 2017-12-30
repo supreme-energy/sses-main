@@ -1,60 +1,12 @@
 <?php
 
-class PlotObject {
-	function __construct($x,$y,$max_md = 0,$min_md = 0){
-		$this->orientation= 'v';		
-		$this->x = $y;
-		$this->y = $x;
-		$this->max_md = $max_md;
-		$this->min_md = $min_md;
-	}
-	
-	function set_line_color($lc){
-		$this->line_color = $lc;
-	}
-		
-	function set_showledgend($sl){
-		$this->show_ledgend = $sl;
-	}
-	
-	function set_name($name){
-		$this->name = $name;
-	}
-	
-	function set_orientation($o){
-		if($o != 'v' || $o !='h'){
-			return;
-		}
-		if($this->orientation!=$o){
-		  $this->orientation = $o;
-		  $temp_x = $this->x;
-		  $temp_y = $this->y;
-		  $this->x = $temp_y;
-		  $this->y = $temp_x;
-		}
-	}
-	
-	function set_axis($axis){
-		$this->axis = $axis;
-	}
-	function to_js(){
-		echo "{
-			  y: ".'[' . implode(',', $this->y) . ']'.",
-		      x: ".'[' . implode(',', $this->x) . ']'.",
-		      type: 'scatter',
-		      showlegend: ". ($this->show_ledgend ? "true" : "false") .","
-		      .(isset($this->axis) ? "yaxis: '$this->axis',":"" ).
-		      "name: '".$this->name."',
-		      line: {
-			    color: '".$this->line_color."'
-		      }}";
-	}
-}
+require_once "PlotObject.class.php";
 
 class SgtaModelingTab4 {
-	function __construct($request, $tableid,$plotbias,$tcl, $rightscale) {
+	function __construct($request, $tableid,$plotbias,$tcl, $rightscale, $no_ledgend = false) {
 		$this->db_name = $request['seldbname'];
 		$this->db=new dbio("$this->db_name");
+		$this->no_ledgends = !$no_ledgend;
 		$this->db->OpenDb();
 		$this->cur_depth_max = 0;
 		$this->cur_depth_min = 0;
@@ -70,6 +22,7 @@ class SgtaModelingTab4 {
 		$this->addformplots = Array();
 		$this->prepare_visible_data_set_plot($tableid);
 		$this->prepare_addforms_plot();
+		
 
 	}
 	
@@ -87,7 +40,7 @@ class SgtaModelingTab4 {
 		$this->control_log = new PlotObject($control_log_x,$control_log_y);
 		$this->control_log->set_line_color('#707070');
 		$this->control_log->set_name('Control');
-		$this->control_log->set_showledgend(false);
+		$this->control_log->set_showledgend(false && $this->no_ledgends);
 	}
 	
 	function prepare_current_data_plot($tableid){
@@ -117,7 +70,7 @@ class SgtaModelingTab4 {
 		$this->current_dataset = new PlotObject($cur_x_plot,$cur_y_plot);
 		$this->current_dataset->set_line_color( '#ff0000');
 		$this->current_dataset->set_name('Current');
-		$this->current_dataset->set_showledgend(false);
+		$this->current_dataset->set_showledgend(false && $this->no_ledgends);
 	}
 	
 	function prepare_visible_data_set_plot($tableid){
@@ -141,7 +94,7 @@ class SgtaModelingTab4 {
 			$log = new PlotObject($x_plot,$y_plot,$this->db->FetchField('endmd'),$this->db->FetchField('startmd'));
 			$log->set_line_color('#00008B');
 			$log->set_name($tablename);
-			$log->set_showledgend(false);
+			$log->set_showledgend(false && $this->no_ledgends);
 			array_push($this->wellogplots,$log);
 		}
 		$this->db2->CloseDb();
@@ -159,7 +112,7 @@ class SgtaModelingTab4 {
 			$log = new PlotObject(Array($x,$x),Array(0,300));
 			$log->set_line_color($this->db->FetchField("color"));
 			$log->set_name($this->db->FetchField("label"));
-			$log->set_showledgend(true);
+			$log->set_showledgend(true && $this->no_ledgends);
 			$log->set_axis('y2');
 			array_push($this->addformplots,$log);
 		}

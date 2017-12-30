@@ -23,6 +23,7 @@ include("readappinfo.inc.php");
 <head>
 <link rel="stylesheet" type="text/css" href="gva_tab5.css" />
 <title><?echo "$dbrealname";?>-GVA Wellbore<?echo " ($seldbname)";?></title>
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
 <?
@@ -59,7 +60,7 @@ include "apptabs.inc.php";
 <form action='splotconfigd.php' method='post'>
 <td>
 	<table class='buttons'>
-	<td> SGTA DMod:<input size'6' type='text' name='sgtadmod' value='<?echo $dmod?>' onchange="OnSubmit(this.form)"></td>
+	<td> SGTA DMod:<input size'6' type='text' name='sgtadmod' value='<?echo $dmod?>' onchange=""></td>
 	</table>
 </td>
 <td>
@@ -69,8 +70,8 @@ include "apptabs.inc.php";
 	<INPUT id='ptype' type='hidden' name='ptype' value='LAT'>
 	<INPUT id='mtype' type='hidden' name='mtype' value='TVD'>
 	<INPUT id='inputa' type='hidden' name='inputa' value='<?echo $inputa?>'>
-	<td> Min TVD: <input size='6' type='text' name='mintvd' value='<?echo $mintvd?>' onchange="OnSubmit(this.form)"> </td>
-	<td> Max TVD: <input size='6' type='text' name='maxtvd' value='<?echo $maxtvd?>' onchange="OnSubmit(this.form)"> </td>
+	<td> Min TVD: <input size='6' type='text' id='mintvd' name='mintvd' value='<?echo $mintvd?>' onchange="wellborePlotUpdate()"> </td>
+	<td> Max TVD: <input size='6' type='text' id='maxtvd' name='maxtvd' value='<?echo $maxtvd?>' onchange="wellborePlotUpdate()"> </td>
 	</table>
 </td>
 <td>
@@ -80,8 +81,8 @@ include "apptabs.inc.php";
 	<INPUT id='ptype' type='hidden' name='ptype' value='LAT'>
 	<INPUT id='mtype' type='hidden' name='mtype' value='TVD'>
 	<INPUT id='inputa' type='hidden' name='inputa' value='<?echo $inputa?>'>
-	<td> Min VS: <input size='6' type='text' name='minvs' value='<?echo $minvs?>' onchange="OnSubmit(this.form)"> </td>
-	<td> Max VS: <input size='6' type='text' name='maxvs' value='<?echo $maxvs?>' onchange="OnSubmit(this.form)"> </td>
+	<td> Min VS: <input size='6' type='text' id='minvs' name='minvs' value='<?echo $minvs?>' onchange="wellborePlotUpdate()"> </td>
+	<td> Max VS: <input size='6' type='text' id='maxvs' name='maxvs' value='<?echo $maxvs?>' onchange="wellborePlotUpdate()"> </td>
 	</table>
 </td>
 <td>
@@ -91,7 +92,7 @@ include "apptabs.inc.php";
 	<INPUT id='ptype' type='hidden' name='ptype' value='LAT'>
 	<INPUT id='mtype' type='hidden' name='mtype' value='TVD'>
 	<INPUT id='inputa' type='hidden' name='inputa' value='<?echo $inputa?>'>
-	<td> <? echo $uselogscale?'Resistivity':'Gamma'?> Scale: <input size='2' type='text' name='inputb' value='<?echo $yscale?>' onchange="OnSubmit(this.form)"> </td>
+	<td> <? echo $uselogscale?'Resistivity':'Gamma'?> Scale: <input size='2' id='gamma_scale' type='text' name='inputb' value='<?echo $yscale?>' onchange="addDataScaleUpdate()"> </td>
 	</table>
 </td>
 </form>
@@ -103,15 +104,17 @@ include "apptabs.inc.php";
 	<tr>
 	
 	<td style='padding: 0; background-color: white;' rowspan='2' >
-	<IMG style='display:<?php if($sgta_off){echo 'none';}else{echo 'inline';}?>' SRC='<?echo $fn5;?>'>
+	<!--  <IMG style='display:<?php if($sgta_off){echo 'none';}else{echo 'inline';}?>' SRC='<?echo $fn5;?>'> -->
+	<?php include "graph_partials/gva_tab5/left_sgta.php" ?>
 	</td>
 	
 	<td style='padding: 0; vertical-align: top;'>
-	<IMG SRC='<?echo $fn;?>'>
-	<br>
-	<IMG SRC='<?echo $fn4;?>'>
+	<!--<IMG SRC='<?echo $fn;?>'>-->
+	<?php include "graph_partials/gva_tab5/main_wellbore.php" ?>
+	<?php include "graph_partials/gva_tab5/additional_data.php" ?>
+	<!--<IMG SRC='<?echo $fn4;?>'>!-->
 	<?foreach ($additionlgraphs as $value){
-		echo "<br><IMG SRC='$value'>";
+		echo "<!--<br><IMG SRC='$value'> -->";
 	}?>
 	</td>
 <!--	<td style='padding: 0 4; vertical-align: top;'>

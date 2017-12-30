@@ -28,16 +28,13 @@ var layout = {
 		  xaxis: {
 			autorange: false,
 			range: [0,<?php echo $scaleright?>],
-			rangemode: 'nonnegative'
+			rangemode: 'nonnegative',
+			nticks: 50
 		  },
 		  yaxis: {
 			autorange: false,
             range: [ <?php echo ($graph_obj->cur_depth_max + ($zoom*2))?>, <?php echo ($graph_obj->cur_depth_min - ($zoom*2)) ?>],
-            tickangle: -45,
-			ticklen: 10,
-			tickmode: 'linear',
-			tick0: 0,
-			dtick: <?php echo $zoom ?>
+			nticks: 50
 	      },
 	      yaxis2:{
 			autorange: false,
@@ -95,5 +92,10 @@ data.push(<?php echo $graph_obj->control_log->to_js()?>)
 </script>
 <div id='well_log_plot' style="<?php if($viewrotds>=1){ ?>transform: rotate(-90deg);<?php }?>"></div>
 <script>
-Plotly.newPlot('well_log_plot', data, layout);
+Plotly.newPlot('well_log_plot', data, layout,{scrollZoom: true});
+var storeLayout = function(){
+	console.log('triggered');
+}
+var graphDiv = document.getElementById('well_log_plot')
+graphDiv.on('plotly_relayout', storeLayout);
 </script>

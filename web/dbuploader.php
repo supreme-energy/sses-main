@@ -53,7 +53,7 @@ elseif ($file->isMissing()) {
 $retstr=array(); $retval=0;
 if(strcasecmp($ext, "zip")==0) {
 	echo("Unzipping database archive...");
-	exec('unzip -p /tmp/pg_restore.backup.zip >/tmp/pg_restore.backup', &$retstr, &$retval);
+	exec('unzip -p /tmp/pg_restore.backup.zip >/tmp/pg_restore.backup', $retstr, $retval);
 	if ($retval!=0) {
 		echo "\n";
 		foreach($retstr as $rs) { echo "$rs\n"; }
@@ -84,7 +84,7 @@ if($id!="") {
 
 echo "\nRestoring database from backup...";
 $retstr=array(); $retval=0;
-exec("export PGPASSWORD=umsdata;psql -U umsdata -d $newdbname </tmp/pg_restore.backup", &$retstr, &$retval);
+exec("export PGPASSWORD=umsdata;psql -U umsdata -d $newdbname </tmp/pg_restore.backup", $retstr, $retval);
 if(count($retstr)<2) {
 	echo "ERROR: Invalid backup file: $real\n";
 	foreach($retstr as $rs) { echo "$rs\n"; }
