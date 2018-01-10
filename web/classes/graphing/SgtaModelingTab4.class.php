@@ -76,23 +76,52 @@ class SgtaModelingTab4 {
 	function prepare_visible_data_set_plot($tableid){
 		$this->db2=new dbio("$this->db_name");
 		$this->db2->OpenDb();
-		$this->db->DoQuery("select * from welllogs where tablename != 'wld_$tableid'");
+		$this->db->DoQuery("select * from welllogs order by startmd");
 		while($this->db->FetchRow()){
 			$tablename = $this->db->FetchField('tablename');
 			
 			$this->db2->DoQuery("select * from $tablename order by md");
 			$x_plot = Array();
 			$y_plot = Array();
+			$depth = Array();
+			$vs = Array();
+			$tvd = Array();
+			$md  = Array();
+			$ids = Array();
 			while($this->db2->FetchRow()){
-				array_push($x_plot, $this->db2->FetchField("depth"));
+				$d = $this->db2->FetchField("depth");
+				array_push($x_plot, $d);
 				$val = $this->db2->FetchField("value");
 				$val *= $this->db->FetchField('scalefactor');
 				$val += $this->db->FetchField('scalebias') + $this->plotbias;
 				array_push($y_plot, $val);
+				array_push($depth, $this->db2->FetchField("depth"));
+				array_push($vs, $this->db2->FetchField("vs")); 
+				array_push($md, $this->db2->FetchField("md"));
+				array_push($tvd, $this->db2->FetchField("tvd"));
+				array_push($ids, $this->db2->FetchField("id"));
 			}
 			
 			$log = new PlotObject($x_plot,$y_plot,$this->db->FetchField('endmd'),$this->db->FetchField('startmd'));
-			$log->set_line_color('#00008B');
+			$log->ids = $ids;
+			$log->tvd = $tvd;
+			$log->md  = $md;
+			$log->vs = $vs;
+			$log->tableid = $this->db->FetchField('id');
+			$log->filename = $this->db->FetchField('realname');
+			$log->depth = $depth;
+			$log->fault = $this->db->FetchField('fault');
+			$log->dip   = $this->db->FetchField('dip');
+			$log->bias  = $this->db->FetchField('scalebias');
+			$log->factor = $this->db->FetchField('scalefactor');
+			if("wld_$tableid" == $tablename){
+			  $log->set_line_color( '#ff0000');
+			  $log->current_sel = true;
+			} else {
+			  $log->set_line_color('#00008B');
+			}
+			$log->min_tvd = $this->db->FetchField('starttvd');
+			$log->max_tvd = $this->db->FetchField('endtvd');
 			$log->set_name($tablename);
 			$log->set_showledgend(false && $this->no_ledgends);
 			array_push($this->wellogplots,$log);

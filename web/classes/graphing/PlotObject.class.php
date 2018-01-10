@@ -4,13 +4,27 @@ class PlotObject {
 		$this->orientation= 'v';		
 		$this->x = $y;
 		$this->y = $x;
+		$this->ids = Array();
+		$this->md  = Array();
+		$this->tvd = Array();
+		$this->vs  = Array();
+		$this->detph = Array();
+		$this->tableid  = '';
+		$this->filename ='';
+		$this->fault = 0;
+		$this->dip = 0;
+		$this->bias = 0;
+		$this->factor = 0;
 		$this->max_md = $max_md;
 		$this->min_md = $min_md;
 		$this->max_v = 0;
 		$this->min_v = 0;
+		$this->max_tvd = 0;
+		$this->min_tvd = 0;
 		$this->fillcolor = false;
 		$this->custom_marker = false;
 		$this->filltype = 'tonexty';
+		$this->current_sel = false;
 	}
 	
 	function set_line_color($lc){
@@ -90,8 +104,21 @@ class PlotObject {
 		echo "{
 			  y: ".'[' . implode(',', $this->y) . ']'.",
 		      x: ".'[' . implode(',', $this->x) . ']'.",
+		      ids: ".'['.implode(',', $this->ids) .']'.",
+		      tvd:".'['.implode(',', $this->tvd) .']'.",
+		      vs: ".'['.implode(',', $this->vs) .']'.",
+		      md: ".'['.implode(',', $this->md) .']'.",
+		      tableid: '".$this->tableid."',
 		      type: 'scatter',
-		      hoverinfo: 'none', 
+		      hoverinfo: 'none',
+		      min_tvd: $this->min_tvd,
+		      max_tvd: $this->max_tvd,
+		      fault: $this->fault,
+		      dip: $this->dip,
+		      bias: $this->bias,
+		      factor: $this->factor,
+		      filename: '".$this->filename."',
+		      current_sel: ".($this->current_sel ? "true" : "false").",
 		      showlegend: ". ($this->show_ledgend ? "true" : "false") .","
 		      .(isset($this->axis) ? "yaxis: '$this->axis',":"" ).
 		      "name: '".$this->name."',

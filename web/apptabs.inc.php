@@ -36,7 +36,7 @@ $tablinks[]="gva_tab8.php";
 if ($userlevel == 'ADMIN') $tablinks[]="gva_admin.php";
 if ($userlevel == 'SUPER_USER') $tablinks[]="gva_suadmin.php";
 ?>
-<table class='tabs'>
+<table class='tabs' onmouseover="window.onwheel = function(){return true;}">
 	<tr>
 <?php
 for($i=0;$i<count($tabnames);$i++) {

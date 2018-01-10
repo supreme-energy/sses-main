@@ -516,551 +516,11 @@ $timelog[] = array(microtime(),'right before html, timelapse = ' . $timelapse);
 <title><?php echo "$dbrealname"; ?>-SGTA Editor<?php echo " ($seldbname)"; ?></title>
 <script language='javascript' type='text/javascript' src='waitdlg.js'></script>
 <script language='javascript'>
-var scrllcnt=0;
-var gdist=0;
-function Init(viewrotds,stop,sleft,freeeze) {
-	var freeze=parseInt(document.pointform.dscache_freeze.value);
-	if(viewrotds>0) document.getElementById('div1').scrollLeft=sleft;
-	else document.getElementById('div1').scrollTop=stop;
-	//alert('viewrotds=' + viewrotds + ' stop=' + stop + ' sleft=' + sleft + ' freeze=' + freeze);
-	
-	if(freeze<=0) {
-		var scrolltop=document.getElementById("div1").scrollTop;
-		var scrollleft=document.getElementById("div1").scrollLeft;
-		var plotstart=document.pointform.plotstart.value;
-		var plotend=document.pointform.plotend.value;
-		var pheight=document.getElementById("clickimage").height;
-		var dist=0.0;
-		if(viewrotds>0) {
-			dist=(plotend-plotstart)/pheight*(scrollleft-885);
-			dist=dist+parseFloat(document.pointform.dspoffset.value);
-			if(document.getElementById("dbgscrolltop")!=undefined)
-				document.getElementById("dbgscrolltop").value=scrollleft.toFixed(0);
-		} else {
-			dist=(plotend-plotstart)/pheight*(scrolltop-885);
-			dist=dist+parseFloat(document.pointform.dspoffset.value);
-			if(document.getElementById("dbgscrolltop")!=undefined)
-				document.getElementById("dbgscrolltop").value=scrolltop.toFixed(0);
-		}
-		gdist=dist	
-		if(document.getElementById("dbgscrolldist")!=undefined)
-			document.getElementById("dbgscrolldist").value=-dist.toFixed(2);
-		showProposedFault();	
-	}
-}
 
-function scrollAction(div){
-	if(scrllcnt>0){
-		console.log('scrolling');
-		var viewrotds=parseInt(document.pointform.viewrotds.value);
-		var freeze=parseInt(document.pointform.dscache_freeze.value);
-		scrolltop  = div.scrollTop;
-		scrollleft = div.scrollLeft;
-		var plotstart=document.pointform.plotstart.value;
-		var plotend=document.pointform.plotend.value;
-		var pheight=document.getElementById("clickimage").height;
-		var scrolltopin = document.getElementById('scrolltop_input');
-		var scrollleftin = document.getElementById('scrollleft_input');
-		//scrollleftin = scrollleft;
-		//scrolltopin.value = scrolltop;
-		if(freeze<=0){
-			var dist=0.0;
-			if(viewrotds>0) {
-				dist=(plotend-plotstart)/pheight*(scrollleft-885);
-				document.getElementById("dbgscrolltop").value=scrollleft.toFixed(0);
-			} else {
-				dist=(plotend-plotstart)/pheight*(scrolltop-885);
-				document.getElementById("dbgscrolltop").value=scrolltop.toFixed(0);
-			}		
-			showProposedFault();
-		} 
-	}
-	scrllcnt++;
-}
-
-function SetScroll(rowform)
-{
-	rowform.scrolltop.value=document.getElementById("div1").scrollTop;
-	rowform.scrollleft.value=document.getElementById("div1").scrollLeft;
-	//alert('scrollTop=' + rowform.scrollTop.value + ' scrollLeft=' + rowform.scrollLeft.value);
-}
-function ClearScroll(rowform){
-	rowform.scrolltop.value='';
-	rowform.scrollleft.value='';
-}
-function OnLasImport(rowform)
-{
-	SetScroll(rowform);
-	t = 'welllogfilesel.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function OnRotateDS(rowform) {
-	if(rowform.viewrotds.value==0) {
-		rowform.scrollleft.value=document.getElementById("div1").scrollTop;
-		rowform.scrolltop.value=document.getElementById("div1").scrollLeft;
-		rowform.viewrotds.value="1";
-	}
-	else {
-		rowform.scrolltop.value=document.getElementById("div1").scrollLeft;
-		rowform.scrollleft.value=document.getElementById("div1").scrollTop;
-		rowform.viewrotds.value="0";
-	}
-	t = 'setview.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function OnViewDS(rowform) {
-	SetScroll(rowform);
-	t = 'setview.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function OnDeleteDS()
-{
-	var r=confirm("Delete this data set?");
-	if (r==true)
- 	{
-		t = 'welllogdel.php';
-		t = encodeURI (t);
-		document.deleteds.action = t;
-		document.deleteds.submit();
-		return ray.ajax();
- 	}
-}
-function plotbiasupdown (rowform, val) {
-	rowform.plotbias.value=parseFloat(rowform.plotbias.value)+parseFloat(val);
-	SetScroll(rowform);
-	OnSetPlotCfg(rowform);
-}
-function OnSetPlotCfg(rowform)
-{
-	SetScroll(rowform);
-	t = 'setplotcfg.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function OnLogScale(rowform)
-{
-	SetScroll(rowform);
-	var ischecked = document.getElementById("lscb").checked;
-	if(ischecked==true) rowform.uselogscale.value='1';
-	else rowform.uselogscale.value='0';
-	t = 'setplotcfg.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function setzoomto (rowform, val) {
-	SetScroll(rowform);
-	rowform.zoom.value=val;
-	t = 'setzoom.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function setzoom (rowform) {
-	SetScroll(rowform);
-	rowform.zoom.value=rowform.zoomtext.value;
-	t = 'setzoom.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-
-function showvalue(event,el){
-  var top = 0, left = 0; 
-  if (!event) { event = window.event; } 
-  var myTarget = event.currentTarget; 
-  if (!myTarget) { 
-   myTarget = event.srcElement; 
-  } 
-  else if (myTarget == "undefined") { 
-   myTarget = event.srcElement; 
-  } 
-  while(myTarget!= document.body) { 
-     top += myTarget.offsetTop; 
-     left += myTarget.offsetLeft; 
-     myTarget = myTarget.offsetParent; 
-  } 
-
-	pos_x = (event.offsetX?(event.offsetX):event.pageX);
-	pos_y = (event.offsetY?(event.offsetY):event.pageY);
-	pos_x -= left;
-	pos_y -= top;
-
-	var plotstart=document.pointform.plotstart.value;
-	var plotend=document.pointform.plotend.value;
-	var scaleright=document.pointform.scaleright.value;
-	var pheight=document.getElementById("clickimage").height;
-	var pwidth=document.getElementById("clickimage").width;
-
-	pos_y+=document.getElementById("div1").scrollTop;
-	pos_x+=document.getElementById("div1").scrollLeft;
-
-	var rot=document.pointform.viewrotds.value;
-	var depth, value;
-	if(rot>=1) {
-		// take off gnuplot margin
-		pos_y-=16; pheight-=32;
-		depth=(pos_x*(plotend-plotstart)/pwidth)+parseFloat(plotstart);
-		value=scaleright-(pos_y*(scaleright/pheight));
-	}
-	else {
-		// take off gnuplot margin
-		pos_x-=16; pwidth-=32;
-		depth=(pos_y*(plotend-plotstart)/pheight)+parseFloat(plotstart);
-		value=pos_x*(scaleright/pwidth);
-	}
-	// scrolltop=document.getElementById("div1").scrollTop;
-	document.getElementById("dbgdepth").value=depth.toFixed(2);
-}
-
-function getpoint(event,el){
-  var top = 0, left = 0; 
-  if (!event) { event = window.event; } 
-  var myTarget = event.currentTarget; 
-  if (!myTarget) { 
-   myTarget = event.srcElement; 
-  } 
-  else if (myTarget == "undefined") { 
-   myTarget = event.srcElement; 
-  } 
-  while(myTarget!= document.body) { 
-     top += myTarget.offsetTop; 
-     left += myTarget.offsetLeft; 
-     myTarget = myTarget.offsetParent; 
-  } 
-
-	pos_x = (event.offsetX?(event.offsetX):event.pageX);
-	pos_y = (event.offsetY?(event.offsetY):event.pageY);
-	pos_x -= left;
-	pos_y -= top;
-
-	var plotstart=document.pointform.plotstart.value;
-	var plotend=document.pointform.plotend.value;
-	var scaleright=document.pointform.scaleright.value;
-	var pheight=document.getElementById("clickimage").height;
-	var pwidth=document.getElementById("clickimage").width;
-
-	pos_y+=document.getElementById("div1").scrollTop;
-	pos_x+=document.getElementById("div1").scrollLeft;
-	// document.getElementById("dbgdepth").value=pos_y;
-
-	var rot=document.pointform.viewrotds.value;
-	var depth, value;
-	if(rot>=1) {
-		depth=(pos_x*(plotend-plotstart)/pwidth)+parseFloat(plotstart);
-		value=pos_y*(scaleright/pheight);
-	}
-	else {
-		depth=(pos_y*(plotend-plotstart)/pheight)+parseFloat(plotstart);
-		value=pos_x*(scaleright/pwidth);
-	}
-
-	document.pointform.scrolltop.value=document.getElementById("div1").scrollTop;
-	document.pointform.scrollleft.value=document.getElementById("div1").scrollLeft;
-	document.pointform.depth.value=depth;
-	document.pointform.val.value=value;
-	document.pointform.setflag.value=1;
-
-	// alert("depth: " + depth);
-	document.getElementById("dbgdepth").value=depth.toFixed(2);
-	// document.getElementById("dbgdepth").value=pos_x;
-
-	if( document.pointform.editmode.value=="align" ) {
-		document.pointform.val.value="";
-		t = 'gva_tab4.php';
-		t = encodeURI (t);
-		document.pointform.action = t;
-		document.pointform.submit();
-		return ray.ajax();
-	}
-	else if( document.pointform.editmode.value=="trim" ) {
-		document.pointform.val.value="";
-		t = 'gva_tab4.php';
-		t = encodeURI (t);
-		document.pointform.action = t;
-		document.pointform.submit();
-		return ray.ajax();
-	}
-	else {
-		var topsel=document.pointform.dsseltop.value;
-		var botsel=document.pointform.dsselbot.value;
-		if(topsel>botsel) {
-			var t=topsel;
-			topsel=botsel;
-			botsel=t;
-		}
-		if( depth>=topsel && depth<=botsel ) {
-			t = 'gva_tab4.php';
-			t = encodeURI (t);
-			document.pointform.action = t;
-			document.pointform.submit();
-			return true;
-		}
-		else {
-			document.pointform.editmode.value="search";
-			document.pointform.scrolltop.value="";
-			document.pointform.scrollleft.value="";
-			t = 'gva_tab4.php';
-			t = encodeURI (t);
-			document.pointform.action = t;
-			document.pointform.submit();
-			return true;
-		}
-	}
-}
-function directInput(rowform) {
-	var topsel=document.directinput.dsseltop.value;
-	var botsel=document.directinput.dsselbot.value;
-	var depth=rowform.depth.value;
-	if(topsel>botsel) {
-		var t=topsel;
-		topsel=botsel;
-		botsel=t;
-	}
-	if( depth>=topsel && depth<=botsel ) {
-		t = 'gva_tab4.php';
-		t = encodeURI (t);
-		document.directinput.action = t;
-		document.directinput.submit();
-		return true;
-	}
-	else {
-		document.directinput.editmode.value="search";
-		document.directinput.scrolltop.value="";
-		document.directinput.scrollleft.value="";
-		t = 'gva_tab4.php';
-		t = encodeURI (t);
-		document.directinput.action = t;
-		document.directinput.submit();
-		return true;
-	}
-}
-function setTrimMode() {
-	if(document.pointform.editmode.value!="trim") {
-		document.pointform.editmode.value="trim";
-		document.getElementById("btntrim").value="Click To Turn Trim Off";
-		alert("Trim mode ON\nClick the depth to trim the data section to...");
-	}
-	else {
-		document.pointform.editmode.value="";
-		document.getElementById("btntrim").value="Trim Section";
-	}
-}
-function setAlignMode() {
-	if(document.pointform.editmode.value!="align") {
-		document.pointform.editmode.value="align";
-		document.getElementById("btnalign").value="Click To Turn Alignment Off";
-		alert("Align mode is ON\nClick on a depth to align the selected point to...\n");
-	}
-	else {
-		document.pointform.editmode.value="";
-		document.getElementById("btnalign").value="Align Welllog";
-	}
-}
-// MARK: Here is where we calculate how far the data has been scrolled
-// MARK: giving us a "fault" value to use
-function showProposedFault() {
-	var freeze=parseInt(document.pointform.dscache_freeze.value);
-	
-	var lastdist = gdist*-1;
-	var dist=0.0;
-	if(freeze==0) {
-		var viewrotds=parseInt(document.pointform.viewrotds.value);
-		var plotstart=document.pointform.plotstart.value;
-		var plotend=document.pointform.plotend.value;
-		var pheight=document.getElementById("clickimage").height;
-		var pwidth=document.getElementById("clickimage").width;
-		var scrolltop=document.getElementById("div1").scrollTop;
-		var scrollleft=document.getElementById("div1").scrollLeft;
-		var scrollwidth=document.getElementById("div1").scrollWidth;
-		if(viewrotds>0) dist=(plotend-plotstart)/pwidth*(scrollleft-885)*-1;
-		else dist=(plotend-plotstart)/pheight*(scrolltop-885)*-1;
-		dist=dist-parseFloat(document.pointform.dspoffset.value);
-	} else {
-		dist=document.pointform.dscache_fault.value;
-	}
-	console.log('last dist:'+lastdist);
-	console.log('new dist:'+dist);
-	gdist = dist*-1;
-	
-	if(document.getElementById("dbgscrollfault")!=undefined){
-		var dbfault=document.getElementById("dbgscrollfault").value;
-		var fault=parseFloat(dbfault)+(dist-lastdist);
-		document.getElementById("dbgscrollfault").value=fault.toFixed(2);
-	}
-	return dist;
-}
-function showdistance(event,el) {
-	var viewrotds=parseInt(document.pointform.viewrotds.value);
-	var freeze=parseInt(document.pointform.dscache_freeze.value);
-	var plotstart=document.pointform.plotstart.value;
-	var plotend=document.pointform.plotend.value;
-	var pheight=document.getElementById("clickimage").height;
-	var scrolltop=document.getElementById("div1").scrollTop;
-	var scrollleft=document.getElementById("div1").scrollLeft;
-	var scrollwidth=document.getElementById("div1").scrollWidth;
-
-	//alert('freeze=' + freeze + ' plotstart=' + plotstart + ' plotend=' + plotend + ' pheight=' + pheight +
-	//	' scrolltop=' + scrolltop + ' scrollwidth=' + scrollwidth);
-
-	if(freeze==0) {
-		if(viewrotds>0) var dist=(plotend-plotstart)/pheight*(scrollleft-885);
-		else var dist=(plotend-plotstart)/pheight*(scrolltop-885);
-		if(viewrotds<=0)
-			dist=dist+parseFloat(document.pointform.dspoffset.value);
-		if(document.getElementById("dbgscrolldist")!=undefined)
-			document.getElementById("dbgscrolldist").value=-dist.toFixed(2);
-	}
-	showProposedFault();
-	if(viewrotds>0) document.getElementById("dbgscrolltop").value=scrollleft.toFixed(0);
-	else document.getElementById("dbgscrolltop").value=scrolltop.toFixed(0);
-}
-function setdscache (rowform, param, val) {
-	if(param=="dip") {
-		var t = parseFloat(rowform.dscache_dip.value);
-		t+=val;
-		if(t<-89.9) t=-89.9;
-		if(t>89.9)	t=89.9;
-		rowform.dscache_dip.value=t;
-	}
-	if(param=="bias") {
-		var t = parseFloat(rowform.dscache_bias.value);
-		t+=val;
-		rowform.dscache_bias.value=t;
-	}
-	if(param=="scale") {
-		var t = parseFloat(rowform.dscache_scale.value);
-		t+=val;
-		rowform.dscache_scale.value=t;
-	}
-	if(param=="freeze") {
-		if(rowform.freeze.checked==1) {
-			faultmod = <?php echo $dbfault?>;
-			//alert('faultmod=' + faultmod);
-			scrlldiv= document.getElementById('div1')
-			SetScroll(rowform);
-			rowform.dscache_md.value=rowform.endmd.value;
-			rowform.dscache_freeze.value="1";
-			var dist=showProposedFault();
-			rowform.dscache_fault.value=(document.getElementById("dbgscrollfault").value-faultmod);
-			rowform.dsholdfault.value='0';
-		} else {
-			rowform.dscache_freeze.value="0";
-			if(rowform.dsholdfault.value<=0){
-				rowform.dscache_fault.value ="0";
-				SetScroll(rowform);
-			} 
-		}
-	}
-	if(param=='reset'){
-		rowform.dscache_freeze.value="0";
-		rowform.dscache_fault.value="0";
-		ClearScroll(rowform);
-	}
-	if(param=='holdfault'){
-		if(rowform.holdfault.checked==1){
-			rowform.dsholdfault.value=document.getElementById("div1").scrollTop;
-		} else {
-			rowform.dsholdfault.value='0';
-		}
-	}
-	t = 'setdscache.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-function savedscache(bDoFault) {
-	var rowform=document.getElementById("savedscache");
-	SetScroll(rowform);
-	var freeze=parseInt(document.pointform.dscache_freeze.value);
-	var dbfault=document.pointform.dbfault.value;
-	var dist=document.pointform.dscache_fault.value;
-	var fault=parseFloat(dbfault)+parseFloat(dist);
-	rowform.dscache_fault.value=fault.toFixed(3);
-	var str="Save shadow dip value of "+rowform.dscache_dip.value+"\n";
-	if(bDoFault==1) {
-		str+="and fault to "+rowform.dscache_fault.value+"\n";
-	}
-	else rowform.dscache_fault.value="";
-	str+="to "+rowform.viewdspcnt.value+" data sets\n";
-	str+="starting at depth "+rowform.dscache_md.value+"\n\n";
-	str+="Are you sure you want to do this?";
-	var r=confirm(str);
-	if(r!=true) return;
-	SetScroll(rowform);
-	t = 'savedscache.php';
-	t = encodeURI (t);
-	rowform.action = t;
-	rowform.submit();
-	return ray.ajax();
-}
-
-function dipupdown (rowform, val) {
-	SetScroll(rowform);
-	var t = parseFloat(rowform.sectdip.value);
-	t+=val;
-	if(t<-89.9) t=-89.9;
-	if(t>89.9)	t=89.9;
-	rowform.sectdip.value=t;
-	setdscfg(rowform);
-}
-function faultupdown (rowform, val) {
-	SetScroll(rowform);
-	var t = parseFloat(rowform.sectfault.value);
-	t+=val;
-	rowform.sectfault.value=t;
-	setdscfg(rowform);
-}
-function biasupdown (rowform, val) {
-	SetScroll(rowform);
-	rowform.bias.value=parseFloat(rowform.bias.value)+parseFloat(val);
-	setdscfg(rowform);
-}
-function scaleupdown (rowform, val) {
-	SetScroll(rowform);
-	var t = parseFloat(rowform.factor.value);
-	t+=val;
-	if(t<0) t=0;
-	if(t>100)	t=100;
-	rowform.factor.value=t;
-	setdscfg(rowform);
-}
-function setdscfg (rowform) {
-	if(rowform) {
-		SetScroll(rowform);
-		t = 'setdscfg.php';
-		t = encodeURI (t);
-		rowform.action = t;
-		rowform.submit();
-		return ray.ajax();
-	} else {
-		rowform = document.getElementById('dipform');
-		t = 'setdscfg.php';
-		t = encodeURI (t);
-		rowform.action = t;
-		rowform.submit();
-		return ray.ajax();
-	}
-}
 </script>
 </head>
 <?php
-echo "<body onload='Init($viewrotds,$scrolltop,$scrollleft)'>";
+echo "<body>";
 $timelog[] = array(microtime(),'right after the body');
 $maintab=3;
 include 'apptabs.inc.php';
@@ -1089,26 +549,10 @@ include 'waitdlg.html';
 MARK: Here is where we use the background image generated from above
 -->
 <?php
-if($dscache_freeze > 0)
-{
-	echo "	<div class='tableContainer' id='div1' style='background-color:white' " .
-		"onmouseup='showdistance(event,this)'>\n";
-}
-else
-{
-	echo "	<div class='tableContainer' id='div1' style=\"background-color:white";
-	if($fn2 != '') echo ";background: url('{$fn2}?{$random}') no-repeat";
-	echo "\" onmouseup='showdistance(event,this)' onscroll='scrollAction(this)'>\n";
-}
+
 $timelog[] = array(microtime(),'before the chart');
 ?>
 	<table border='0' cellpadding='0' cellspacing='0'>
-	
-<?php if($dscache_freeze > 0 and $fn2 != '') { ?>
-	<tbody class='scrollContent' STYLE='background: url(<?php echo "$fn2?$random"?>) no-repeat center center;'>
-<?php } else { ?>
-	<tbody class="scrollContent">
-<?php } ?>
 		<tr>
 		<td>
 		<input type='hidden' name='ret' value='gva_tab4.php'>
@@ -1132,12 +576,7 @@ $timelog[] = array(microtime(),'before the chart');
 		<input type='hidden' name='dscache_fault' value='<?php echo $dscache_fault?>'>
 		<input type='hidden' name='dscache_freeze' value='<?php echo $dscache_freeze?>'>
 <?php
-	if($tableid > 0 and $endmd > 0 and $fn != '') {
-		echo "		<img id='clickimage' src='{$fn}?{$random}' onmouseup='showvalue(event, this)' " .
-			"onclick='getpoint(event, this)'>\n";
-	} else {
-		echo "		<h1>No well log data found ($tableid,$endmd,$fn)</h1>\n";
-	}
+	
 ?>
 		</td>
 		</tr>
@@ -1146,13 +585,12 @@ $timelog[] = array(microtime(),'before the chart');
 <?php
 $timelog[] = array(microtime(),'after the chart');
 ?>
-	</div> <!-- end of div class tablecontainer -->
-	</div> <!-- end of div class transbox -->
+
 	</form> <!-- end of pointform --> 
-	<?php include 'sgta_modeling_gva_tab4.php' ?> 
+	<?php include 'graph_partials/gva_tab4/sgta_main.php' ?> 
 </td>
 
-<td class="container" align='left'>
+<td class="container" align='left' onmouseover="window.onwheel = function(){return true;}">
 	<table class="settings">
 	<tr><th colspan='5' class='header'>Data Sections - <?php echo $wellname; ?></th></tr>
 	<tr>
@@ -1160,72 +598,16 @@ $timelog[] = array(microtime(),'after the chart');
 		<table style='font-size: 1em; width: 100%;'>
 		<tr>
 		<td>
-			<FORM action='changeds.php' method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-			<input type='hidden' name='startmd' value='<?php echo $startmd?>'>
-			<input type='hidden' name='endmd' value='<?php echo $endmd?>'>
-			<input type='hidden' name='zoom' value='<?php echo $zoom; ?>'>
-			<input type='hidden' name='dir' value='first'>
-			<INPUT type="submit" value="First">
-			</FORM>
+			<INPUT type="submit" value="First" onclick="firstDataSet()">
 		</td>
 		<td>
-			<FORM action='changeds.php' method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-			<input type='hidden' name='startmd' value='<?php echo $startmd?>'>
-			<input type='hidden' name='endmd' value='<?php echo $endmd?>'>
-			<input type='hidden' name='zoom' value='<?php echo $zoom; ?>'>
-			<input type='hidden' name='dir' value='prev'>
-			<input type='hidden' name='sgtastart' value='<?php echo $sgtastart?>'>
-			<input type='hidden' name='sgtaend' value='<?php echo $sgtaend?>'>
-			<input type='hidden' name='sgtacutin' value='<?php echo $sgtacutin?>'>
-			<input type='hidden' name='sgtacutoff' value='<?php echo $sgtacutoff?>'>
-			<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-			<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-			<input type='hidden' name='plotstart' value='<?php echo $plotstart?>'>
-			<input type='hidden' name='plotend' value='<?php echo $plotend?>'>
-			<INPUT type="submit" value="Prev" onclick='SetScroll(this.form)'>
-			</FORM>
+			<INPUT type="submit" value="Prev" onclick='prevDataSet()'>
 		</td>
 		<td>
-			<FORM action='changeds.php' method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-			<input type='hidden' name='startmd' value='<?php echo $startmd?>'>
-			<input type='hidden' name='endmd' value='<?php echo $endmd?>'>
-			<input type='hidden' name='zoom' value='<?php echo $zoom; ?>'>
-			<input type='hidden' name='dir' value='next'>
-			<input type='hidden' name='sgtastart' value='<?php echo $sgtastart?>'>
-			<input type='hidden' name='sgtaend' value='<?php echo $sgtaend?>'>
-			<input type='hidden' name='sgtacutin' value='<?php echo $sgtacutin?>'>
-			<input type='hidden' name='sgtacutoff' value='<?php echo $sgtacutoff?>'>
-			<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-			<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-			<input type='hidden' name='plotstart' value='<?php echo $plotstart?>'>
-			<input type='hidden' name='plotend' value='<?php echo $plotend?>'>
-			<INPUT type="submit" value="Next" onclick='SetScroll(this.form)'>
-			</FORM>
+			<INPUT type="submit" value="Next" onclick='nextDataSet()'>
 		</td>
 		<td>
-			<FORM action='changeds.php' method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-			<input type='hidden' name='startmd' value='<?php echo $startmd?>'>
-			<input type='hidden' name='endmd' value='<?php echo $endmd?>'>
-			<input type='hidden' name='zoom' value='<?php echo $zoom; ?>'>
-			<input type='hidden' name='dir' value='last'>
-			<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-			<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-			<input type='hidden' name='plotstart' value='<?php echo $plotstart?>'>
-			<input type='hidden' name='plotend' value='<?php echo $plotend?>'>
-			<INPUT type="submit" value="Last" onclick='SetScroll(this.form);'>
-			</FORM>
+			<INPUT type="submit" value="Last" onclick='lastDataSet()'>
 		</td>
 		<td align='right'>
 			<FORM method="post">
@@ -1244,22 +626,22 @@ $timelog[] = array(microtime(),'after the chart');
 			<table class='header' style='width: 100%;'>
 			<tr>
 			<th class='header'> </th>
-			<th class='header' colspan='4'> <b>File:</b><?php echo " $realname ($tablename)"; ?> </th>
+			<th class='header' colspan='4'> <b>File:</b><span id='realname_tablename'><?php echo " $realname "; ?><?php echo "($tablename)"; ?></span></th>
 			</tr> <tr>
 			<td class='header'><b>MD:</b></td>
-			<td class='header'> <?php printf("%9.2f", $startmd); ?> </td>
+			<td class='header' id='md_start_disp'> <?php printf("%9.2f", $startmd); ?> </td>
 			<td class='toheader'><b>to</b></td>
-			<td class='header'> <?php printf("%9.2f", $endmd); ?> </td>
+			<td class='header'  id='md_end_disp'> <?php printf("%9.2f", $endmd); ?> </td>
 			</tr> <tr>
 			<td class='header'><b>TVD:</b></td>
-			<td class='header'> <?php printf("%9.2f", $starttvd); ?> </td>
+			<td class='header'  id='tvd_start_disp'> <?php printf("%9.2f", $starttvd); ?> </td>
 			<td class='toheader'><b>to</b></td>
-			<td class='header'> <?php printf("%9.2f", $endtvd); ?> </td>
+			<td class='header'  id='tvd_end_disp'> <?php printf("%9.2f", $endtvd); ?> </td>
 			</tr> <tr>
 			<td class='header'><b>VS:</b></td>
-			<td class='header'> <?php printf("%9.2f", $startvs); ?> </td>
+			<td class='header'  id='vs_start_disp'> <?php printf("%9.2f", $startvs); ?> </td>
 			<td class='toheader'><b>to</b></td>
-			<td class='header'> <?php printf("%9.2f", $endvs); ?> </td>
+			<td class='header' id='vs_end_disp'> <?php printf("%9.2f", $endvs); ?> </td>
 			</tr> <tr>
 			<td class='header'><b>TOT/BOT:</b></td>
 			<td class='header'> <?php printf("%9.2f", $secttot); ?> </td>
@@ -1272,12 +654,7 @@ $timelog[] = array(microtime(),'after the chart');
 
 		<tr>
 		<td colspan='3' class="container" align='right'>
-			<FORM action='changeds.php' method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='dir' value='directmd'>
-			Go to dataset at <input type='text' size='4' name='startmd' value=''> MD
-			</FORM>
+			Go to dataset at <input type='text' size='4' id='gotodatasetat' name='startmd' value='' onchange='goToDataSetAt()'> MD
 		</td>
 		</tr>
 
@@ -1300,14 +677,14 @@ $timelog[] = array(microtime(),'after the chart');
 			<input type='hidden' name='sgtacutoff' value='<?php echo $endmd?>'>
 			<input type="radio" name='viewallds' value='<?php
 				if($viewallds<=1) echo "500"; else echo $viewallds; ?>' <?php
-				if($viewallds>1) echo " checked='true';"?> onclick="OnViewDS(this.form)">View previous 
-			<input type='text' size='7' name='viewallds' value='<?php
+				if($viewallds>1) echo " checked='true';"?> onclick="viewPreviousXMD()">View previous 
+			<input type='text' size='7' id='viewallprevval' name='viewallds' value='<?php
 				if($viewallds<=1) echo "500"; else echo $viewallds; ?>' <?php
-				if($viewallds<=1) echo "readonly='true'"; ?> onchange="OnViewDS(this.form)"> MD<br>
+				if($viewallds<=1) echo "readonly='true'"; ?> onchange="viewPreviousXMD()"> MD<br>
 			<input type="radio" name='viewallds' value='1' <?php
-				if($viewallds==1) echo " checked='true'"?> onclick="OnViewDS(this.form)">View All Datasets<br>
+				if($viewallds==1) echo " checked='true'"?> onclick="viewAll(true)">View All Datasets<br>
 			<input type="radio" name='viewallds' value='0' <?php
-				if($viewallds==0) echo " checked='true'"?> onclick="OnViewDS(this.form)">View Only Selected
+				if($viewallds==0) echo " checked='true'"?> onclick="viewOnlySelected()">View Only Selected
 			</FORM>
 			<FORM method='post'>
 			<input type='hidden' name='ret' value='gva_tab4.php'>
@@ -1375,21 +752,21 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
 		<td class='header'>Fault</td>
 		<td class='header'>
-			<input type="text" size="4" name="sectfault" value="<?php echo $sectfault?>" onchange='setdscfg(this.form)'>
+			<input type="text" size="4" name="sectfault" id='sectfault' value="<?php echo $sectfault?>" onchange='updateFault(this);sendWellLogFieldUpdate("fault", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td>
 		<td class='header' style='text-align: left;'>
-			<input type=button value="+" onClick="faultupdown(this.form, 1)">
-			<input type=button value="-" onClick="faultupdown(this.form, -1)">
+			<input type=button value="+" onClick="faultupdown(1,false)">
+			<input type=button value="-" onClick="faultupdown(-1,false)">
 		</td>
 		</tr>
 		<tr>
 		<td class='header'>Dip</td>
 		<td class='header'>
-			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='setdscfg(this.form)'>
+			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td>
 		<td class='header' style='text-align: left;'>
-			<input type=button value="+" onClick="dipupdown(this.form, 1)">
-			<input type=button value="-" onClick="dipupdown(this.form, -1)">
+			<input type=button value="+" onClick="dipupdown( 1,false)">
+			<input type=button value="-" onClick="dipupdown(-1,false)">
 			<input type=button value='Auto Dip' 
 			onClick="window.open('sgtamodeling_autodip.php?seldbname=<?php echo $seldbname?>','sgtaavgpopup','width=700,height=400,left=200,scrollbars=yes');">
 			<br />
@@ -1398,20 +775,20 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		<tr>
 		<td class='header'>Bias</td>
 		<td class='header'>
-			<input type='text' size='4' name='bias' value="<?php printf('%.0f', $bias); ?>" onchange='setdscfg(this.form)'>
+			<input type='text' size='4' name='bias' id='scalebias' value="<?php printf('%.0f', $bias); ?>" onchange='updatePlotBias(this);sendWellLogFieldUpdate("scalebias", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td>
 		<td class='header' style='text-align: left;'>
-			<input type=button value="Left" onClick="biasupdown(this.form, -10)">
-			<input type=button value="Right" onClick="biasupdown(this.form, 10)">
+			<input type=button value="Left" onClick="biasupdown(-10)">
+			<input type=button value="Right" onClick="biasupdown(10)">
 		</td>
 		</tr>
 		<tr>
 		<td class='header'>Scale</td>
 		<td class='header'>
-			<input type='text' size='4' name='factor' value="<?php printf('%.2f', $factor); ?>" onchange='setdscfg(this.form)'>
+			<input type='text' size='4' name='factor' id='scalefactor' value="<?php printf('%.2f', $factor); ?>" onchange='updateScaleFactor(this);sendWellLogFieldUpdate("scalefactor", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td> <td class='header' style='text-align: left;'>
-			<input type=button value="+" onClick="scaleupdown(this.form, 0.1)">
-			<input type=button value="-" onClick="scaleupdown(this.form, -.1)">
+			<input type=button value="+" onClick="factorupdown(0.1)">
+			<input type=button value="-" onClick="factorupdown(-.1)">
 			<br>
 		</td>
 		</FORM>
@@ -1504,12 +881,11 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 	<input type='hidden' name='sgtacutoff' value='<?php echo $sgtacutoff?>'>
 	<input type='hidden' name='zoom' value='<?php echo $zoom?>'>
 	<td class='container' align='right'>
-		Depth scale
+		Depth Range
 		<input type='text' <?php if($dscache_freeze>0) echo "disabled='true'"?> id='zoomtext' name='zoomtext' size='3' value='<?php echo $zoom; ?>' onchange="setzoom(this.form)">
 	</td>
 	<td class='container' align='left'>
-		<input type="submit" <?php if($dscache_freeze>0) echo "disabled='true'"?> value="Zoom In" <?php if($zoom<=.5)echo " disabled='true' "; ?> onmouseup="setzoomto(this.form, <?php echo $zoomdec; ?>)">
-		<input type="submit" <?php if($dscache_freeze>0) echo "disabled='true'"?> value="Zoom Out" <?php if($zoom>=$maxzoom)echo " disabled='true' "; ?> onmouseup="setzoomto(this.form, <?php echo $zoominc; ?>)">
+
 	</td>
 	</FORM>
 	</tr>
@@ -1699,7 +1075,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 <?php } ?>
 </tr>
 <tr>
-<td colspan='3'>
+<td colspan='3' onmouseover="window.onwheel = function(){return true;}">
 	<center><small><small>
 	&#169; 2010-2011 Digital Oil Tools
 	</small></small></center>
@@ -1713,5 +1089,5 @@ $timelog[] = array(microtime(),'before tab5');
 include_once('gva_tab5_funct.php');
 $timelog[] = array(microtime(),'after tab5');
 //echo '<pre>'; print_r($timelog); echo '</pre>';
-$db->CloseDb();
+//$db->CloseDb();
 ?>
