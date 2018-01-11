@@ -307,10 +307,12 @@ var dipupdown  = function(val, ontimeout=false){
 	}
 	document.getElementById('sectdip_parent').value = newval
 	if(!ontimeout){
+		updateDip(document.getElementById('sectdip_parent'))
 		sendWellLogFieldUpdate("dip", newval, "wld_"+selected.tableid)
 	} else {
 		lastscrollEvent = setTimeout(function(){
 			var selected = data[index_of_selected]
+			updateDip(document.getElementById('sectdip_parent'))
 			sendWellLogFieldUpdate("dip", document.getElementById('sectdip_parent').value, "wld_"+selected.tableid)
 		}, 250)
 	}
@@ -404,6 +406,64 @@ var updateFault = function(infield){
 	Plotly.deleteTraces('well_log_plot', index_of_selected)
 	cascadeFaultUpdate(addval)
 	reRangeOnCurrent()
+}
+var calcDepth = function(tvd,dip,vs,lastvs,fault,lasttvd,lastdepth){
+	return tvd-(-Math.tan(dip/57.29578)*Math.abs(vs-lastvs))-fault-(lasttvd-lastdepth);
+}
+var updateDip = function(infield){
+	var newdip = parseFloat(infield.value)
+	var selected = data[index_of_selected]
+	var lastvs = selected.vs[0]
+	var lasttvd = selected.tvd[0]
+	var lastmd  = selected.md[0]
+	var lastdepth = selected.y[0]
+	if(index_of_selected != first_index){
+	  var previous = data[index_of_selected - 1]
+	  lastvs = previous.vs[previous.vs.length-1]
+	  lasttvd = previous.tvd[previous.tvd.length-1]
+	  lastmd  = previous.md[previous.md.length-1]
+	  lastdepth = previous.y[previous.y.length-1]
+	}
+
+	newdepths=[]
+	for(var i = 0; i < selected.tvd.length; i++){
+		vs = selected.vs[i]
+		tvd = selected.tvd[i]
+		md = selected.md[i]
+		depth = calcDepth(tvd,newdip,vs,lastvs,selected.fault,lasttvd,lastdepth)
+		newdepths.push(depth)
+	}
+	selected.y = newdepths
+	selected.dip = newdip
+	Plotly.addTraces('well_log_plot' ,selected ,index_of_selected)
+	Plotly.deleteTraces('well_log_plot', index_of_selected)
+	cascadeDipUpdate()
+	reRangeOnCurrent()
+}
+
+var cascadeDipUpdate = function(){
+	var startindex = index_of_selected+1
+	var updateIndexes = []
+	for(var i = startindex; i <= last_index; i++){
+		var selected = data[i]
+		var previous = data[i - 1]
+		lastvs = previous.vs[previous.vs.length-1]
+		lasttvd = previous.tvd[previous.tvd.length-1]
+		lastmd  = previous.md[previous.md.length-1]
+		lastdepth = previous.y[previous.y.length-1]
+		var newdepths = []
+		for(var j = 0; j < selected.tvd.length; j++){
+			vs = selected.vs[j]
+			tvd = selected.tvd[j]
+			md = selected.md[j]
+			depth = calcDepth(tvd,selected.dip,vs,lastvs,selected.fault,lasttvd,lastdepth)
+			newdepths.push(depth)
+		}
+		selected.y = newdepths
+		updateIndexes.push(i);
+	}
+	Plotly.addTraces('well_log_plot' ,data.slice(startindex,last_index+1), updateIndexes)
+	Plotly.deleteTraces('well_log_plot', updateIndexes)
 }
 
 var cascadeFaultUpdate = function(addfault){

@@ -739,17 +739,14 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 
 <br style='font-size: 2pt;'>
 	<table class="settings">
-	<tr> <th colspan='3' class='header'>Data Modeling</th> </tr>
+	<tr> <th colspan='3' class='header'>Data Modeling  </th> </tr>
 	<tr>
 	<td colspan='5'>
 		<table class='header' style='width: 100%;'>
 		<tr>
-		<form method='post' id='dipform'>
-		<input type='hidden' name='ret' value='gva_tab4.php'>
-		<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-		<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-		<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-		<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
+		<td class='header'>On Scroll</td><td colspan=2><div style='float:left;padding-right:10px'><button onclick='scrollMode="fault"' >Fault</button></div><div style='float:left;padding-right:10px'><button onclick='scrollMode="dip"' >Dip</button></div><div style='clear:both'></div></div></td>
+		</tr>
+		<tr>
 		<td class='header'>Fault</td>
 		<td class='header'>
 			<input type="text" size="4" name="sectfault" id='sectfault' value="<?php echo $sectfault?>" onchange='updateFault(this);sendWellLogFieldUpdate("fault", this.value, "wld_"+data[index_of_selected].tableid)'>
@@ -762,7 +759,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		<tr>
 		<td class='header'>Dip</td>
 		<td class='header'>
-			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
+			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='updateDip(this);sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td>
 		<td class='header' style='text-align: left;'>
 			<input type=button value="+" onClick="dipupdown( 1,false)">
@@ -791,7 +788,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 			<input type=button value="-" onClick="factorupdown(-.1)">
 			<br>
 		</td>
-		</FORM>
+
 		</tr>
 		</table>
 	</td>
