@@ -403,9 +403,9 @@ function setdscache (rowform, param, val) {
 		rowform.dscache_bias.value=t;
 	}
 	if(param=="scale") {
-		var t = parseFloat(rowform.dscache_scale.value);
-		t+=val;
-		rowform.dscache_scale.value=t;
+		//var t = parseFloat(rowform.dscache_scale.value);
+		//t+=val;
+		//rowform.dscache_scale.value=t;
 	}
 	if(param=="freeze") {
 		if(rowform.freeze.checked==1) {

@@ -107,6 +107,7 @@ class SgtaModelingTab4 {
 			$log->tvd = $tvd;
 			$log->md  = $md;
 			$log->vs = $vs;
+			$log->tcl = $this->db->FetchField('tot');
 			$log->tableid = $this->db->FetchField('id');
 			$log->filename = $this->db->FetchField('realname');
 			$log->depth = $depth;
@@ -133,10 +134,12 @@ class SgtaModelingTab4 {
 		$this->db2=new dbio("$this->db_name");
 		$this->db2->OpenDb();
 		$this->db->DoQuery("select * from addforms order by id asc");
+		$this->formation_thickness = Array();
 		while($this->db->FetchRow()){
 			$infoid = $this->db->FetchField("id");
 			$this->db2->DoQuery("select thickness from addformsdata where infoid=$infoid order by md asc");
 			$this->db2->FetchRow();
+			array_push($this->formation_thickness,$this->db2->FetchField("thickness"));
 			$x = $this->cur_tcl+$this->db2->FetchField("thickness");
 			$log = new PlotObject(Array($x,$x),Array(0,300));
 			$log->set_line_color($this->db->FetchField("color"));

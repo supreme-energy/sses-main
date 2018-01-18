@@ -662,19 +662,6 @@ $timelog[] = array(microtime(),'after the chart');
 
 		<tr>
 		<td colspan='5'>
-			<FORM method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-			<input type='hidden' name='depth' value='<?php echo $depth?>'>
-			<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-			<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-			<input type='hidden' name='viewrotds' value='<?php echo $viewrotds?>'>
-			<input type='hidden' name='sgtastart' value='<?php echo $plotstart?>'>
-			<input type='hidden' name='sgtaend' value='<?php echo $plotend?>'>
-			<?php if($viewallds<=1) $ci=$startmd-500; else $ci=$startmd-$viewallds; ?>
-			<input type='hidden' name='sgtacutin' value='<?php echo $ci?>'>
-			<input type='hidden' name='sgtacutoff' value='<?php echo $endmd?>'>
 			<input type="radio" name='viewallds' value='<?php
 				if($viewallds<=1) echo "500"; else echo $viewallds; ?>' <?php
 				if($viewallds>1) echo " checked='true';"?> onclick="viewPreviousXMD()">View previous 
@@ -685,21 +672,11 @@ $timelog[] = array(microtime(),'after the chart');
 				if($viewallds==1) echo " checked='true'"?> onclick="viewAll(true)">View All Datasets<br>
 			<input type="radio" name='viewallds' value='0' <?php
 				if($viewallds==0) echo " checked='true'"?> onclick="viewOnlySelected()">View Only Selected
-			</FORM>
-			<FORM method='post'>
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-			<input type='hidden' name='scrolltop' value='<?php echo $scrolltop; ?>'>
-			<input type='hidden' name='scrollleft' value='<?php echo $scrollleft; ?>'>
-			<input type='hidden' name='viewrotds' value='<?php echo $viewrotds?>'>
-			<input type='hidden' name='viewallds' value='<?php echo $viewallds?>'>
-			<input type="checkbox" name='viewrot' <?php if($viewrotds>=1)echo " checked='true' "; ?> value="<?php echo $viewrotds; ?>" onclick="OnRotateDS(this.form)">Rotate Dataset
 			<br> <br>
 			Show shadow of last 
-			<input type='text' size='3' name='viewdspcnt' value='<?php echo $viewdspcnt?>' onchange="OnViewDS(this.form)">
+			<input type='text' size='3' id='shadow_view_cnt' name='viewdspcnt' value='<?php echo $viewdspcnt?>' onchange="showShadow(this)">
 			modeled datasets
-			</FORM>
+			
 		</td>
 		</tr>
 		<tr>
@@ -744,7 +721,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 	<td colspan='5'>
 		<table class='header' style='width: 100%;'>
 		<tr>
-		<td class='header'>On Scroll</td><td colspan=2><div style='float:left;padding-right:10px'><button onclick='scrollMode="fault"' >Fault</button></div><div style='float:left;padding-right:10px'><button onclick='scrollMode="dip"' >Dip</button></div><div style='clear:both'></div></div></td>
+		<td class='header'>On Scroll</td><td colspan=2><div style='float:left;padding-right:10px'><button onclick='scrollMode="zoom"; mouseWheelZoomOn(true);'>Zoom</button></div><div style='float:left;padding-right:10px'><button onclick='scrollMode="fault";mouseWheelZoomOn(false);' >Fault</button></div><div style='float:left;padding-right:10px'><button onclick='scrollMode="dip";mouseWheelZoomOn(false);' >Dip</button></div><div style='clear:both'></div></div></td>
 		</tr>
 		<tr>
 		<td class='header'>Fault</td>
@@ -970,106 +947,70 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 	</tr>
 	</table>
 </td>
-<?php if($viewdspcnt>0) {
-	$enable=" ";
-	if($dscache_freeze>0)
-	{
-		$enable=" disabled='true' ";
-	}
-?>
+<!-- drop shadow -->
 <td class="container" align='left' style='vertical-align: middle;'>
-	<table class="settings" style='width: 170;'>
-	<FORM action='setdscache.php' method='post'>
-	<tr><th colspan='3' class='header'>Shadow Sections Modeling</th></tr>
-	<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-	<input type='hidden' name='ret' value='gva_tab4.php'>
-	<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-	<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-	<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-	<input type="hidden" name="viewdspcnt" value="<?php echo "$viewdspcnt"; ?>">
-	<input type="hidden" name="endmd" value="<?php echo "$endmd"; ?>">
-	<input type="hidden" name="dscache_md" value="<?php echo $endmd; ?>">
-	<input type="hidden" name="dscache_plotstart" value="<?php echo "$plotstart"; ?>">
-	<input type="hidden" name="dscache_plotend" value="<?php echo "$plotend"; ?>">
-	<input type='hidden' name='dscache_freeze' value='<?php echo $dscache_freeze?>'>
-	<input type="hidden" name="dscache_fault" value="<?php echo $dscache_fault?>">
-	<input type="hidden" name="dsholdfault" value="<?php echo $dsholdfault?>">
-	<input type='hidden' name='faultmod' value=''>
+	<table class="settings" style='width: 270;<?php echo $viewdspcnt> 0 ? '' : 'display:none' ?>;' id='dropshadow_container'>
 	<tr>
-	<td class='header'>
-		Dip
+	<td class='header' style='width:100'>
+		Fault (of First piece)
 	</td><td class='header'>
-		<input type="text" <?php echo $enable?> size="3" name="dscache_dip" value="<?php echo $dscache_dip?>" onchange='setdscache(this.form)'>
+		<input type="text" size="3" id='shadow_fault' name="shadow_fault" value="<?php echo $dscache_fault?>" onchange='shadowFault(this.value)'>
 	</td><td class='header' style='text-align: left;'>
-		<input type=button <?php echo $enable?> value="+" onClick="setdscache(this.form, 'dip', 1)">
-		<input type=button <?php echo $enable?> value="-" onClick="setdscache(this.form, 'dip', -1)">
-	</td>
-	</tr> <tr>
-	<td class='header'>
-		Bias
-	</td><td class='header'>
-		<input type='text' <?php echo $enable?> size='3' name='dscache_bias' value="<?printf('%.0f', $dscache_bias); ?>" onchange='setdscache(this.form)'>
-	</td><td class='header' style='text-align: left;'>
-		<input type=button <?php echo $enable?> value="<" onClick="setdscache(this.form, 'bias', -10)">
-		<input type=button <?php echo $enable?> value=">" onClick="setdscache(this.form, 'bias', 10)">
-	</td>
-	</tr> <tr>
-	<td class='header'>
-		Scale
-	</td><td class='header'>
-		<input type='text' <?php echo $enable?> size='3' name='dscache_scale' value="<?printf('%.2f', $dscache_scale); ?>" onchange='setdscache(this.form)'>
-	</td><td class='header' style='text-align: left;'>
-		<input type=button <?php echo $enable?> value="+" onClick="setdscache(this.form, 'scale', 0.1)">
-		<input type=button <?php echo $enable?> value="-" onClick="setdscache(this.form, 'scale', -0.1)">
-	</td>
-	</tr>
-	<tr><td colspan='4'>
-	<input type='button' value='Reset Calculated Fault' onclick="setdscache(this.form,'reset')">
-	</td></tr>
-	<tr>
-	<td colspan='2' class='header'>
-		Freeze <input type='checkbox' name='freeze' value='<?php echo $dscache_freeze; ?>' <?php if($dscache_freeze==1)echo " checked='true' "; ?> onchange="setdscache(this.form, 'freeze')">
-		<?php if($dscache_freeze==1) { ?><br>Hold Fault <input type='checkbox' name='holdfault' value='1'  <?php if($dsholdfault>0) echo " checked='true'"; ?> onchange="setdscache(this.form,'holdfault')"> <?php } ?>
-	</td>
-	</FORM>
-	<td colspan='1' class='header'>
-		<FORM id='savedscache' method='post' style='padding: 0 0; margin: 0 0;'>
-		<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-		
-		<input type='hidden' name='ret' value='gva_tab4.php'>
-		<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-		<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-		<input type="hidden" name="viewdspcnt" value="<?php echo $viewdspcnt; ?>">
-		<input type="hidden" name="dscache_dip" value="<?php echo $dscache_dip?>">
-		<input type="hidden" name="dscache_bias" value="<?php echo $dscache_bias?>">
-		<input type="hidden" name="dscache_scale" value="<?php echo $dscache_scale?>">
-		<input type='hidden' name='dscache_freeze' value='<?php echo $dscache_freeze?>'>
-		<input type="hidden" name="dscache_fault" value="<?php echo $dscache_fault?>">
-		<input type="hidden" name="dsholdfault" value="<?php echo $dsholdfault?>">
-		<input type="hidden" name="dscache_md" value="<?php echo "$dscache_md"; ?>">
-		<input type="hidden" name="dscache_md" value="<?php echo "$dscache_md"; ?>">
-		</FORM>
-		<input type='submit' <?php if($dscache_freeze==0) echo " disabled='true '"; ?> value='Save Dip' onclick="savedscache(0)">
-		<input type='submit' <?php if($dscache_freeze==0) echo " disabled='true '"; ?> value='Save Fault' onclick="savedscache(1)">
-		
+		<input type=button value="+" onClick="">
+		<input type=button  value="-" onClick="">
 	</td>
 	</tr>
 	<tr>
-	<td colspan='4' align='right' class='container'>
-		<!--<br>
-		Scroll distance
-		-->
-		<input size='3' readonly='true' type='hidden' name='dbgscrolldist' id='dbgscrolldist' value="">
-		<br>
-		Current Fault
-		<input size='3' readonly='true' type='text' value="<?php echo $dbfault?>">
-		<br>
-		Calculated Fault
-		<input size='3' readonly='true' type='text' name='dbgscrollfault' id='dbgscrollfault' value="<?php echo ($dbfault+$dscache_fault)?>">
+	<td class='header'>
+		Dip (all Pieces)
+	</td><td class='header'>
+		<input type="text" size="3" id='shadow_dip' name="dscache_dip" value="<?php echo $dscache_dip?>" onchange='shadowDip(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="+" onClick="shadowDipUpDown(1)">
+		<input type=button  value="-" onClick="shadowDipUpDown(-1)">
 	</td>
+	</tr>
+	<tr>
+	<td class='header'>
+		Bias (all Pieces)
+	</td><td class='header'>
+		<input type='text' size='3' id='shadow_bias' name='dscache_bias' value="<?echo $dscache_bias ?>" onchange='shadowBias(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="<" onClick="shadowBiasUpDown(-10)">
+		<input type=button  value=">" onClick="shadowBiasUpDown(10)">
+	</td>
+	</tr> <tr>
+	<td class='header'>
+		Scale (all Pieces)
+	</td><td class='header'>
+		<input type='text'  size='3' id ='shadow_scale' name='shadow_scale' value="<?echo $dscache_scale ?>" onchange='shadowScale(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="+" onClick="shadowScaleUpDown(.1)">
+		<input type=button value="-" onClick="shadowScaleUpDown(-.1)">
+	</td>
+	</tr>
+	<tr>
+		<td colspan='4'>
+			<button>Apply Dip</button>
+			<button>Apply Fault</button>
+		</td>
+	</tr>
+		<tr>
+		<td colspan='4'>
+			<button>Apply Bias</button>
+			<button>Apply Scale</button>
+			
+		</td>
+	</tr>
+		<tr>
+		<td colspan='4'>
+			<button>Apply All</button>
+			<button>Reset</button>
+		</td>
+	</tr>
 	</table>
 </td>
-<?php } ?>
+<!-- drop shadow end -->
 </tr>
 <tr>
 <td colspan='3' onmouseover="window.onwheel = function(){return true;}">

@@ -9,6 +9,7 @@ class PlotObject {
 		$this->tvd = Array();
 		$this->vs  = Array();
 		$this->detph = Array();
+		$this->tcl   = 0;
 		$this->tableid  = '';
 		$this->filename ='';
 		$this->fault = 0;
@@ -108,6 +109,7 @@ class PlotObject {
 		      tvd:".'['.implode(',', $this->tvd) .']'.",
 		      vs: ".'['.implode(',', $this->vs) .']'.",
 		      md: ".'['.implode(',', $this->md) .']'.",
+		      tcl: ".$this->tcl.",
 		      tableid: '".$this->tableid."',
 		      type: 'scatter',
 		      hoverinfo: 'none',
