@@ -956,8 +956,8 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 	</td><td class='header'>
 		<input type="text" size="3" id='shadow_fault' name="shadow_fault" value="<?php echo $dscache_fault?>" onchange='shadowFault(this.value)'>
 	</td><td class='header' style='text-align: left;'>
-		<input type=button value="+" onClick="">
-		<input type=button  value="-" onClick="">
+		<input type=button value="+" onClick="shadowFaultUpDown(1)">
+		<input type=button  value="-" onClick="shadowFaultUpDown(-1)">
 	</td>
 	</tr>
 	<tr>
