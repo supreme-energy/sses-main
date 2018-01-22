@@ -4,20 +4,20 @@ var faultupdown = function(val, ontimeout=false){
 	var newval = (oldval+val)
 	document.getElementById('sectfault').value = Number(newval).toFixed(2)
 	if(!ontimeout){
-		updateFault(document.getElementById('sectfault'))
+		updateFault(document.getElementById('sectfault').value, index_of_selected)
 		sendWellLogFieldUpdate("fault", newval, "wld_"+selected.tableid)
 	} else {
 		lastscrollEvent = setTimeout(function(){
-			updateFault(document.getElementById('sectfault'))
+			updateFault(document.getElementById('sectfault').value, index_of_selected)
 			var selected = data[index_of_selected]
 			sendWellLogFieldUpdate("fault", document.getElementById('sectfault').value, "wld_"+selected.tableid)
 		}, 250)
 	} 
 }
 
-var updateFault = function(infield){
-	var newfault = parseFloat(infield.value)
-	var selected = data[index_of_selected]
+var updateFault = function(fault, index_to_update){
+	var newfault = parseFloat(fault)
+	var selected = data[index_to_update]
 	var newy = []
 	var oldfault = selected.fault
 	var addval = newfault-oldfault
@@ -26,14 +26,14 @@ var updateFault = function(infield){
 	}
 	selected.y = newy
 	selected.fault = newfault
-	Plotly.restyle('well_log_plot' ,{y: [selected.y]},[index_of_selected])
-	cascadeFaultUpdate(addval)
+	Plotly.restyle('well_log_plot' ,{y: [selected.y]},[index_to_update])
+	cascadeFaultUpdate(addval,index_to_update)
 
 }
 
 
-var cascadeFaultUpdate = function(addfault){
-	var startindex = index_of_selected+1
+var cascadeFaultUpdate = function(addfault, si){
+	var startindex = si+1
 	var updateIndexes = []
 	var newys = []
 	for(var i = startindex; i <= last_index; i++){

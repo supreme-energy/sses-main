@@ -1,4 +1,6 @@
 var shadowFirstDraw = true
+var shadowInitialFault = 0
+var shadowInitialDip = 0
 var initializeShadow = function(){
 	if(isShadowOn){
 		shadowPiecesVal = parseInt(document.getElementById('shadow_view_cnt').value)
@@ -60,7 +62,8 @@ var shadowSet = function(onoff, numberOfTraces, initializing){
 		document.getElementById('shadow_fault').value = firstTrace.fault		
 		document.getElementById('shadow_dip').value = traceDipAvg
 	}
-
+	shadowInitialFault = document.getElementById('shadow_fault').value
+	shadowInitialDip   = document.getElementById('shadow_dip').value
 	shadowBias(document.getElementById('shadow_bias').value)
 	shadowScale(document.getElementById('shadow_scale').value)
 	shadowDip(document.getElementById('shadow_dip').value)
@@ -156,20 +159,27 @@ var shadowFault = function(fault){
 	console.log(indexOfLastUnshadowedPiece)
 	if(indexOfLastUnshadowedPiece < first_index){
 		console.log('shadowing from start')
+		console.log(newfault)
 	}
 	var cumulative_fault =0
 	for(var i = 0; i < shadowTraces.length; i++){
 		var trace = shadowTraces[i]
 		var oldfault = trace.fault
 		if(i==0){
-			if(i != (shadowTraces.length-1) && shadowFirstDraw){
+			if((indexOfLastUnshadowedPiece < first_index) && shadowFirstDraw ){
 				addval = newfault * -1				
 			} else {
 				addval = newfault-oldfault
 			}
+			
+			
 		} else if(i != (shadowTraces.length-1) && shadowFirstDraw ){
-			cumulative_fault -= trace.fault
-			addval = (newfault + trace.fault)*-1
+			if(indexOfLastUnshadowedPiece < first_index){
+				addval = newfault * -1		
+			} else {
+				addval =  0 //trace.fault * -1
+			}
+			
 		}
 		
 		var newy = []
@@ -259,5 +269,52 @@ var shadowDip = function(dip){
 
 var mouseWheelZoomOn = function(onoff){
 	Plotly.plot('well_log_plot',[],{},{scrollZoom: onoff})	
+}
+
+var applyDipFromShadow = function(){
+	var shadowPiecesVal = parseInt(document.getElementById('shadow_view_cnt').value)
+	var first_of_selected = index_of_selected - (shadowPiecesVal-1)
+	if(first_of_selected < first_index){
+		first_of_selected = first_index
+	}
+	var element = document.getElementById('shadow_dip')
+	var val = parseFloat(parseFloat(element.value).toFixed(2))
+	updateDip(val,first_of_selected,true)
+	for(var i = first_of_selected; i <= index_of_selected; i++){
+		var selected = data[i]
+		selected.dip = val
+		sendWellLogFieldUpdate("dip", val, "wld_"+data[i].tableid)	
+	}
+	
+	
+	document.getElementById('sectdip_parent').value = val
+		
+}
+
+var applyFaultFromShadow = function(){
+	var shadowPiecesVal = parseInt(document.getElementById('shadow_view_cnt').value)
+	var first_of_selected = index_of_selected - (shadowPiecesVal-1)
+	if(first_of_selected < first_index){
+		first_of_selected = first_index
+	}
+	var element = document.getElementById('shadow_fault')
+	var val = parseFloat(parseFloat(element.value).toFixed(2))
+	updateFault(val,first_of_selected)
+	sendWellLogFieldUpdate("fault", val, "wld_"+data[first_of_selected].tableid)
+	if(first_of_selected==index_of_selected){
+		document.getElementById('sectfault').value = val
+	}
+}
+
+var resetDipAndFaultForShadow = function(){
+	shadowFault(shadowInitialFault)
+	shadowDip(shadowInitialDip)
+	document.getElementById('shadow_fault').value = shadowInitialFault
+	document.getElementById('shadow_dip').value = shadowInitialDip
+}
+
+var applyDipAndFaultFromShadow = function(){
+	applyFaultFromShadow()
+	applyDipFromShadow()
 }
 

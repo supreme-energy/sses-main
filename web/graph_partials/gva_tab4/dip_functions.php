@@ -10,12 +10,12 @@ var dipupdown  = function(val, ontimeout=false){
 	}
 	document.getElementById('sectdip_parent').value = newval
 	if(!ontimeout){
-		updateDip(document.getElementById('sectdip_parent'))
+		updateDip(document.getElementById('sectdip_parent').value, index_of_selected)
 		sendWellLogFieldUpdate("dip", newval, "wld_"+selected.tableid)
 	} else {
 		lastscrollEvent = setTimeout(function(){
 			var selected = data[index_of_selected]
-			updateDip(document.getElementById('sectdip_parent'))
+			updateDip(document.getElementById('sectdip_parent').value, index_of_selected)
 			sendWellLogFieldUpdate("dip", document.getElementById('sectdip_parent').value, "wld_"+selected.tableid)
 		}, 250)
 	}
@@ -25,15 +25,15 @@ var calcDepth = function(tvd,dip,vs,lastvs,fault,lasttvd,lastdepth){
 	return tvd-(-Math.tan(dip/57.29578)*Math.abs(vs-lastvs))-fault-(lasttvd-lastdepth);
 }
 
-var updateDip = function(infield){
-	var newdip = parseFloat(infield.value)
-	var selected = data[index_of_selected]
+var updateDip = function(dip, index_to_update, cascade_down=false){
+	var newdip = parseFloat(dip)
+	var selected = data[index_to_update]
 	var lastvs = selected.vs[0]
 	var lasttvd = selected.tvd[0]
 	var lastmd  = selected.md[0]
 	var lastdepth = selected.y[0]
-	if(index_of_selected != first_index){
-	  var previous = data[index_of_selected - 1]
+	if(index_to_update != first_index){
+	  var previous = data[index_to_update - 1]
 	  lastvs = previous.vs[previous.vs.length-1]
 	  lasttvd = previous.tvd[previous.tvd.length-1]
 	  lastmd  = previous.md[previous.md.length-1]
@@ -50,15 +50,15 @@ var updateDip = function(infield){
 	}
 	selected.y = newdepths
 	selected.dip = newdip
-	Plotly.restyle('well_log_plot' ,{y: [selected.y]},[index_of_selected])	
-	cascadeDipUpdate()
+	Plotly.restyle('well_log_plot' ,{y: [selected.y]},[index_to_update])	
+	cascadeDipUpdate(index_to_update, cascade_down, newdip)
 
 }
 
 
 
-var cascadeDipUpdate = function(){
-	var startindex = index_of_selected+1
+var cascadeDipUpdate = function(index_to_update, cascade_down, newdip){
+	var startindex = index_to_update+1
 	var updateIndexes = []
 	var newys = []
 	for(var i = startindex; i <= last_index; i++){
@@ -73,7 +73,11 @@ var cascadeDipUpdate = function(){
 			vs = selected.vs[j]
 			tvd = selected.tvd[j]
 			md = selected.md[j]
-			depth = calcDepth(tvd,selected.dip,vs,lastvs,selected.fault,lasttvd,lastdepth)
+			var dip = selected.dip
+			if(cascade_down){
+				dip = newdip
+			}
+			depth = calcDepth(tvd,dip,vs,lastvs,selected.fault,lasttvd,lastdepth)
 			newdepths.push(depth)
 		}
 		selected.y = newdepths

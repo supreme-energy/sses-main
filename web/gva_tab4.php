@@ -726,7 +726,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		<tr>
 		<td class='header'>Fault</td>
 		<td class='header'>
-			<input type="text" size="4" name="sectfault" id='sectfault' value="<?php echo $sectfault?>" onchange='updateFault(this);sendWellLogFieldUpdate("fault", this.value, "wld_"+data[index_of_selected].tableid)'>
+			<input type="text" size="4" name="sectfault" id='sectfault' value="<?php echo $sectfault?>" onchange='updateFault(this.value, index_of_selected);sendWellLogFieldUpdate("fault", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td>
 		<td class='header' style='text-align: left;'>
 			<input type=button value="+" onClick="faultupdown(1,false)">
@@ -736,7 +736,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		<tr>
 		<td class='header'>Dip</td>
 		<td class='header'>
-			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='updateDip(this);sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
+			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='updateDip(this.value, index_of_selected);sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
 		</td>
 		<td class='header' style='text-align: left;'>
 			<input type=button value="+" onClick="dipupdown( 1,false)">
@@ -991,21 +991,14 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 	</tr>
 	<tr>
 		<td colspan='4'>
-			<button>Apply Dip</button>
-			<button>Apply Fault</button>
+			<button onclick="applyDipFromShadow()">Apply Dip</button>
+			<button onclick="applyFaultFromShadow()">Apply Fault</button>
 		</td>
 	</tr>
 		<tr>
 		<td colspan='4'>
-			<button>Apply Bias</button>
-			<button>Apply Scale</button>
-			
-		</td>
-	</tr>
-		<tr>
-		<td colspan='4'>
-			<button>Apply All</button>
-			<button>Reset</button>
+			<button onclick="applyDipAndFaultFromShadow()">Apply Both</button>
+			<button onclick="resetDipAndFaultForShadow()">Reset</button>
 		</td>
 	</tr>
 	</table>
