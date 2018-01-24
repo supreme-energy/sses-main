@@ -100,7 +100,9 @@ class WellBorePlot {
 		$this->surveys_bot->set_name('Wellbore');
 		$this->surveys_bot->set_fillcolor("#EBEDEF");
 		
-		$this->surveys = new PlotObject($survey_depths,$vs);
+		$survey_vs = array_slice($vs,0,count($vs)-1);
+		
+		$this->surveys = new PlotObject($survey_depths,$survey_vs);
 		$this->surveys->set_line_color('blue');
 		$this->surveys->set_name('Surveys');
 		$this->surveys->set_showledgend(true);
@@ -108,7 +110,7 @@ class WellBorePlot {
 		
 		$this->final_survey = New PlotObject(Array($final_survey_tvd), Array($final_survey_vs ));
 		$this->final_survey->set_line_color('red');
-		$this->final_survey->set_name('BitPrj');
+		$this->final_survey->set_name('Current Survey');
 		$this->final_survey->set_showledgend(true);
 		$this->final_survey->set_markers('star-open-dot','markers',4,'red');
 		

@@ -87,3 +87,9 @@ var cascadeDipUpdate = function(index_to_update, cascade_down, newdip){
 	Plotly.restyle('well_log_plot' ,{y: newys}, updateIndexes)
 }
 
+window.setAutoDip = function(dip){
+	document.getElementById('sectdip_parent').value = dip
+	var selected = data[index_of_selected]
+	sendWellLogFieldUpdate("dip",dip, "wld_"+selected.tableid)
+	updateDip(dip, index_of_selected)
+}

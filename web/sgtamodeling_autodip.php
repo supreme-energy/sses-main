@@ -336,9 +336,7 @@ function create_control_dip_closure(inid){
 
 function apply_dip() {
 	if(window.opener && !window.opener.closed) {
-		window.opener.document.getElementById('sectdip_parent').value =
-			document.getElementById('autodip').value;
-		window.opener.setdscfg();
+		window.opener.setAutoDip(document.getElementById('autodip').value)
 	} else {
 		alert("Dip cannot be applied. SGTA window has been closed or is not accessible.")
 	}

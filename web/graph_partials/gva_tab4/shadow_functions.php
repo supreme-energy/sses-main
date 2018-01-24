@@ -245,9 +245,7 @@ var shadowDip = function(dip){
 			lasttvd = previous.tvd[previous.tvd.length-1]
 			lastmd  = previous.md[previous.md.length-1]
 			lastdepth = previous.y[previous.y.length-1]
-			if(!shadowFirstDraw){
-				lastdepth -= selected.fault
-			}
+
 		}
 		var newdepths = []
 		for(var j = 0; j < selected.tvd.length; j++){

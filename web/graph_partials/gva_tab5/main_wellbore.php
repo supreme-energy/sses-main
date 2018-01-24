@@ -14,8 +14,7 @@ var layout_mw ={
 		  xaxis: {
 			autorange: false,
 			range: [<?php echo $minvs ?>, <?php echo $maxvs ?>],
-			nticks: 50,
-			rangemode: 'nonnegative',
+			nticks: 50
 		  },
 		  yaxis: {
 			autorange: false,
@@ -26,20 +25,35 @@ var layout_mw ={
 
 var data_mw = []
 var last_interacted_plot = '';
+var mw_index = 0;
 <?php foreach($graph_obj->formations as $formation){?>
 data_mw.push(<?php $formation->to_js()?>)
+mw_index+=1
 <?php }?>
 
 data_mw.push(<?php echo $graph_obj->tcl->to_js()?>)
+var mw_tcl_idx = mw_index
+mw_index+=1
 data_mw.push(<?php echo $graph_obj->proj_tcl->to_js()?>)
+mw_index+=1
 data_mw.push(<?php echo $graph_obj->wellplan->to_js()?>)
+mw_index+=1
 
 data_mw.push(<?php echo $graph_obj->surveys_top->to_js()?>)
+mw_index+=1
 data_mw.push(<?php echo $graph_obj->surveys_bot->to_js()?>)
+mw_index+=1
+
 data_mw.push(<?php echo $graph_obj->surveys->to_js()?>)
+var mw_surveys_idx = mw_index
+mw_index+=1
+
 data_mw.push(<?php echo $graph_obj->final_survey->to_js()?>)
+mw_index+=1
 data_mw.push(<?php echo $graph_obj->bit->to_js()?>)
+mw_index+=1
 data_mw.push(<?php echo $graph_obj->projections->to_js()?>)
+mw_index+=1
 </script>
 <div id='main_wellbore' style="height:<?php echo $graph_obj->get_layout_height() ?>px;width:1148px;"></div>
 <script>

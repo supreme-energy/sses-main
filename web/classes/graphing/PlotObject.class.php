@@ -105,8 +105,8 @@ class PlotObject {
 		echo "{
 			  y: ".'[' . implode(',', $this->y) . ']'.",
 		      x: ".'[' . implode(',', $this->x) . ']'.",
-		      ids: ".'['.implode(',', $this->ids) .']'.",
-		      tvd:".'['.implode(',', $this->tvd) .']'.",
+		      ". (count($this->ids)>0 ? ("ids: ".'['.implode(',', $this->ids) .']'.",") : '')
+		      ."tvd:".'['.implode(',', $this->tvd) .']'.",
 		      vs: ".'['.implode(',', $this->vs) .']'.",
 		      md: ".'['.implode(',', $this->md) .']'.",
 		      tcl: ".$this->tcl.",
