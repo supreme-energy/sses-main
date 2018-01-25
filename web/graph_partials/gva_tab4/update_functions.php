@@ -1,3 +1,9 @@
+var OnLasImport = function(rowform)
+{
+	window.open('/sses/welllogfilesel.php?seldbname=<?php echo $seldbname ?>','targetWindow',
+                                   'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=350');
+}
+
 var sendWellLogFieldUpdate = function(field,value,id){
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/sses/json.php?path=json/sgta_modeling/update_welllog_field.php&seldbname=<?php echo $seldbname ?>&field='+field+'&value='+value+'&id='+id);

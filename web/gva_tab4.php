@@ -610,14 +610,7 @@ $timelog[] = array(microtime(),'after the chart');
 			<INPUT type="submit" value="Last" onclick='lastDataSet()'>
 		</td>
 		<td align='right'>
-			<FORM method="post">
-			<input type='hidden' name='ret' value='gva_tab4.php'>
-			<input type="hidden" name="seldbname" value="<?php echo "$seldbname"; ?>">
-			<input type='hidden' name='scrolltop' value='<?php echo $scrolltop?>'>
-			<input type='hidden' name='scrollleft' value='<?php echo $scrollleft?>'>
-			<input type='hidden' name='zoom' value='<?php echo $zoom; ?>'>
-			<INPUT type="submit" value="Import" ONCLICK="OnLasImport(this.form)">
-			</FORM>
+			<INPUT type="submit" value="Import" ONCLICK="OnLasImport()">
 		</td>
 		</tr>
 

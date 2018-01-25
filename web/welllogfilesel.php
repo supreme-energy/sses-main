@@ -7,9 +7,6 @@
 
 $seldbname=$_POST['seldbname'];
 $ret=$_POST['ret'];
-$scrolltop=$_POST['scrolltop'];
-$scrollleft=$_POST['scrollleft'];
-$zoom=$_POST['zoom'];
 ?>
 <!doctype html>
 <head>
@@ -20,14 +17,12 @@ $zoom=$_POST['zoom'];
 <form method="post" enctype="multipart/form-data">
 <input type='hidden' name='ret' value='<?echo $ret;?>'>
 <input type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
-<input type='hidden' name='scrolltop' value='<?echo $scrolltop?>'>
-<input type='hidden' name='scrollleft' value='<?echo $scrollleft?>'>
-<input type='hidden' name='zoom' value='<?echo $zoom?>'>
+
 
 <TABLE class='container'>
 <tr>
 <td>
-	<A class='menu' href='<?echo "$ret?seldbname=$seldbname";?>'>Return</A>
+	<A class='menu' href='#' onclick='window.close()'>Close</A>
 	<h1>LAS File To Import:</h1>
 </td>
 </tr>

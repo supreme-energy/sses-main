@@ -242,5 +242,7 @@ $db->CloseDb();
 exec("./sses_cc -d $seldbname");
 exec("./sses_gva -d $seldbname");
 exec("./sses_cc -d $seldbname -p");
-include("$ret");
 ?>
+<script>
+	window.opener.location.reload()
+</script>
