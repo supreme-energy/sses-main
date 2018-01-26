@@ -23,6 +23,12 @@ var layout_mw ={
 	      }
 		};
 
+var annotations_holding = {}
+<?php foreach($graph_obj->annotations as $annotation ){?>
+
+	annotations_holding['<?php echo $annotation[1]?>']=<?php echo $annotation[0] ?>;
+	
+<?php }?>
 var data_mw = []
 var last_interacted_plot = '';
 var mw_index = 0;
@@ -81,4 +87,19 @@ var wellborePlotChange = function(){
 }
 var graphDiv = document.getElementById('main_wellbore')
 graphDiv.on('plotly_relayout', wellborePlotChange);
+graphDiv.on('plotly_hover', function(eventData) {
+	  var xaxis = eventData.points[0].xaxis,
+	      yaxis = eventData.points[0].yaxis;
+	  
+	  eventData.points.forEach(function(p) {
+		
+		annotation = annotations_holding[''+p.x+"_"+p.y]
+		if(annotation){
+		Plotly.relayout('main_wellbore', {
+			'annotations': [annotation]
+	        });
+		}
+	  });
+	})
+
 </script>

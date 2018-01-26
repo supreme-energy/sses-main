@@ -6,9 +6,9 @@ class WellBorePlot {
 		$this->db_name = $request['seldbname'];
 		$this->db=new dbio("$this->db_name");
 		$this->db->OpenDb();
+		$this->annotations = Array();
 		$this->build();
 		$this->formations = Array();
-		$this->annotations = Array();
 		$this->build_formations();
 		
 		$this->formation_projections = Array();
@@ -66,16 +66,33 @@ class WellBorePlot {
 		$curcnt = 0;
 		while($this->db->FetchRow()){			
 			if($this->db->FetchField('plan')==0){		
+				$tvd_cur = $this->db->FetchField('tvd');
+				$vs_cur = $this->db->FetchField('vs');
 				array_push($tcl_depths, $this->db->FetchField('tot'));
 				array_push($survey_depths_p1, $this->db->FetchField('tvd')+1);
 				array_push($survey_depths_m1, $this->db->FetchField('tvd')-1);
-				array_push($vs, $this->db->FetchField('vs'));
+				array_push($vs, $vs_cur );
 				if($curcnt >= $surveycnt-2){
-					$final_survey_tvd = $this->db->FetchField('tvd');
-					$final_survey_vs  = $this->db->FetchField('vs');
+					$final_survey_tvd = $tvd_cur;
+					$final_survey_vs  = $vs_cur ;
 				} else {
-					array_push($survey_depths, $this->db->FetchField('tvd'));
+					array_push($survey_depths, $tvd_cur);
 				}
+				array_push($this->annotations,Array("{
+            bordercolor:'#FF9900',
+            borderpad:5,
+            bgcolor:'#FFCC99',
+            opacity:1,
+            text:'TVD: $tvd_cur<br>VS:$vs_cur',
+            x:$vs_cur,
+			y:$tvd_cur, 
+      		xref: 'x',
+      		yref: 'y',
+            ax:0,
+			ay:-100,
+			showarrow: true,
+      		arrowhead: 7
+          }\n", "$vs_cur"."_"."$tvd_cur"));
 			} else {
 				$bit_tvd = $this->db->FetchField('tvd');
 				$bit_vs  = $this->db->FetchField('vs');

@@ -100,7 +100,16 @@ var graphDiv = document.getElementById('well_log_plot')
 var storeLayout = function(){
 	console.log('triggered');
 }
+graphDiv.on('plotly_hover', function(eventData) {
+	  var xaxis = eventData.points[0].xaxis,
+	      yaxis = eventData.points[0].yaxis;
+	  
+	  eventData.points.forEach(function(p) {
+	    console.log('pixel position', xaxis.l2p(p.x), yaxis.l2p(p.y))
+	  });
+	})
 graphDiv.on('plotly_relayout', storeLayout);
+ 
 
 
 
