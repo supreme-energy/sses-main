@@ -3,6 +3,7 @@
 	$graph_obj = new WellBorePlot($_REQUEST);
 ?>
 <script>
+<?php include 'graph_partials/shared/update_splot_field.php' ?>
 var layout_mw ={
 		  height: <?php echo $graph_obj->get_layout_height() ?>,
 		  margin: {
@@ -64,25 +65,43 @@ mw_index+=1
 <div id='main_wellbore' style="height:<?php echo $graph_obj->get_layout_height() ?>px;width:1148px;"></div>
 <script>
 Plotly.newPlot('main_wellbore', data_mw, layout_mw,{scrollZoom: true});
+var nowellplotchange = false;
+
+var wellboreFieldUpdates = function(new_xrange, new_yrange){
+	document.getElementById('minvs').value =new_xrange[0]
+	document.getElementById('maxvs').value = new_xrange[1]
+	document.getElementById('maxtvd').value = new_yrange[0]
+	document.getElementById('mintvd').value = new_yrange[1]
+	
+	sendSplotFieldUpdate('minvs',new_xrange[0])
+	sendSplotFieldUpdate('maxvs',new_xrange[1])
+	sendSplotFieldUpdate('maxtvd',new_yrange[0])
+	sendSplotFieldUpdate('mintvd',new_yrange[1])
+}
+
 var wellborePlotUpdate = function(){
 	new_xrange = [document.getElementById('minvs').value, document.getElementById('maxvs').value]
 	new_yrange = [document.getElementById('maxtvd').value, document.getElementById('mintvd').value]
+	
 	Plotly.relayout('main_wellbore',
 	   {'xaxis.range': new_xrange,
 		'yaxis.range': new_yrange		
 		})
 }
-var wellborePlotChange = function(){
 
-	var graphDiv = document.getElementById('main_wellbore')
-	new_xrange = graphDiv.layout.xaxis.range
-	new_yrange = graphDiv.layout.yaxis.range
-	document.getElementById('minvs').value =new_xrange[0]
-	document.getElementById('maxvs').value = new_xrange[1]
-	document.getElementById('maxtvd').value = new_yrange[0]
-	document.getElementById('mintvd').value = new_yrange[1]
-	for(var i = 0, len = add_data_plotids.length; i < len; i++){
-	  Plotly.relayout(add_data_plotids[i],{'xaxis.range': new_xrange})
+var wellborePlotChange = function(){
+	if(nowellplotchange==false){
+		var graphDiv = document.getElementById('main_wellbore')
+		new_xrange = graphDiv.layout.xaxis.range
+		new_yrange = graphDiv.layout.yaxis.range
+		console.log(new_yrange)
+		wellboreFieldUpdates(new_xrange,new_yrange)
+
+		for(var i = 0, len = add_data_plotids.length; i < len; i++){
+		  Plotly.relayout(add_data_plotids[i],{'xaxis.range': new_xrange})
+		}
+	} else {
+		nowellplotchange=false
 	}
 }
 var graphDiv = document.getElementById('main_wellbore')
@@ -95,6 +114,7 @@ graphDiv.on('plotly_hover', function(eventData) {
 		
 		annotation = annotations_holding[''+p.x+"_"+p.y]
 		if(annotation){
+		nowellplotchange = true	
 		Plotly.relayout('main_wellbore', {
 			'annotations': [annotation]
 	        });
