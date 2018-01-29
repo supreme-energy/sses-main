@@ -15,6 +15,14 @@ var sendAppInfoFieldUpdate = function(field,value){
 	xhr.send();
 }
 
+var sendSgtaPositionUpdate = function(field,value){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/sses/json.php?path=json/sgta_modeling/update_sgta_position_field.php&seldbname=<?php echo $seldbname ?>&field='+field+'&value='+value);
+	xhr.send();
+}
+
+
+
 var updateFormations = function(){
 	var selected = data[index_of_selected]
 	var updateIndices = [0]

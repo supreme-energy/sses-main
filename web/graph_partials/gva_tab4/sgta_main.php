@@ -14,7 +14,19 @@
 	
 	
 	$graph_obj = new SgtaModelingTab4($_REQUEST,$tableid, $plotbias,$secttot, $scaleright, true);
-
+	
+	$yrange_start = $graph_obj->cur_depth_max + ($zoom*2);
+	$yrange_end = $graph_obj->cur_depth_min - ($zoom*2);
+	$xrange_start = 0;
+	$xrange_end =  $scaleright;
+	$query = "select * from splotlist WHERE ptype='SGTA' AND mtype='DEPTH'";
+	$db->DoQuery($query);
+	if($db->FetchRow()){
+		$yrange_start = $db->FetchField('mintvd');
+		$yrange_end   = $db->FetchField('maxtvd');
+		$xrange_start = $db->FetchField('minvs');
+		$xrange_end   = $db->FetchField('maxvs');
+	}
 ?>
 <script>
 var layout = {
@@ -27,18 +39,18 @@ var layout = {
 		  },
 		  xaxis: {
 			autorange: false,
-			range: [0,<?php echo $scaleright?>],
+			range: [<?php echo $xrange_start ?>,<?php echo $xrange_end ?>],
 			rangemode: 'nonnegative',
 			nticks: 50
 		  },
 		  yaxis: {
 			autorange: false,
-            range: [ <?php echo ($graph_obj->cur_depth_max + ($zoom*2))?>, <?php echo ($graph_obj->cur_depth_min - ($zoom*2)) ?>],
+            range: [ <?php echo $yrange_start?>, <?php echo $yrange_end  ?>],
 			nticks: 50
 	      },
 	      yaxis2:{
 			autorange: false,
-			range: [<?php echo ($graph_obj->cur_tvd_max + ($zoom*2))?>, <?php echo ($graph_obj->cur_tvd_min - ($zoom*2)) ?>],
+			range: [<?php echo $yrange_start?>, <?php echo $yrange_end  ?>],
 			overlaying: 'y',
 			side: 'right'
 		  }
@@ -98,14 +110,20 @@ Plotly.newPlot('well_log_plot', data, layout,{scrollZoom: true});
 var graphDiv = document.getElementById('well_log_plot')
 
 var storeLayout = function(){
-	console.log('triggered');
+	console.log('triggered')
+	new_xrange = graphDiv.layout.xaxis.range
+	new_yrange = graphDiv.layout.yaxis.range
+	sendSgtaPositionUpdate('mintvd',new_yrange[0])
+	sendSgtaPositionUpdate('maxtvd',new_yrange[1])
+	sendSgtaPositionUpdate('minvs',new_xrange[0])
+	sendSgtaPositionUpdate('maxvs',new_xrange[1])
 }
 graphDiv.on('plotly_hover', function(eventData) {
 	  var xaxis = eventData.points[0].xaxis,
 	      yaxis = eventData.points[0].yaxis;
 	  
 	  eventData.points.forEach(function(p) {
-	    console.log('pixel position', xaxis.l2p(p.x), yaxis.l2p(p.y))
+	    //console.log('pixel position', xaxis.l2p(p.x), yaxis.l2p(p.y))
 	  });
 	})
 graphDiv.on('plotly_relayout', storeLayout);
