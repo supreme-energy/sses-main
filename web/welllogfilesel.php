@@ -5,8 +5,8 @@
 //	NOTICE: This file is solely owned by Digital Oil Tools You may NOT modify, copy,
 //	or distribute this file in any manner without written permission of Digital Oil Tools
 
-$seldbname=$_POST['seldbname'];
-$ret=$_POST['ret'];
+$seldbname=$_REQUEST['seldbname'];
+$ret=$_REQUEST['ret'];
 ?>
 <!doctype html>
 <head>
