@@ -7,7 +7,7 @@
 
 //error_reporting(E_ALL);
 //ini_set('display_errors', '1');
-
+error_reporting(0);
 require_once 'sses_include.php';
 
 $timestart=microtime_float();
@@ -426,7 +426,7 @@ if($viewallds>0) {
 			"-ci $cutinMD -co $cutoffMD " .
 			"-avg $dataavg -r $scaleright $logsw $addformsstr";
 	exec ($com." -w $pwidth -h $pheight -o $fn");
-	echo ($com." -w $pwidth -h $pheight -o $fn");
+	//echo ($com." -w $pwidth -h $pheight -o $fn");
 	exec ($com." -w $snapw -h $snaph -o $fnsnap");
 	//echo ($com." -w $snapw -h $snaph -o $fnsnap");
 	//&$retstr, &$retval);
@@ -513,6 +513,7 @@ $timelog[] = array(microtime(),'right before html, timelapse = ' . $timelapse);
 <head>
 <link rel="stylesheet" type="text/css" href="gva_tab4.css" />
 <link rel="stylesheet" type="text/css" href="waitdlg.css" />
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 <title><?php echo "$dbrealname"; ?>-SGTA Editor<?php echo " ($seldbname)"; ?></title>
 <script language='javascript' type='text/javascript' src='waitdlg.js'></script>
 <script language='javascript'>
@@ -529,69 +530,201 @@ include 'waitdlg.html';
 ?>
 
 <table class='tabcontainer'>
-
-<tr style='background-color:none'>
-<td class='header' style='width: 20px; padding: 0;'><br /></td>
-<td class='header' style='text-align: left;'><?php if($viewrotds==0) echo '0'; else echo '.'; ?></td>
-<td class='header'><?php if($viewrotds==0) echo $scaleright;else echo '.'; ?></td>
-<td class='header'><br /></td>
-</tr>
-
+<tr><td colspan='3'>
+	<button onclick='OnLasImport()' style='width:100%'><i class="fas fa-upload"></i>&nbsp;IMPORT DATA &nbsp;<i class="fas fa-upload"></i></button>
+</td></tr>
 <tr>
-<td style='width: 20px; font-size: 8pt; vertical-align: top; padding: 0;'>
-<?php if($viewrotds==1) echo $scaleright; else echo ' '; ?>
-</td>
-
-<td colspan='2' class="container" align='left' style='background-color:white;width: 800px;'>
-	<form name='pointform' method='post'>
-	<div class='transbox'>
-<!--
-MARK: Here is where we use the background image generated from above
--->
-<?php
-
-$timelog[] = array(microtime(),'before the chart');
-?>
-	<table border='0' cellpadding='0' cellspacing='0'>
-		<tr>
-		<td>
-		<input type='hidden' name='ret' value='gva_tab4.php'>
-		<input type='hidden' name='seldbname' value='<?php echo $seldbname; ?>'>
-		<input type='hidden' name='dspoffset' value='<?php echo $dspoffset?>'>
-		<input type='hidden' id='scroll0' name='scroll0' value='<?php echo $scrollpt?>'>
-		<input type='hidden' id='initscrolltop' name='scrolltop' value='<?php echo $scrolltop?>'>
-		<input type='hidden' id='initscrollleft' name='scrollleft' value='<?php echo $scrollleft?>'>
-		<input type='hidden' name='plotstart' value='<?php echo $plotstart?>'>
-		<input type='hidden' name='plotend' value='<?php echo $plotend?>'>
-		<input type='hidden' name='viewrotds' value='<?php echo $viewrotds?>'>
-		<input type='hidden' name='depth' value=''>
-		<input type='hidden' name='val' value=''>
-		<input type='hidden' name='setflag' value=''>
-		<input type='hidden' name='tablename' value='<?php echo $tablename?>'>
-		<input type='hidden' name='editmode' value='<?php echo $editmode?>'>
-		<input type='hidden' name='scaleright' value='<?php echo $scaleright?>'>
-		<input type='hidden' name='dsseltop' value='<?php echo $dsseltop?>'>
-		<input type='hidden' name='dsselbot' value='<?php echo $dsselbot?>'>
-		<input type='hidden' name='dbfault' value='<?php echo $dbfault?>'>
-		<input type='hidden' name='dscache_fault' value='<?php echo $dscache_fault?>'>
-		<input type='hidden' name='dscache_freeze' value='<?php echo $dscache_freeze?>'>
-<?php
-	
-?>
-		</td>
-		</tr>
-	</tbody>
-	</table>
-<?php
-$timelog[] = array(microtime(),'after the chart');
-?>
-
-	</form> <!-- end of pointform --> 
+<td colspan='3' class="container" align='left' style='background-color:white;width: 800px;'> 
 	<?php include 'graph_partials/gva_tab4/sgta_main.php' ?> 
 </td>
 
-<td class="container" align='left' onmouseover="window.onwheel = function(){return true;}">
-	<table class="settings">
+<td class="container" align='left' onmouseover="">
+	<div style='padding-top:5px;text-align:center;width:80px;' >Navigation</div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><hr></div>
+	<div style='padding-top:5px;'><div style='text-align:center;width:80px;font-weight:bold;'>Go To MD</div>
+		<div style='text-align:center;width:80px;'><input type='text' size='4' id='gotodatasetat' name='startmd' value='' onchange='goToDataSetAt()'></div>
+	</div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><button title='First' onclick='firstDataSet()'><i class="fa fa-angle-double-up"></i></button></div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><button title='Previous' onclick='prevDataSet()'><i class="fa fa-angle-up"></i></button></div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><button title='Next' onclick='nextDataSet()'><i class="fa fa-angle-down"></i></button></div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><button title='Last' onclick='lastDataSet()'><i class="fa fa-angle-double-down"></i></button></div>
+	<div style='padding-top:5px;text-align:center;width:80px;'>Display</div>
+	<div><hr></div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><button id='viewallbutton' <?php echo ($viewallds == 1 ? "style='background-color:green'" : '')?> title='Zoom' onclick='viewAll(true)'>All</i></div>
+	<div style='padding-top:5px;padding-bottom:3px;text-align:center;width:80px;'><button  id='viewselectedbutton' <?php echo ($viewallds == 0 ? "style='background-color:green'" : '')?> title='Zoom' onclick='viewOnlySelected()'>Current</i></div>
+	<div style='padding-top:2px;padding-bottom:5px;text-align:center;width:80px;border: 1px solid black;'><button id='viewlastbutton' <?php echo ($viewallds > 1 ? "style='background-color:green'" : '')?> title='Zoom' onclick='viewPreviousXMD()'>Last MD</button></i> <input style='margin-top:5px;text-align:center;width:50px;' type='text' size='7' id='viewallprevval' name='viewallds' value='<?php
+				if($viewallds<=1) echo "500"; else echo $viewallds; ?>' <?php
+				if($viewallds<=1) echo "readonly='true'"; ?> onchange="viewPreviousXMD()"></div>
+	<div style='padding-top:5px;text-align:center;width:80px;'>Modeling</div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><hr></div>
+	<div style='padding-top:5px;text-align:center;width:80px;position:relative;'><button id='shadowbutton' title='Shadow' onclick='showShadow()'><i class="fab fa-snapchat-ghost"></i></button>
+		
+	<table class="settings" style='position:absolute; left: 80px;top:-120px;width: 270;<?php echo $viewdspcnt> 0 ? '' : 'display:none' ?>;' id='dropshadow_container'>
+	<tr>
+		<td class='header' style='width:100'>
+			# of Pieces
+		</td>
+		<td class='header'>
+		<input type="text" size="3" id='shadow_view_cnt' name="shadow_pieces" value="<?php echo $viewdspcnt ?>" onchange='showShadow(this.value)'>
+		</td>
+	</tr>
+	<tr>
+	<td class='header' style='width:100'>
+		Fault (of First piece)
+	</td><td class='header'>
+		<input type="text" size="3" id='shadow_fault' name="shadow_fault" value="<?php echo $dscache_fault?>" onchange='shadowFault(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="+" onClick="shadowFaultUpDown(1)">
+		<input type=button  value="-" onClick="shadowFaultUpDown(-1)">
+	</td>
+	</tr>
+	<tr>
+	<td class='header'>
+		Dip (all Pieces)
+	</td><td class='header'>
+		<input type="text" size="3" id='shadow_dip' name="dscache_dip" value="<?php echo $dscache_dip?>" onchange='shadowDip(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="+" onClick="shadowDipUpDown(1)">
+		<input type=button  value="-" onClick="shadowDipUpDown(-1)">
+	</td>
+	</tr>
+	<tr>
+	<td class='header'>
+		Bias (all Pieces)
+	</td><td class='header'>
+		<input type='text' size='3' id='shadow_bias' name='dscache_bias' value="<?echo $dscache_bias ?>" onchange='shadowBias(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="<" onClick="shadowBiasUpDown(-10)">
+		<input type=button  value=">" onClick="shadowBiasUpDown(10)">
+	</td>
+	</tr> <tr>
+	<td class='header'>
+		Scale (all Pieces)
+	</td><td class='header'>
+		<input type='text'  size='3' id ='shadow_scale' name='shadow_scale' value="<?echo $dscache_scale ?>" onchange='shadowScale(this.value)'>
+	</td><td class='header' style='text-align: left;'>
+		<input type=button value="+" onClick="shadowScaleUpDown(.1)">
+		<input type=button value="-" onClick="shadowScaleUpDown(-.1)">
+	</td>
+	</tr>
+	<tr>
+		<td colspan='4'>
+			<button onclick="applyDipFromShadow()">Apply Dip</button>
+			<button onclick="applyFaultFromShadow()">Apply Fault</button>
+		</td>
+	</tr>
+		<tr>
+		<td colspan='4'>
+			<button onclick="applyDipAndFaultFromShadow()">Apply Both</button>
+			<button onclick="resetDipAndFaultForShadow()">Reset</button>
+		</td>
+	</tr>
+	</table>
+	</div>
+	<div style='padding-top:5px;text-align:center;width:80px;'><button style='background-color:green' id='zoombutton'   title='Zoom' onclick='scrollMode="zoom"; mouseWheelZoomOn(true);setSelectedButton(this.id);'><i class="fas fa-search-plus"></i></div>
+	<div style='padding-top:5px;text-align:center;width:80px; position:relative;'><button id='faultbutton'  title='Fault' onclick='scrollMode="fault";mouseWheelZoomOn(false);setSelectedButton(this.id);' style='width:28px;height:24px;position:relative;'><i class="fas fa-square-full" style='position:absolute;left:2px;top:4px;' ></i><i class="fas fa-square-full" style='position:absolute;left:8px;top:1px;color:red;'></i></button>
+		<table style='position:absolute; top:-5px;left:60px;display:none;' id='faultbutton_view'>
+		<tr>
+		<td class='header'>
+			<input type="text" size="4" name="sectfault" id='sectfault' value="<?php echo $sectfault?>" onchange='updateFault(this.value, index_of_selected);sendWellLogFieldUpdate("fault", this.value, "wld_"+data[index_of_selected].tableid)'>
+		</td>
+		<td class='header' style='text-align: left;'>
+			<input type=button value="+" onClick="faultupdown(1,false)">
+			<input type=button value="-" onClick="faultupdown(-1,false)">
+		</td>
+		</tr>
+		<tr>
+		</table>
+	</div>
+	<div style='padding-top:5px;text-align:center;width:80px;position:relative;'><button id='dipbutton'  title='Dip' onclick='scrollMode="dip";mouseWheelZoomOn(false);setSelectedButton(this.id);'><i style='transform: skew(-15deg, -15deg);color:red;' class="fas fa-square-full"></i></button>
+		<table style='position:absolute; top:-5px;left:60px;display:none;' id='dipbutton_view'>
+		<tr>
+		<td class='header'>
+			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='updateDip(this.value, index_of_selected);sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
+		</td>
+		<td class='header' style='text-align: left;'>
+			<input type=button value="+" onClick="dipupdown( 1,false)">
+			<input type=button value="-" onClick="dipupdown(-1,false)">
+			<input type=button value='Auto Dip' 
+			onClick="window.open('sgtamodeling_autodip.php?seldbname=<?php echo $seldbname?>','sgtaavgpopup','width=700,height=400,left=200,scrollbars=yes');">
+			<br />
+		</td>
+		</tr>
+		</table>
+	</div>
+	<div style='padding-top:5px;text-align:center;width:80px;position:relative;'><button id='currentbiasbutton'  title='Current Bias' onclick='scrollMode="cbias";mouseWheelZoomOn(false);setSelectedButton(this.id);'  style='width:28px;height:24px;position:relative;'><i class="fas fa-expand" style='color:red' style='position:absolute;left:2px;top:4px;'></i><i class="fas fa-search-plus" style='position:absolute;left:2px;top:4px;'></i></button>
+		<table style='position:absolute; top:-5px;left:60px;display:none;' id='currentbiasbutton_view'>
+		<tr>
+		<td class='header'>
+			<input type='text' size='4' name='bias' id='scalebias' value="<?php printf('%.0f', $bias); ?>" onchange='updatePlotBias(this.value);sendWellLogFieldUpdate("scalebias", this.value, "wld_"+data[index_of_selected].tableid)'>
+		</td>
+		<td class='header' style='text-align: left;'>
+			<input type=button value="Left" onClick="biasupdown(-10)">
+			<input type=button value="Right" onClick="biasupdown(10)">
+		</td>
+		</tr>
+		</table>
+	</div>
+	<div style='padding-top:5px;text-align:center;width:80px;position:relative;'><button id='currentscalebutton'  title='Current Scale' onclick='scrollMode="cscale";mouseWheelZoomOn(false);setSelectedButton(this.id);' style='width:28px;height:24px;position:relative;'><i class="fas fa-arrows-alt" style='color:red' style='position:absolute;left:2px;top:4px;'></i><i class="fas fa-search-plus" style='position:absolute;left:2px;top:4px;'></i></button>
+	<table style='position:absolute; top:-5px;left:60px;display:none;' id='currentscalebutton_view'>
+	<tr>
+		<td class='header'>
+			<input type='text' size='4' name='factor' id='scalefactor' value="<?php printf('%.2f', $factor); ?>" onchange='updateScaleFactor(this);sendWellLogFieldUpdate("scalefactor", this.value, "wld_"+data[index_of_selected].tableid)'>
+		</td> <td class='header' style='text-align: left;'>
+			<input type=button value="+" onClick="factorupdown(0.1)">
+			<input type=button value="-" onClick="factorupdown(-.1)">
+			<br>
+		</td>
+
+		</tr>
+	</table>
+	</div>
+	<div style='padding-top:5px;text-align:center;width:80px;position:relative;'><button id='plotbiasbutton' title='Plot Bias' onclick='scrollMode="pbias";mouseWheelZoomOn(false);setSelectedButton(this.id);'><i class="fas fa-expand"></i></button>
+	<table style='position:absolute; top:-5px;left:60px;display:none;' id='plotbiasbutton_view'>
+	<tr>
+	<td class='container' align='right'>
+		<input type='text' size='3' name='plotbias' id='plotbias' value="<?printf('%.0f', $plotbias); ?>" onchange='updateAllPlotBias(this.value);'>
+	</td>
+	<td class='container'>
+		<input type=button value="Left" onClick="allBiasUpDown(-10)">
+		<input type=button value="Right" onClick="allBiasUpDown(10)">
+	</td>
+	</tr>
+	</table>
+	</div>
+	
+	<div style='padding-top:5px;text-align:center;width:80px;'><button id='deletedatsetbutton'  title='Delete Data Set'><i class="fas fa-trash-alt" style='color:red'></i></button></div>
+	
+
+	
+	<div style='position:absolute; left: 490px;top:100px;'>
+		<table class='header' style='width: 300px;'>
+			<tr>
+			<td class='header'> File:</td>
+			<td colspan='4'><span id='realname_tablename'><?php echo " $realname "; ?><?php echo "($tablename)"; ?></span></td>
+			</tr> <tr>
+			<td class='header' style='width:30px'><b>MD:</b></td>
+			<td class='header' id='md_start_disp'> <?php printf("%9.2f", $startmd); ?> </td>
+			<td class='toheader'><b>to</b></td>
+			<td class='header'  id='md_end_disp'> <?php printf("%9.2f", $endmd); ?> </td>
+			</tr> <tr>
+			<td class='header'  style='width:30px'><b>TVD:</b></td>
+			<td class='header'  id='tvd_start_disp'> <?php printf("%9.2f", $starttvd); ?> </td>
+			<td class='toheader'><b>to</b></td>
+			<td class='header'  id='tvd_end_disp'> <?php printf("%9.2f", $endtvd); ?> </td>
+			</tr> <tr>
+			<td class='header'  style='width:30px'><b>VS:</b></td>
+			<td class='header'  id='vs_start_disp'> <?php printf("%9.2f", $startvs); ?> </td>
+			<td class='toheader'><b>to</b></td>
+			<td class='header' id='vs_end_disp'> <?php printf("%9.2f", $endvs); ?> </td>
+			</tr> <tr>
+			<td class='header'  style='width:30px'><b>TCL</b></td>
+			<td class='header'> <?php printf("%9.2f", $secttot); ?> </td>
+			</tr>
+		</table>
+	</div>
+
+	<!-- <table class="settings">
 	<tr><th colspan='5' class='header'>Data Sections - <?php echo $wellname; ?></th></tr>
 	<tr>
 	<td>
@@ -616,38 +749,13 @@ $timelog[] = array(microtime(),'after the chart');
 
 		<tr>
 		<td colspan='5'>
-			<table class='header' style='width: 100%;'>
-			<tr>
-			<th class='header'> </th>
-			<th class='header' colspan='4'> <b>File:</b><span id='realname_tablename'><?php echo " $realname "; ?><?php echo "($tablename)"; ?></span></th>
-			</tr> <tr>
-			<td class='header'><b>MD:</b></td>
-			<td class='header' id='md_start_disp'> <?php printf("%9.2f", $startmd); ?> </td>
-			<td class='toheader'><b>to</b></td>
-			<td class='header'  id='md_end_disp'> <?php printf("%9.2f", $endmd); ?> </td>
-			</tr> <tr>
-			<td class='header'><b>TVD:</b></td>
-			<td class='header'  id='tvd_start_disp'> <?php printf("%9.2f", $starttvd); ?> </td>
-			<td class='toheader'><b>to</b></td>
-			<td class='header'  id='tvd_end_disp'> <?php printf("%9.2f", $endtvd); ?> </td>
-			</tr> <tr>
-			<td class='header'><b>VS:</b></td>
-			<td class='header'  id='vs_start_disp'> <?php printf("%9.2f", $startvs); ?> </td>
-			<td class='toheader'><b>to</b></td>
-			<td class='header' id='vs_end_disp'> <?php printf("%9.2f", $endvs); ?> </td>
-			</tr> <tr>
-			<td class='header'><b>TOT/BOT:</b></td>
-			<td class='header'> <?php printf("%9.2f", $secttot); ?> </td>
-			<td class='toheader'><b>to</b></td>
-			<td class='header'> <?php printf("%9.2f", $sectbot); ?> </td>
-			</tr>
-			</table>
+			
 		</td>
 		</tr>
 
 		<tr>
 		<td colspan='3' class="container" align='right'>
-			Go to dataset at <input type='text' size='4' id='gotodatasetat' name='startmd' value='' onchange='goToDataSetAt()'> MD
+			Go to dataset at  MD
 		</td>
 		</tr>
 
@@ -716,50 +824,10 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		<tr>
 		<td class='header'>On Scroll</td><td colspan=2><div style='float:left;padding-right:10px'><button onclick='scrollMode="zoom"; mouseWheelZoomOn(true);'>Zoom</button></div><div style='float:left;padding-right:10px'><button onclick='scrollMode="fault";mouseWheelZoomOn(false);' >Fault</button></div><div style='float:left;padding-right:10px'><button onclick='scrollMode="dip";mouseWheelZoomOn(false);' >Dip</button></div><div style='clear:both'></div></div></td>
 		</tr>
-		<tr>
-		<td class='header'>Fault</td>
-		<td class='header'>
-			<input type="text" size="4" name="sectfault" id='sectfault' value="<?php echo $sectfault?>" onchange='updateFault(this.value, index_of_selected);sendWellLogFieldUpdate("fault", this.value, "wld_"+data[index_of_selected].tableid)'>
-		</td>
-		<td class='header' style='text-align: left;'>
-			<input type=button value="+" onClick="faultupdown(1,false)">
-			<input type=button value="-" onClick="faultupdown(-1,false)">
-		</td>
-		</tr>
-		<tr>
-		<td class='header'>Dip</td>
-		<td class='header'>
-			<input id='sectdip_parent' type="text" size="4" name="sectdip" value="<?php echo $sectdip?>" onchange='updateDip(this.value, index_of_selected);sendWellLogFieldUpdate("dip", this.value, "wld_"+data[index_of_selected].tableid)'>
-		</td>
-		<td class='header' style='text-align: left;'>
-			<input type=button value="+" onClick="dipupdown( 1,false)">
-			<input type=button value="-" onClick="dipupdown(-1,false)">
-			<input type=button value='Auto Dip' 
-			onClick="window.open('sgtamodeling_autodip.php?seldbname=<?php echo $seldbname?>','sgtaavgpopup','width=700,height=400,left=200,scrollbars=yes');">
-			<br />
-		</td>
-		</tr>
-		<tr>
-		<td class='header'>Bias</td>
-		<td class='header'>
-			<input type='text' size='4' name='bias' id='scalebias' value="<?php printf('%.0f', $bias); ?>" onchange='updatePlotBias(this);sendWellLogFieldUpdate("scalebias", this.value, "wld_"+data[index_of_selected].tableid)'>
-		</td>
-		<td class='header' style='text-align: left;'>
-			<input type=button value="Left" onClick="biasupdown(-10)">
-			<input type=button value="Right" onClick="biasupdown(10)">
-		</td>
-		</tr>
-		<tr>
-		<td class='header'>Scale</td>
-		<td class='header'>
-			<input type='text' size='4' name='factor' id='scalefactor' value="<?php printf('%.2f', $factor); ?>" onchange='updateScaleFactor(this);sendWellLogFieldUpdate("scalefactor", this.value, "wld_"+data[index_of_selected].tableid)'>
-		</td> <td class='header' style='text-align: left;'>
-			<input type=button value="+" onClick="factorupdown(0.1)">
-			<input type=button value="-" onClick="factorupdown(-.1)">
-			<br>
-		</td>
+		
 
-		</tr>
+
+		
 		</table>
 	</td>
 	</tr>
@@ -885,8 +953,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 		ProcessTime:<?printf("%.3f",$timelapse); ?>
 	</td>
 	<td class='container' align='right'>
-	<!--<input type="submit" value="View Tables" onclick="window.open('viewtablespdf.php?seldbname=<?php echo $seldbname?>', 'View Tables', 'height=600,width=900,scrollbars=yes')">
-	-->
+	
 	<input type="submit" value="View Tables" onclick="window.location='viewtablespdf.php?seldbname=<?php echo $seldbname?>'">
 	</td>
 	</tr>
@@ -940,7 +1007,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 	</tr>
 	</table>
 </td>
-<!-- drop shadow -->
+
 <td class="container" align='left' style='vertical-align: middle;'>
 	<table class="settings" style='width: 270;<?php echo $viewdspcnt> 0 ? '' : 'display:none' ?>;' id='dropshadow_container'>
 	<tr>
@@ -994,7 +1061,7 @@ if(isset($_FILES) and isset($_FILES['rotslide_csv_file']))
 			<button onclick="resetDipAndFaultForShadow()">Reset</button>
 		</td>
 	</tr>
-	</table>
+	</table> -->
 </td>
 <!-- drop shadow end -->
 </tr>

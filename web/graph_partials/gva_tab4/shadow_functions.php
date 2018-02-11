@@ -3,19 +3,34 @@ var shadowInitialFault = 0
 var shadowInitialDip = 0
 var initializeShadow = function(){
 	if(isShadowOn){
+		document.getElementById('shadowbutton').style='background-color:green'
 		shadowPiecesVal = parseInt(document.getElementById('shadow_view_cnt').value)
 		shadowSet(true, shadowPiecesVal - 1, true)
+	} else {
+		document.getElementById('shadowbutton').style=''
 	}
 }
 
-var showShadow = function(inputel){
-	shadowPiecesVal = parseInt(inputel.value)
-	sendAppInfoFieldUpdate('viewdspcnt', inputel.value)
+var showShadow = function(value = undefined){
+	var curval = parseInt(document.getElementById('shadow_view_cnt').value)
+	if(value == undefined){
+		if(curval == 0){
+			curval = 1
+		} else {
+			curval = 0
+		}
+	} 
+	shadowPiecesVal = parseInt(curval)
+	sendAppInfoFieldUpdate('viewdspcnt', curval)
 	if(shadowPiecesVal>=1){
-		document.getElementById('dropshadow_container').style='width: 270;'
+		document.getElementById('shadowbutton').style='background-color:green'
+		document.getElementById('dropshadow_container').style.display=''
+		document.getElementById('shadow_view_cnt').value = curval
 		shadowSet(true, shadowPiecesVal - 1, false)
 	} else {
-		document.getElementById('dropshadow_container').style='width: 270; display:none'
+		document.getElementById('shadowbutton').style=''
+		document.getElementById('dropshadow_container').style.display='none'
+		document.getElementById('shadow_view_cnt').value = curval
 		shadowSet(false,0, false)
 	}
 }

@@ -30,12 +30,30 @@ graphDiv.on('plotly_hover', function(data){
 		   } else {
 			shadowFaultUpDown(modifier)
 		   }
-		} else {
+		} else if(scrollMode == 'dip') {
 		   if(!isShadowOn){
 		   	dipupdown(modifier, true )
 		   } else{
 		   	shadowDipUpDown(modifier)
 		   }
+		} else if(scrollMode == 'cbias'){
+			modifier*=10
+			if(!isShadowOn){
+		   		biasupdown(modifier)
+		   	} else{
+		   		shadowBiasUpDown(modifier)
+		   	}
+		} else if(scrollMode == 'cscale'){
+			modifier*=10
+			if(!isShadowOn){
+		   		factorupdown(modifier)
+		   	} else{
+		   		shadowScaleUpDown(modifier)
+		   	}
+		
+		} else if(scrollMode == 'pbias'){
+			modifier*=10
+			allBiasUpDown(modifier)
 		}
 		return false;
 	}
