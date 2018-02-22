@@ -104,6 +104,10 @@ var wellborePlotChange = function(){
 		nowellplotchange=false
 	}
 }
+
+var addSurveyToPlot = function(survey){
+	
+}
 var graphDiv = document.getElementById('main_wellbore')
 graphDiv.on('plotly_relayout', wellborePlotChange);
 graphDiv.on('plotly_hover', function(eventData) {

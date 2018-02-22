@@ -43,6 +43,7 @@ var updateDataModelingValues = function(){
 	document.getElementById('scalebias').value = selected.bias
 	document.getElementById('scalefactor').value = selected.factor
 }
+
 var updateDisplayedValues = function(){
 	var selected = data[index_of_selected]
 	var fields_to_update = ['md_start_disp', 'md_end_disp', 'tvd_start_disp', 'tvd_end_disp', 'vs_start_disp', 'vs_end_disp']
@@ -54,4 +55,6 @@ var updateDisplayedValues = function(){
 	}
 }
 
+var addDataSetToPlot = function(dataset){
 
+}

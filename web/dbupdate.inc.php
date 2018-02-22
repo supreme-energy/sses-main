@@ -73,6 +73,7 @@ $ghostwelllogs=0;
 $nogo_zone=0;
 $nogo_point=0;
 $profile_lines = 0;
+$import_config = 0;
 
 $dbu->DoQuery("SHOW TABLES");
 while($dbu->FetchRow()) {
@@ -101,8 +102,26 @@ while($dbu->FetchRow()) {
 	elseif($tn=="nogo_zone") $nogo_zone=1;
 	elseif($tn=="nogo_point") $nogo_point=1;
 	elseif($tn=="profile_lines") $profile_lines=1;
+	elseif($tn=="import_config") $import_config=1;
 	
 }
+if($import_config == 0) {
+	logDoQuery($dbu,"CREATE TABLE import_config (
+    id integer NOT NULL,
+    field_name text,
+    field_value TEXT,
+	field_column_index smallint)");
+	logDoQuery($dbu,"CREATE SEQUENCE import_config_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1");
+	logDoQuery($dbu,"ALTER TABLE ONLY import_config ALTER COLUMN id SET DEFAULT nextval('import_config_id_seq'::regclass)");
+	logDoQuery($dbu,"ALTER TABLE ONLY import_config
+    ADD CONSTRAINT import_config_pkey PRIMARY KEY (id)");
+}
+
 if($profile_lines==0){
 	logDoQuery($dbu,"CREATE TABLE profile_lines (
     id integer NOT NULL,

@@ -52,6 +52,11 @@ $retstr=array();
 $retval=0;
 exec("./sses_laschk -f $filename -d $seldbname", &$retstr, &$retval);
 ?>
+<?php  if($_REQUEST['JSON']){
+	$display_str = join('|',$retstr)
+?>
+{"status":"success", "message": "<?php echo $display_str ?>"}
+<?php } else { ?>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="gva_styles.css" />
@@ -108,3 +113,4 @@ echo "</pre>";
 </table>
 </body>
 </html>
+<?php } ?>

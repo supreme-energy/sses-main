@@ -6,7 +6,7 @@
 	or distribute this file in any manner without written permission of Digital Oil Tools
 */ ?>
 <?
-header("Location: gva_tab1.php");
+//header("Location: gva_tab1.php");
 include_once("sses_include.php");
 require_once("dbio.class.php");
 require_once("tabs.php");
@@ -26,16 +26,10 @@ require_once("version.php");
 		   </TD>
 	   </TABLE>
 	   <TABLE class='container'>
-	       <TR>
-	           <TD style='text-align: center;'>
-		       <h2>LOGIN: <font color="FF0000"> <? if ($_GET['login_err'] == 1) { echo "Login Failed"; }	       ?></font></h2>
-		       <?
-                   $log = new LogMeIn();
-                   $log->encrypt = true;
-                   $log->loginform("sgta_form","container","sgta_login.php");
-		       ?>
-		   </TD>
-	       </TR>
+		<tr>
+			<td><button>New Well</button></td>
+			<td><button>Existing Well</button></td>
+		</tr>
 	  </TABLE>
 </TD>
 </TR>
