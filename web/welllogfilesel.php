@@ -32,11 +32,8 @@ while($row = $db->FetchRow()){
 </head>
 <body>
 
-<form method="post" enctype="multipart/form-data" id='fileform'>
-<input type='hidden' name='ret' value='<?echo $ret;?>'>
-<input type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
-<input type='hidden' name='JSON' value='true'>
-</form>
+
+
 <TABLE class='container'>
 <tr>
 <td>
@@ -46,7 +43,12 @@ while($row = $db->FetchRow()){
 </tr>
 <tr>
 <td class="container" align='left'>
+	<form method="post" action='/sses/upload_raw_file.php' enctype="multipart/form-data" id='fileform'>
+	<input type='hidden' name='ret' value='<?echo $ret;?>'>
+	<input type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
+	<input type='hidden' name='JSON' value='true'>
 	<input type="file" name="userfile" size="90" id='userfile'>
+	</form>
 </td>
 </tr>
 <tr>
@@ -89,17 +91,17 @@ var seldbname = '<?php echo $_REQUEST['seldbname']?>';
 <?php }
 }?>
 function readLasFile(evt) {
-    var f = evt.target.files[0];   
-    if (f) {
-      var r = new FileReader();
-      r.onload = function(e) { 
-          var filecontents = e.target.result;             
-          parseLasFile(filecontents)
-      }
-      r.readAsText(f);
-    } else { 
-      alert("Failed to load file");
-    }
+	var xhr = new XMLHttpRequest();	
+	xhr.open('POST', '/sses/upload_raw_file.php', true);
+	var file = this.files[0];	
+	var fd = new FormData()
+	fd.append("userfile", file);
+    xhr.onreadystatechange = function () {
+    	  if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+    	    parseLasFile(xhr.responseText)
+    	  }
+    	};
+	xhr.send(fd);
   }
 
 document.getElementById('userfile').addEventListener('change', readLasFile, false);
@@ -209,6 +211,14 @@ function extractDataSets(data){
 	var last_inc = 0;
 	var last_azm = 0;
 	var surveycnt = 0;	
+	var azms = []
+	var tvds = []
+	var vss  = []
+	var depths = []
+	var ropes  = []
+	var gases   = []
+	var gammas = []
+	
 	for(var i = 1; i < data.length; i++){		
 		var row = data[i].split(/[ \t]+/)
 		var depth = row[headerConfig['md'].index]
@@ -219,29 +229,40 @@ function extractDataSets(data){
 		var azm = row[headerConfig['azm'].index]
 		var rop = row[6]
 		var gas = row[7]
-		if(last_inc != inc || last_azm != azm){
-			var current_survey = {
+		vss.push(vs)
+		tvds.push(tvd)
+		depths.push(depth)
+		gammas.push(gamma)
+		gases.push(gas)
+		ropes.push(rop)
+		azms.push(azm)
+		var survey_data_row = false
+		if(inc > -9999){
+			survey_data_row = true
+		}
+
+		if( last_inc != inc && survey_data_row){
+			surveys.push( {
 					tvd: tvd,
 					md: depth,
 					inc: inc,
 					azm: azm,
 					vs: vs,
-					tvds : [tvd],
-					vss  : [vs],
-					depth: [depth],
-					gamma: [gamma],
-					gas: [rop],
-					rop: [gas]						
-				}
-			surveys.push(current_survey)
-		} else {
-			current_survey = surveys[surveys.length-1]
-			current_survey.vss.push(vs)
-			current_survey.tvds.push(tvd)
-			current_survey.depth.push(depth)
-			current_survey.gamma.push(gamma)
-			current_survey.gas.push(gas)
-			current_survey.rop.push(rop)
+					azms : azms.slice(0),
+					tvds : tvds.slice(0),
+					vss  : vss.slice(0),
+					depth: depths.slice(0),
+					gamma: gammas.slice(0),
+					gas: gases.slice(0),
+					rop: ropes.slice(0)						
+				})
+			azms = []
+			tvds = []
+			vss  = []
+			depths = []
+			gammas = []
+			gases  = []
+			ropes  = []
 		}
 		last_inc = inc
 		last_azm = azm
