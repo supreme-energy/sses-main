@@ -126,8 +126,17 @@ function validateHeadersPositions(header_data){
 function validateConfiguration(header_data){
 	if(isConfigged){
 	  return validateHeadersPositions(header_data)
-	} 
-	header_fields = header_data.split('#')[1].split(/[ \t]+/)
+	}
+	if(header_fields.indexOf('#-') > -1){ 
+		header_fields = header_data.split('#')[1].split(/[ \t]+/)
+	} else {
+		header_array_fields = header_data.split("\n")
+		header_fields = []
+		for(var i=1; i< header_array_fields.length; i++){
+			var row = header_array_fields[i]
+			header_fields.push(row.trim().split(" ")[0])
+		}
+	}
 		
 	html='<table><form id="column_assignment_form" onsubmit="return false;">'
 	html+='<tr><td colspan="2" style="text-align:right"><button onclick="assignDataSetConfigs()">assign</button></td></tr>'
