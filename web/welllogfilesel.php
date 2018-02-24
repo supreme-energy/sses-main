@@ -97,7 +97,8 @@ function readLasFile(evt) {
 	var fd = new FormData()
 	fd.append("userfile", file);
     xhr.onreadystatechange = function () {
-    	  if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+		  console.log(xhr.responseText)
+  	  	  if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     	    parseLasFile(xhr.responseText)
     	  }
     	};
