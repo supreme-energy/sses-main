@@ -126,7 +126,7 @@ function validateConfiguration(header_data){
 	if(isConfigged){
 	  return validateHeadersPositions(header_data)
 	}
-	if(header_fields.indexOf('#-') > -1){ 
+	if(header_data.indexOf('#-') > -1){ 
 		header_fields = header_data.split('#')[1].split(/[ \t]+/)
 	} else {
 		header_array_fields = header_data.split("\n")
