@@ -51,7 +51,7 @@ foreach($data as $survey){
 	$db->DoQuery("select * from welllogs where startmd=$startmd");
 	$welllog_row = $db->FetchRow();
 	if($welllog_row){
-		//welllog row previously created nop for now
+		$tablename = $welllog_row['tablename'];
 	} else{
 	  $result = $db->DoQuery("insert into welllogs (tablename,startdepth,enddepth,startmd,endmd,startvs,endvs,starttvd,endtvd,scalebias,scalefactor,fault,dip,filter,scaleleft,scaleright) 
 			values ('xxxxxx',$starttvd,$endtvd,$startmd,$endmd,$startvs,$endvs,$starttvd,$endtvd,$lastbias,$lastscale,0,0,0,0,0)");
@@ -85,28 +85,31 @@ foreach($data as $survey){
 	if($data_entry_cnt['cnt']==0){
 		$db->DoQuery("BEGIN TRANSACTION;");
 		for($i = 1; $i < count($survey['gamma']); $i++){
-			$md = $suvery['depth'][$i];
+			$md = $survey['depth'][$i];
 			$gamma = $survey['gamma'][$i];
 			$tvd   = $survey['tvds'][$i];
 			$vs = $survey['vss'][$i];
 			$inc = $survey['inc'];
 			$azm = $survey['azm'];
+			
 			if($gamma > -999.0){
-				$result=$db->DoQuery("INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$md);");
+				$query = "INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$gamma,$tvd,$vs,$md);";
+				echo $query. "\n";
+				$result=$db->DoQuery("INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$gamma,$tvd,$vs,$md);");
 			}
 			if($result==FALSE) {
 				$db->DoQuery("ROLLBACK;");
 				die("<pre>Error updating table: $tablename\n</pre>");
 			}
 		}
-		$md = $data[$data_index+1]['depth'][$i];
-		$gamma = $data[$data_index+1]['gamma'][$i];
-		$tvd   = $data[$data_index+1]['tvds'][$i];
-		$vs = $data[$data_index+1]['vss'][$i];
+		$md = $data[$data_index+1]['depth'][0];
+		$gamma = $data[$data_index+1]['gamma'][0];
+		$tvd   = $data[$data_index+1]['tvds'][0];
+		$vs = $data[$data_index+1]['vss'][0];
 		$inc = $data[$data_index+1]['inc'];
 		$azm = $data[$data_index+1]['azm'];
 		if($gamma > -999.0){		
-			$result=$db->DoQuery("INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$md);");
+			$result=$db->DoQuery("INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$gamma,$tvd,$vs,$md);");
 		}
 		$result=$db->DoQuery("COMMIT;");
 	}
