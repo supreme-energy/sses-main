@@ -221,6 +221,12 @@ function importWellLogSet(){
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "/sses/json.php?path=json/sgta_modeling/import_well_log.php&seldbname=<?php echo $seldbname ?>");
 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	 xhr.onreadystatechange = function () {
+ 	  if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+ 		 window.opener.location.reload()
+ 		 window.close()
+   	  }
+   	};
 	xhr.send(JSON.stringify(surveys));
 }
 
