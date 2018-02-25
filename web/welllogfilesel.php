@@ -126,7 +126,6 @@ function validateConfiguration(header_data){
 	if(isConfigged){
 	  return validateHeadersPositions(header_data)
 	}
-	console.log(header_data);
 	if(header_data.indexOf('#-') > -1){ 
 		header_fields = header_data.split('#')[1].split(/[ \t]+/)
 	} else {
@@ -143,9 +142,12 @@ function validateConfiguration(header_data){
 		
 	html='<table><form id="column_assignment_form" onsubmit="return false;">'
 	html+='<tr><td colspan="2" style="text-align:right"><button onclick="assignDataSetConfigs()">assign</button></td></tr>'
+	var trimed_hdr_cnt = 0
 	for(var i=0; i< header_fields.length; i++){
 		if(header_fields[i].trim()!=""){
-			html+='<tr><td>'+header_fields[i]+'</td><td><select class="index_assigment" name="select_idx_'+(i-1)+'" id="hf_index_'+header_fields[i]+'"><option>-</option><option value="md">MD</option><option value="gr">Gamma</option><option value="tvd">TVD</option><option value="vs">VS</option><option value="inc">INC</option><option value="azm">AZM</option><option value="add_data">Additional Data</option></select></td></tr>'
+			html+='<tr><td>'+header_fields[i]+'</td><td><select class="index_assigment" name="select_idx_'+(i-trimed_hdr_cnt)+'" id="hf_index_'+header_fields[i]+'"><option>-</option><option value="md">MD</option><option value="gr">Gamma</option><option value="tvd">TVD</option><option value="vs">VS</option><option value="inc">INC</option><option value="azm">AZM</option><option value="add_data">Additional Data</option></select></td></tr>'
+		} else {
+			trimed_hdr_cnt++	
 		}
 	}
 	html+='<tr><td colspan="2" style="text-align:right"><button onclick="assignDataSetConfigs()">assign</button></td></tr>'
