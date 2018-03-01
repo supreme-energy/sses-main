@@ -118,8 +118,11 @@ include("readsurveys.inc.php");
 
 <input type='hidden' id='seldbn' value='<?echo $seldbname;?>'>
 <?
+$show_tabs = isset($_REQUEST['no_tabs']) ? false: true;
 $maintab=2;
-include "apptabs.inc.php";
+if($show_tabs){
+	include "apptabs.inc.php";
+}
 include("waitdlg.html");
 ?>
 <table class='tabcontainer'>

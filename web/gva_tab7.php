@@ -202,7 +202,10 @@ for($i=0;$i<count($infoids);$i++) {
 <body>
 <?php
 $maintab=6;
-include "apptabs.inc.php";
+$show_tabs = isset($_REQUEST['no_tabs']) ? false: true;
+if($show_tabs){
+	include "apptabs.inc.php";
+}
 include("waitdlg.html");
 ?>
 <div class='tabcontainer'>

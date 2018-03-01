@@ -27,8 +27,11 @@ include("readappinfo.inc.php");
 </head>
 <body>
 <?
+$show_tabs = isset($_REQUEST['no_tabs']) ? false: true;
 $maintab=4;
-include "apptabs.inc.php";
+if($show_tabs){
+	include "apptabs.inc.php";
+}
 ?>
 <table class='tabcontainer'>
 <input type='hidden' id='seldbn' value='<?echo $seldbname;?>'>

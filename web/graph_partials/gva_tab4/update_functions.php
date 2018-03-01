@@ -21,6 +21,11 @@ var sendSgtaPositionUpdate = function(field,value){
 	xhr.send();
 }
 
+var sendDeleteDataSection = function(id){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/sses/json.php?path=json/sgta_modeling/delete_ds.php&seldbname=<?php echo $seldbname ?>&id='+id);
+	xhr.send();
+}
 
 
 var updateFormations = function(){
@@ -55,6 +60,18 @@ var updateDisplayedValues = function(){
 	}
 }
 
+var deleteSelectedDs = function(){
+	var table_id = data[index_of_selected].tableid
+	var index_of_selected_at_start = index_of_selected
+	var r=confirm("Delete this data set?");
+	if (r==true)
+ 	{
+ 		prevDataSet()
+		Plotly.deleteTraces('well_log_plot', index_of_selected_at_start)
+		sendDeleteDataSection(table_id)
+		last_index--
+	}
+}
 var addDataSetToPlot = function(dataset){
 
 }

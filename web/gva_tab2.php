@@ -100,8 +100,12 @@ echo $cmd. "\n";
 </HEAD>
 <BODY>
 <?
+$show_tabs = isset($_REQUEST['no_tabs']) ? false: true;
 $maintab=1;
-include "apptabs.inc.php";
+if($show_tabs){
+	include "apptabs.inc.php";
+}
+
 include("waitdlg.html");
 ?>
 <table class='tabcontainer'>

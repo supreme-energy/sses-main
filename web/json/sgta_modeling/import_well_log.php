@@ -4,7 +4,6 @@ $seldbname=$_REQUEST['seldbname'];
 $db=new dbio($seldbname,true);
 $db->OpenDb();
 $data = json_decode(file_get_contents('php://input'), true);
-print_r($data);
 $db->DoQuery("SELECT endmd,scalebias,scalefactor FROM welllogs ORDER BY endmd DESC LIMIT 1;");
 $lastbias=0;
 $lastscale=1.0;
@@ -120,4 +119,5 @@ exec("./sses_gva -d $seldbname");
 exec("./sses_cc -d $seldbname");
 exec("./sses_cc -d $seldbname -p");
 exec("./sses_af -d $seldbname");
+include_once("classes/graphing/SgtaModelingTab4.class.php");
 ?>

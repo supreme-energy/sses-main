@@ -7,10 +7,11 @@
 */ ?>
 <?
 require_once("dbio.class.php");
-$seldbname=$_POST['seldbname'];
-$dbname=$_POST['dbname'];
-$newname=$_POST['newname'];
+$seldbname=$_REQUEST['seldbname'];
+$dbname=$_REQUEST['dbname'];
+$newname=$_REQUEST['newname'];
 $entity_id=$_SESSION['entity_id'];
+$wizard = isset($_REQUEST['wizard']);
 $db=new dbio("sgta_index");
 $db->OpenDb();
 $db->DoQuery("INSERT INTO dbindex (dbname) VALUES ('xxx');");
@@ -28,6 +29,10 @@ if($id!="") {
 }
 else die("<pre>Failed to update dbindex!\n</pre>");
 $db->CloseDb();
-header("Location: dbindex.php?seldbname=$seldbname");
+if($wizard){
+	header("Location: well_setup_well_plan_import.php?seldbname=$newdbname");	
+} else {
+	header("Location: dbindex.php?seldbname=$seldbname");
+}
 exit();
 ?>

@@ -107,7 +107,10 @@ else {
 jQuery.js is not present. You must install jQuery in this folder for the color wheel to work.</div>
 <?
 $maintab=5;
-include "apptabs.inc.php";
+$show_tabs = isset($_REQUEST['no_tabs']) ? false: true;
+if($show_tabs){
+	include "apptabs.inc.php";
+}
 include("waitdlg.html");
 ?>
 <table class='tabcontainer'>

@@ -82,7 +82,10 @@ $hostname=exec("uname -n");
 <body>
 <?
 $maintab=0;
-include "apptabs.inc.php";
+$show_tabs = isset($_REQUEST['no_tabs']) ? false: true;
+if($show_tabs){
+	include "apptabs.inc.php";
+}
 include("waitdlg.html");
 ?>
 <TABLE class='tabcontainer'>
