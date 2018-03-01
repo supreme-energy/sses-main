@@ -25,14 +25,13 @@ $db->DoQuery("BEGIN TRANSACTION");
 $indata = false;
 
 while( ($data = fgetcsv($fh, 8192, ",")) !== FALSE ) {
-	print_r($data);
+	
 	if($indata){	
 		$md=$data[0];
 		$inc=$data[1];
 		$azm=$data[2];
 		if($md!=''){
 			$result=$db->DoQuery("INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');");
-			echo "INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');<br>";
 			if($result==FALSE) die("<pre>Error on SQL statement for table: wellplan\n</pre>");
 		}
 	}
@@ -53,5 +52,5 @@ if (strlen($output) && $debug) {
 	exit;
 }
 
-//header("Location: well_setup_control_log_import.php?seldbname=$seldbname");
+header("Location: well_setup_control_log_import.php?seldbname=$seldbname");
 ?>
