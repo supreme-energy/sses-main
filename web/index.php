@@ -35,7 +35,7 @@ while($db->FetchRow()) {
 			window.location = "/sses/gva_tab4.php?seldbname="+db+"&no_tabs=true"
 		}
 	</script>
-   <LINK href="gva_tab0.css" rel="stylesheet" type="text/css">
+   <LINK href="gva_tab0.css?x=<?=time();?>" rel="stylesheet" type="text/css">
    <TABLE class='tabcontainer'>
    <TR>
        <TD>

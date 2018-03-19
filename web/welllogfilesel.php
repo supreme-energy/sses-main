@@ -7,7 +7,7 @@
 require_once("dbio.class.php");
 
 $seldbname=$_REQUEST['seldbname'];
-$ret=$_REQUEST['ret'];
+$fromtiein = isset($_REQUEST['fromtiein']) ? ($_REQUEST['fromtiein']=='true') : false;
 $db=new dbio($seldbname);
 $db->OpenDb();
 
@@ -37,8 +37,16 @@ while($row = $db->FetchRow()){
 <TABLE class='container'>
 <tr>
 <td>
-	<A class='menu' href='#' onclick='window.close()'>Close</A>
-	<h1>LAS File To Import:</h1>
+	
+	<?php if($fromtiein){?>
+	 <A class='menu' href='gva_tab4.php?seldbname=<?php echo $seldbname ;?>&no_tabs=true'>Skip</A>
+	 <h1>Import first data piece:</h1>
+	<?php } else {?>
+     <A class='menu' href='#' onclick='window.close()'>Close</A>
+     <h1>LAS File To Import:</h1>
+	<?php }?>
+	
+	
 </td>
 </tr>
 <tr>
@@ -61,7 +69,7 @@ while($row = $db->FetchRow()){
 	<div id='content_loaded_action_area'>
 		<div id='not_configured' <?php echo (count($import_config)>0 ? 'style="display:none;"':'')?>>
 			<div>Header data is not configured. Please configure the header data.</div>
-			<div>This is the header data we have found within your LAS file. Please assign the proper data columns</div>
+			<div id='header_data_sub' style='padding-top:5px;display:none;'>This is the header data we have found within your LAS file. Please assign the proper data columns</div>
 			<div id='header_assigment'>
 			</div>
 		</div>
@@ -126,6 +134,7 @@ function validateConfiguration(header_data){
 	if(isConfigged){
 	  return validateHeadersPositions(header_data)
 	}
+	document.getElementById('header_data_sub').style.display='block'
 	if(header_data.indexOf('#-') > -1){ 
 		header_fields = header_data.split('#')[1].split(/[ \t]+/)
 	} else {
@@ -241,7 +250,7 @@ function extractDataSets(data){
 	var ropes  = []
 	var gases   = []
 	var gammas = []
-	
+	var canSurvey = false;
 	for(var i = 1; i < data.length; i++){		
 		var row = data[i].split(/[ \t]+/)
 		var depth = row[headerConfig['md'].index]
@@ -265,6 +274,7 @@ function extractDataSets(data){
 		}
 
 		if( last_inc != inc && survey_data_row){
+			if(canSurvey){
 			surveys.push( {
 					tvd: tvd,
 					md: depth,
@@ -286,6 +296,9 @@ function extractDataSets(data){
 			gammas = []
 			gases  = []
 			ropes  = []
+			} else {
+				canSurvey=true;
+			}
 		}
 		last_inc = inc
 		last_azm = azm

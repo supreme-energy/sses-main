@@ -65,7 +65,8 @@ td.inactive {
 }
 table.container {
   padding: 0;
-	width: 950px;
+	max-width: 950px;
+	min-width: 700px;
 	-moz-border-radius: 5px 5px 5px 5px;
 	border: thin solid black;
   background-color: #fffffc;
@@ -79,7 +80,8 @@ table.container2 {
 	border: none;
   background-color: #fffffc;
 	padding: 2 60;
-	width: 950px;
+	max-width: 950px;
+	mind-width: 700px;
 }
 td.container2 {
 	border: none;
@@ -114,7 +116,8 @@ table.tabcontainer {
 	text-align: left;
 	padding: 0px;
   background-color: rgb(255, 255, 252);
-	width: 950px;
+	max-width: 950px;
+	min-width: 700px;
 	margin: 0;
   }
 /*
@@ -136,4 +139,49 @@ input.button:hover {
 }
 input.button:active {
   	background-color: rgb(128,128,128);
+}
+
+table.surveys {
+  text-align:left;
+  border-spacing:0;
+  padding:4px;
+  margin:0;
+  border-style: none;
+  background-color: #fffffc;
+  width: 100%;
+}
+table.surveys td {
+  padding-right:1px;
+}
+table.surveys td:first-child {
+  text-align:center;
+}
+input.surveys {
+  text-align: right;
+  padding: 0;
+  border: none;
+  background-color: #ffffff;
+}
+th.surveys {
+  border: thin solid black;
+  border-right: none;
+  text-align: center;
+  padding: 0;
+  background-color: #4b7eaa;
+}
+
+td.gridmdcl {
+  border-left: thin solid black;
+  border-bottom: thin solid black;
+  background-color: white;
+}
+
+td.grid {
+  text-align: right;
+  padding: 0 4 0 4;
+  background-color: rgb(230,245,200);;
+
+  
+  
+  background-color: white;
 }

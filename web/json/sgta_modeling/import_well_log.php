@@ -33,15 +33,16 @@ foreach($data as $survey){
 	$endvs   = $data[$data_index+1]['vss'][0];
 	
 	$tvd = $survey['tvd'];
-	
+	print_r($survey['tvds']);
 	$starttvd = $survey['tvds'][1];
 	$endtvd = $data[$data_index+1]['tvds'][0];
-	
+	echo "select * from surveys where md=$md and inc=$inc and azm=$azm";
 	$db->DoQuery("select * from surveys where md=$md and inc=$inc and azm=$azm");
 	$row = $db->FetchRow();
 	if($row){
 		
 	} else{
+		echo 'inserting survey data';
 		$db->DoQuery("INSERT INTO surveys (md,inc,azm) VALUES ($md,$inc,$azm)");
 		$db->DoQuery("UPDATE wellinfo SET pamethod='-1';");
 		$db->DoQuery("delete from projections where ptype='rot' or ptype='sld'");

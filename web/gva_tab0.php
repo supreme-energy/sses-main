@@ -12,7 +12,7 @@ require_once("tabs.php");
 require_once("login.class.php");
 require_once("version.php");
 ?>
-   <LINK href="gva_tab0.css" rel="stylesheet" type="text/css">
+   <LINK href="gva_tab0.css?x=<?=time();?>" rel="stylesheet" type="text/css">
    <TABLE class='tabcontainer'>
    <TR>
        <TD>

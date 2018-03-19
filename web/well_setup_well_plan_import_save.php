@@ -1,6 +1,5 @@
 <?php 
 require_once("dbio.class.php");
-print_r($_REQUEST);
 $seldbname=$_REQUEST['seldbname'];
 $wellname = $_REQUEST['wellname'];
 $color =  $_REQUEST['colorrawwp'];
