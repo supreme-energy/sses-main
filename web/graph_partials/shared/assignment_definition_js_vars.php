@@ -22,7 +22,7 @@ var buildDataDefinationFromLocalStorage = function(selected, inval){
     selected.row = rows.join("&")
 }
 
-function definitionDataObj (display_name, current_value = '', table = '', field_name = ''){
+function definitionDataObj (display_name, current_value = '', table = '', field_name = '', field_type='normal'){
 	this.display_name = display_name
 	this.db_table = table
 	this.db_field_name = field_name
@@ -31,6 +31,7 @@ function definitionDataObj (display_name, current_value = '', table = '', field_
 	this.column = -1
 	this.row = -1
 	this.locked = 0
+	this.field_type = field_type
 	var storedData = JSON.parse(localStorage.getItem(display_name))
 	buildDataDefinationFromLocalStorage(this, storedData)
 }
@@ -60,5 +61,8 @@ var sharedVars = {
  	new definitionDataObj('Northing(Y) PBHL', '<?=$pbhl_northing?>', 'wellinfo', 'pbhl_northing'),
  	new definitionDataObj('Correction', '<?=$correction?>', 'wellinfo', 'correction'),
  	new definitionDataObj('Coordinate System', '<?=$coordsys?>', 'wellinfo', 'coordsys'),
+	new definitionDataObj('Well Plan MD', '', 'wellplan', 'md', 'column'),
+	new definitionDataObj('Well Plan INC', '', 'wellplan', 'inc', 'column'),
+    new definitionDataObj('Well Plan AZM', '', 'wellplan', 'azm', 'column'),
    ]
 }

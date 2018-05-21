@@ -48,6 +48,10 @@ table.importContentTable td {
     background-color: white;
     -moz-border-radius: ;
 }
+
+table.importContentTable td:hover{
+    background-color: green
+}
 </style>
    <LINK href="gva_tab0.css?x=<?=time();?>" rel="stylesheet" type="text/css">
    <TABLE class='tabcontainer'>
@@ -133,7 +137,9 @@ function generateFromCSV(file_content){
 }
 
 function generateFromLAS(file_content){
-	console.log(file_content)
+    var las_content = parseLAS(file_content)
+	var table = createTable(las_content)
+	document.getElementById('import_content_display').appendChild(table)
 }
 
 function parseAndDisplayFile(response){
@@ -152,13 +158,18 @@ var currentSelectedCells = []
 var tableSelectionType = 'cell'
 var dehighlightCurrent = function(){
 	for(var i = 0 ; i < currentSelectedCells.length;i++){
-		var previousSelection = currentSelectedCells[i]
-		var prevElement = document.getElementById(previousSelection.cell_id)
-		prevElement.style.backgroundColor = 'white'
+		try{
+		  var previousSelection = currentSelectedCells[i]
+		  var prevElement = document.getElementById(previousSelection.cell_id)
+		  deHighlightColumn(previousSelection.cell_id)
+		  prevElement.style.backgroundColor = 'white'
+		  prevElement.highlighted = false
+		} catch(e){}
 		
 	}
 }
 var highlightFromStorage = function(inval){
+	return ''
 	dehighlightCurrent()
 	if (Array.isArray(inval)){
 	   currentSelectedCells = inval
@@ -167,12 +178,60 @@ var highlightFromStorage = function(inval){
 	}
 
 	for(var i = 0 ; i < currentSelectedCells.length; i ++ ){
-		var currentSel = currentSelectedCells[i]
-		var el = document.getElementById(currentSel.cell_id)
-		el.style.backgroundColor='green'
+		try{
+		  var currentSel = currentSelectedCells[i]
+		  var el = document.getElementById(currentSel.cell_id)
+		  el.style.backgroundColor='green'
+		  el.highlighted = true
+		} catch(e){}
 	}
 }
+
+var highlightColumn = function(start_cell){
+    var split_vals = start_cell.split("_")
+	var row_pos = parseInt(split_vals[1])
+	var hasmore_data = true
+	var next_id =''
+	while(hasmore_data){
+		row_pos += 1
+		next_id = split_vals[0]+"_"+row_pos+"_"+split_vals[2]+"_"+split_vals[3]
+		try{
+            var el = document.getElementById(next_id)
+			if(el.innerHTML == ''){
+				hasmore_data = false
+			} else {
+				el.style.backgroundColor='green'
+			}
+		}catch(e){
+			hasmore_data = false
+		}
+    }
+}
+
+var deHighlightColumn = function(start_cell){
+	var split_vals = start_cell.split("_")
+	var row_pos = parseInt(split_vals[1])
+	var hasmore_data = true
+	var next_id =''
+	while(hasmore_data){
+		row_pos += 1;
+		next_id = split_vals[0]+"_"+row_pos+"_"+split_vals[2]+"_"+split_vals[3];
+		try{
+            var el = document.getElementById(next_id)
+			if(el.style.backgroundColor == 'green'){
+			   el.style.backgroundColor='white'
+			} else {
+			   hasmore_data = false
+			}
+		}catch(e){
+			hasmore_data = false
+		}
+	}
+}
+
 var onCellClick = function (e){
+	var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")
+	var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
 	var selection = {
 				   filename: 'well_plan',
 		           cell_id: this.id,
@@ -183,36 +242,25 @@ var onCellClick = function (e){
 	} else{
        dehighlightCurrent()
 	   currentSelectedCells = [selection]
+	   if (currentSelectedVar.field_type == 'column'){
+           highlightColumn(this.id)
+	   }
 	}
-	var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")
-	var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
 	localStorage.setItem(currentSelectedVar.display_name,  JSON.stringify(currentSelectedCells))
 	this.style.backgroundColor='green'
 }
 
-var onCellMouseOver = function(evnt){
-	   this.style.backgroundColor = 'green'
-}
-
-var onCellMouseOut = function(evnt){
-    var hasId = false
-	for(var i = 0 ; i < currentSelectedCells.length;i++){
-	       var previousSelection = currentSelectedCells[i]
-	       if(previousSelection.cell_id == this.id){
-            hasId=true
-			break;
-		   }
-	}
-	if(!hasId){
-		this.style.backgroundColor = 'white'
-	}
-}
 function createTable(tableData) {
 	  var table = document.createElement('table');
 	  table.className  = 'importContentTable';
 	  var tableBody = document.createElement('tbody');
       var row_idx = 0
-	    
+	  var max_columns = 1
+	  tableData.forEach(function(rowData) {
+	   if(rowData.length > max_columns){
+		   max_columns = rowData.length
+	   }
+	  })  
 	  tableData.forEach(function(rowData) {
 	    var row = document.createElement('tr');
 		row.id='row_'+row_idx
@@ -221,11 +269,16 @@ function createTable(tableData) {
 	      var cell = document.createElement('td');
 		  cell.id = 'row_'+row_idx+'_col_'+column_idx
 	      cell.onclick = onCellClick
-		  cell.onmouseover = onCellMouseOver
-		  cell.onmouseout  = onCellMouseOut
+            
+		  column_idx++
+		  if(column_idx < max_columns && column_idx == rowData.length){
+			  var colspan = max_columns - column_idx 
+			  cell.colSpan = colspan
+		  }
 		  cell.appendChild(document.createTextNode(cellData));
 	      row.appendChild(cell);
-		  column_idx++
+		  
+
 	    });
         row_idx++
 	    tableBody.appendChild(row);
@@ -234,7 +287,16 @@ function createTable(tableData) {
 	  table.appendChild(tableBody);
 	  return table
 	}
-	
+
+function parseLAS(str){
+    var lines = str.split("\n")
+	var arr = [];
+	for(c = 0; c < lines.length; c++){
+		arr[c] =  lines[c].split(/[ ]+/);
+	}
+	return arr
+}
+
 function parseCSV(str) {
     var arr = [];
     var quote = false;  // true means we're inside a quoted field
