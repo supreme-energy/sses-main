@@ -9,9 +9,11 @@ var buildDataDefinationFromLocalStorage = function(selected, inval){
     var columns = []
     var rows = []
     var filename=''
+	var field_type = 'normal'
     for(var i = 0 ; i < inval.length; i ++){
         var selObj = inval[i]
         var splitrows_cols = selObj.cell_id.split("_")
+		field_type = selObj.field_type
         rows.push(splitrows_cols[1])
         columns.push(splitrows_cols[3])
         values.push(selObj.cell_value)
@@ -20,6 +22,7 @@ var buildDataDefinationFromLocalStorage = function(selected, inval){
     selected.value = values.join(" ")
     selected.column = columns.join("&")
     selected.row = rows.join("&")
+	selected.field_type = field_type
 }
 
 function definitionDataObj (display_name, current_value = '', table = '', field_name = '', field_type='normal'){

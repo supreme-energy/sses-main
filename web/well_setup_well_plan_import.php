@@ -169,7 +169,6 @@ var dehighlightCurrent = function(){
 	}
 }
 var highlightFromStorage = function(inval){
-	return ''
 	dehighlightCurrent()
 	if (Array.isArray(inval)){
 	   currentSelectedCells = inval
@@ -183,6 +182,10 @@ var highlightFromStorage = function(inval){
 		  var el = document.getElementById(currentSel.cell_id)
 		  el.style.backgroundColor='green'
 		  el.highlighted = true
+        
+		  if(currentSel.field_type=='column'){
+			  highlightColumn(currentSel.cell_id)
+		  }
 		} catch(e){}
 	}
 }
@@ -235,7 +238,8 @@ var onCellClick = function (e){
 	var selection = {
 				   filename: 'well_plan',
 		           cell_id: this.id,
-				   cell_value: this.innerHTML
+				   cell_value: this.innerHTML,
+				   field_type: currentSelectedVar.field_type
 			   }	
 	if (e.ctrlKey) {
 	   currentSelectedCells.push(selection)  
