@@ -18,11 +18,13 @@ var buildDataDefinationFromLocalStorage = function(selected, inval){
         columns.push(splitrows_cols[3])
         values.push(selObj.cell_value)
         filename = selObj.filename
+		console.log(selObj)
     }
     selected.value = values.join(" ")
     selected.column = columns.join("&")
     selected.row = rows.join("&")
 	selected.field_type = field_type
+	selected.filename = filename
 }
 
 function definitionDataObj (display_name, current_value = '', table = '', field_name = '', field_type='normal'){

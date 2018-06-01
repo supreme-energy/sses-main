@@ -10,7 +10,10 @@
 include_once("sses_include.php");
 require_once("dbio.class.php");
 require_once("version.php");
+
+
 $seldbname=$_REQUEST['seldbname'];
+require_once("graph_partials/shared/uploaded_file_list.php");
 $db=new dbio('sgta_index');
 $db->OpenDb();
 $db->DoQuery("select * from dbindex where dbname='$seldbname';");
@@ -68,15 +71,24 @@ table.importContentTable td:hover{
 	   <TABLE class='container' >
 		<tr>
 			<td>
+			<table style='float:left'>
+			     <tr><td>Previously loaded files:</td></tr>
+			     <tr><td><select id='previous_loaded_files' onchange="readExistingFile()"><option>--------------------------------</option>
+			     	<?php 
+			     	foreach($import_files as $fname){
+			     		echo "<option>".$fname."</option>";
+			     	}
+			     	?>
+			     </select></td></tr>
+			</table>
 			<FORM method='post' action='well_setup_well_plan_import_save.php' enctype="multipart/form-data">
 			<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 			<table style='float:right'>
-			<tr><td>Well Name: </td><td><input type='text' name='wellname' value='<?php echo $wellname; ?>'></td> </tr>
 			<tr><td>Well Plan Line Color:</td><td> <input type="text" readonly="true" size='7' id="colorrawwp" name="colorrawwp" 
 				value="<?echo "#$colorwp"?>" 
 				style="vertical-align:bottom;background-color:#<?echo "$colorwp";?>;color:white;"
 				onclick=''/> </td></tr>
-			<tr><td>Well Plan CSV: </td><td><input id='userfile' type='file' name='userfile'></td></tr>
+			<tr><td>Well Plan CSV/LAS: </td><td><input id='userfile' type='file' name='userfile'></td></tr>
 			
 			<tr><td></td><td><button>import</button></td></tr>
 			</table>
@@ -92,13 +104,38 @@ table.importContentTable td:hover{
 <?php include "graph_partials/shared/assignment_definition_js_vars.php"?>
 
 var filetype = ''
+var wellplan_filename = ''
+
+function readExistingFile(){
+  var e = document.getElementById("previous_loaded_files");
+  var filename = e.options[e.selectedIndex].text;
+  if(filename == '--------------------------------') return;
+  document.getElementById('import_content_display').innerHTML = ''
+  wellplan_filename = filename
+  filetype = wellplan_filename.split('.').pop()
+  var xhr = new XMLHttpRequest();	
+  xhr.open('POST', '/sses/read_raw_file.php', true);
+  var fd = new FormData()
+  fd.append('seldbname', '<?echo $seldbname;?>');
+  fd.append('filename', filename);
+  
+  xhr.onreadystatechange = function () {
+	if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      parseAndDisplayFile(xhr.responseText)
+    }  
+  };
+  xhr.send(fd);
+}
+
 function readLasFile(evt) {
 	var xhr = new XMLHttpRequest();	
 	xhr.open('POST', '/sses/upload_raw_file.php', true);
 	var file = this.files[0];
-	filetype = file.name.split('.').pop()
+	wellplan_filename = file.name
+	filetype = wellplan_filename.split('.').pop()
 	var fd = new FormData()
 	fd.append("userfile", file);
+	fd.append("seldbname", '<?echo $seldbname;?>');
     xhr.onreadystatechange = function () {
   	  	  if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     	    parseAndDisplayFile(xhr.responseText)
@@ -179,6 +216,9 @@ var highlightFromStorage = function(inval){
 	for(var i = 0 ; i < currentSelectedCells.length; i ++ ){
 		try{
 		  var currentSel = currentSelectedCells[i]
+		  if(currentSel.filename != wellplan_filename){
+			  continue
+		  }
 		  var el = document.getElementById(currentSel.cell_id)
 		  el.style.backgroundColor='green'
 		  el.highlighted = true
@@ -236,7 +276,7 @@ var onCellClick = function (e){
 	var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")
 	var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
 	var selection = {
-				   filename: 'well_plan',
+				   filename: wellplan_filename,
 		           cell_id: this.id,
 				   cell_value: this.innerHTML,
 				   field_type: currentSelectedVar.field_type
@@ -296,7 +336,7 @@ function parseLAS(str){
     var lines = str.split("\n")
 	var arr = [];
 	for(c = 0; c < lines.length; c++){
-		arr[c] =  lines[c].split(/[ ]+/);
+		arr[c] =  lines[c].split(/[\s]+/);
 	}
 	return arr
 }

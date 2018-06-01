@@ -36,11 +36,8 @@ $db->OpenDb();
 var findNextUnAssignedLoop = function(startidx){
     var found = -1
     for(var i = startidx; i < bvnSelector.options.length; i ++){
-        console.log(i)
-        console.log(bvnSelector.options[i])
         if(i == parseInt(bvnSelector.selectedIndex)){ continue;}
         var el = sharedVars['selectable_definitions'][bvnSelector.options[i].value]
-        console.log(el)
         if(el.value == '' && el.lock!=1){
             found = i
             break;
