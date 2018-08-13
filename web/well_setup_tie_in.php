@@ -78,6 +78,7 @@ $tiein_info = $db->FetchRow();
 			</div>
 			</FORM></td>
 		</tr>
+		<tr><td><a href ='well_setup_marker_bed_import.php?seldbname=<?php echo $seldbname?>'>previous</a></td></tr>
 	  </TABLE>
 </TD>
 </TR>

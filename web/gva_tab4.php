@@ -313,9 +313,12 @@ include 'waitdlg.html';
 	</div>
 	
 	<div style='padding-top:5px;text-align:center;width:80px;'>
-		<a target="_blank" href="/sses/gva_tab1.php?seldbname=<?php echo $seldbname; ?>&no_tabs=true">Well Config</a>
+		<a target="_blank" href="/sses/gva_tab1.php?seldbname=<?php echo $seldbname; ?>&no_tabs=true">Well Config (original)</a>
 	</div>
 	
+	<div style='padding-top:5px;text-align:center;width:80px;'>
+		<a href="/sses/well_setup_well_plan_import.php?seldbname=<?php echo $seldbname; ?>&no_tabs=true">Well Config (wizard)</a>
+	</div>
 	
 	<div style='position:absolute; left: 490px;top:100px;'>
 		<table class='header' style='width: 300px;'>

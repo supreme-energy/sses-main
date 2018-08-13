@@ -1,6 +1,64 @@
 <?php
  include_once 'load_assigned_vars_js.php';
+ include_once 'update_wellinfo.php';
 ?>
+
+  Array.prototype.eachSlice = function (size) {
+    var arr = []
+    if (this !== undefined) {
+      for (var i = 0, l = this.length; i < l; i += size) {
+        arr.push(this.slice(i, i + size))
+      }
+    }
+    return arr
+  }
+
+  Array.prototype.contains = function (elem) {
+    if (this === undefined) {
+      return true
+    }
+    return (this.indexOf(elem) > -1)
+  }
+
+  Array.prototype.intersect = function (array) {
+    // this is naive--could use some optimization
+    var result = []
+    if (this !== undefined) {
+      for (var i = 0; i < this.length; i++) {
+        if (array.contains(this[i]) && !result.contains(this[i])) { result.push(this[i]) }
+      }
+    }
+    return result
+  }
+
+  Array.prototype.union = function (a) {
+    if (this !== undefined) {
+      var r = this.slice(0)
+      a.forEach(function (i) { if (r.indexOf(i) < 0) r.push(i) })
+      return r
+    } else {
+      return []
+    }
+  }
+var fuzzyMatch = function (value1, value2) {
+      var n1 = nameBigram(value1)
+      var n2 = nameBigram(value2)
+      var intersect = n1.intersect(n2)
+      var union = n1.union(n2)
+      var similarity_factor = intersect.length / union.length
+      return similarity_factor >= 0.75
+}
+var nameBigram = function (n) {
+      var n1 = []
+      n.split('').eachSlice(2).forEach(function (el) {
+        n1.push(el.join().toLowerCase())
+      })
+      n.slice(1).split('').eachSlice(2).forEach(function (el) {
+        n1.push(el.join().toLowerCase())
+      })
+      return n1.filter(function (value, index, self) { return self.indexOf(value) === index })
+    }
+    
 var buildDataDefinationFromLocalStorage = function(selected, inval){
     if(inval == null){
         return
@@ -18,7 +76,6 @@ var buildDataDefinationFromLocalStorage = function(selected, inval){
         columns.push(splitrows_cols[3])
         values.push(selObj.cell_value)
         filename = selObj.filename
-		console.log(selObj)
     }
     selected.value = values.join(" ")
     selected.column = columns.join("&")
@@ -27,7 +84,7 @@ var buildDataDefinationFromLocalStorage = function(selected, inval){
 	selected.filename = filename
 }
 
-function definitionDataObj (display_name, current_value = '', table = '', field_name = '', field_type='normal'){
+function definitionDataObj (display_name, current_value = '', table = '', field_name = '', field_type='normal', filetype='not_specified'){
 	this.display_name = display_name
 	this.db_table = table
 	this.db_field_name = field_name
@@ -35,9 +92,32 @@ function definitionDataObj (display_name, current_value = '', table = '', field_
 	this.filename = ''
 	this.column = -1
 	this.row = -1
-	this.locked = 0
+	this.locked = localStorage.getItem(display_name+"_lock", 0)
 	this.field_type = field_type
+	this.filetype = filetype
 	var storedData = JSON.parse(localStorage.getItem(display_name))
+	this.dbStore = function(){
+		console.log(this)
+		if( this.field_type == 'normal' || this.field_type == 'not_specified'){
+			if(this.db_table == 'wellinfo'){
+				let xhr = new XMLHttpRequest();
+				xhr.open('GET', '/sses/json.php?path=json/sgta_modeling/update_wellinfo_field.php&seldbname=<?php echo $seldbname ?>&field='+this.db_field_name+'&value='+this.value);
+				xhr.send();
+			} else {
+				throw "Table type db storage not defined"
+			}
+		}else {
+			if(this.db_table == 'wellplan' ||
+			   this.db_table == 'controllog'){
+				let xhr = new XMLHttpRequest();
+				let params = "path=json/sgta_modeling/update_data_column.php&seldbname=<?php echo $seldbname ?>&filename="+this.filename+"&field="+this.db_field_name+"&col_start="+this.column+"&row_start="+this.row+"&table="+this.db_table
+				xhr.open('POST', '/sses/json.php');
+				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+				xhr.send(params);
+			}	
+		}
+		
+	}
 	buildDataDefinationFromLocalStorage(this, storedData)
 }
 
@@ -69,5 +149,9 @@ var sharedVars = {
 	new definitionDataObj('Well Plan MD', '', 'wellplan', 'md', 'column'),
 	new definitionDataObj('Well Plan INC', '', 'wellplan', 'inc', 'column'),
     new definitionDataObj('Well Plan AZM', '', 'wellplan', 'azm', 'column'),
+    new definitionDataObj('Control Log MD','','controllog','md', 'column'),
+    new definitionDataObj('Control Log Gamma','','controllog','value', 'column'),
+    new definitionDataObj('Control Log VS','','controllog','vs', 'column'),
+    new definitionDataObj('Control Log TVD','','controllog','tvd', 'column')        
    ]
 }

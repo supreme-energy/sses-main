@@ -11,6 +11,10 @@ include_once("sses_include.php");
 require_once("dbio.class.php");
 require_once("version.php");
 $seldbname=$_REQUEST['seldbname'];
+$db=new dbio($seldbname);
+$db->OpenDb();
+$query = "select * from addforms";
+$result = $db->DoQuery($query);
 ?>
    <script>
 		var marker_bed_cnt = 2;
@@ -24,8 +28,8 @@ $seldbname=$_REQUEST['seldbname'];
 			var cell2 = row.insertCell(1);
 			var cell3 = row.insertCell(2);
 
-			cell1.innerHTML = "<input type='text' name='input_"+marker_bed_cnt+"' value=''>"
-			cell2.innerHTML = "<input type='text' name='value_"+marker_bed_cnt+"' value=''>"
+			cell1.innerHTML = "<input id='label_row_"+insertAt+"' type='text' name='input_"+marker_bed_cnt+"' value=''>"
+			cell2.innerHTML = "<input id='row_' type='text' onchange=\"saveMarkerBed(this, document.getElementById('label_row_"+insertAt+"').value)\" name='value_"+marker_bed_cnt+"' value=''>"
 			cell3.innerHTML = "<button onclick='return deleteMarkerBed("+insertAt+")'>delete</button>"
 			return false;
 		}
@@ -34,6 +38,15 @@ $seldbname=$_REQUEST['seldbname'];
 			table.deleteRow(row_to_remove)
 			return false;
 		}
+
+		var saveMarkerBed = function(obj,label){
+			var id = obj.id.split("_")[1];
+			if(obj.value){
+			  sendAddformUpdate(id,label,obj.value);
+			}
+		}
+		
+	<?php include("graph_partials/shared/update_addforms_js.php")?>	
    </script>
    <LINK href="gva_tab0.css?x=<?=time();?>" rel="stylesheet" type="text/css">
    <TABLE class='tabcontainer'>
@@ -50,17 +63,42 @@ $seldbname=$_REQUEST['seldbname'];
 	   <TABLE class='container'>
 		<tr>
 			<td>
-			<FORM method='post' action='well_setup_marker_bed_import_save.php'>
+			
 			<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 			<table id='add_marker_table'>
 				<tr><td>Label</td><td>Distance From TCL</td><td></td>
-				<tr><td><input type='text' name='input_1' value='TOT'></td><td><input type='text' name='value_1' value=''></td><td><button onclick='return deleteMarkerBed(1)'>delete</button></td></tr>
-				<tr><td><input type='text' name='input_2' value='BOT'></td><td><input type='text' name='value_2' value=''></td><td><button onclick='return deleteMarkerBed(2)'>delete</button></td></tr>
+				<?php
+					$tot_val = '';
+					$tot_id  = '';
+					$bot_val = '';
+					$bot_id  = '';
+					$add_rows = Array();
+					$row_count = 3;
+					while($row = $db->FetchRow()){
+						if($row['label'] == 'TOT'){
+							$tot_id  = $row['id'];
+							$tot_val = $row['thickness'];
+							$row_count--;
+						}else if($row['label'] == 'BOT'){
+							$bot_id = $row['id'];
+							$bot_val = $row['thickness'];
+							$row_count--;
+						}else{
+								array_push($add_rows, "<tr><td><input onchange=\"saveMarkerBed(document.getElementById('row_".$row['id']."'),this.value)\" id='label_row_".$row_count."' type='text' value='".$row['label']."'></td><td><input id='row_".$row['id']."' onchange=\"saveMarkerBed(this,document.getElementById('label_row_".$row_count."').value)\" type='text' value='".$row['thickness']."'></td><td><button onclick='return deleteMarkerBed(".$row_count.")'>delete</button></tr>");
+						}
+						$row_count++;
+					}
+				?>
+				<tr><td><input type='text' name='input_1' disabled value='TOT'></td><td><input id='row_<?php echo $tot_id?>'  onchange="saveMarkerBed(this, 'TOT')" type='text' name='value_1' value='<?php echo $tot_val ?>'></td><td></td></tr>
+				<tr><td><input type='text' name='input_2' disabled value='BOT'></td><td><input id='row_<?php echo $bot_id?>' onchange="saveMarkerBed(this, 'BOT')" type='text' name='value_2' value='<?php echo $bot_val ?>'></td><td></td></tr>
+				<?php echo implode($add_rows,"")?>
 				<tr id='add_marker_row'><td colspan='3' style='text-align:right'><button onclick="return addMarkerBed()">Add Marker Bed</button>
 			</table>
-			<button>Next</button>
-			</FORM></td>
+			
+			</td>
 		</tr>
+		<tr><td><a href ='well_setup_tie_in.php?seldbname=<?php echo $seldbname?>'>next</a></td><td></td></tr>
+		<tr><td><a href ='well_setup_well_plan_import.php?seldbname=<?php echo $seldbname?>'>previous</a></td><td></td></tr>
 	  </TABLE>
 </TD>
 </TR>

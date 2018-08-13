@@ -64,7 +64,7 @@ table.importContentTable td:hover{
 	           <TD> 
 		       <img src='digital_tools_logo.png' align='left'>
 		       <H2 style='line-height: 2.0; font-style: italic; color: #040;' align='center'>Digital Oil Tools</H2>
-		       <H1 style='line-height: 1.0;' align='center'>Well Plan Import and Config</H1>
+		       <H1 style='line-height: 1.0;' align='center'>Data Import</H1>
 		       <p align="center">Version <?echo $version; ?> (<?echo $_SERVER['SERVER_NAME']?>:<?echo $_SERVER['SERVER_PORT']?> - <?echo $hostname?>)</p>
 		   </TD>
 	   </TABLE>
@@ -80,20 +80,30 @@ table.importContentTable td:hover{
 			     	}
 			     	?>
 			     </select></td></tr>
+			     <tr><td><a href='#'>File Manager</a></td></tr>
 			</table>
 			<FORM method='post' action='well_setup_well_plan_import_save.php' enctype="multipart/form-data">
 			<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 			<table style='float:right'>
-			<tr><td>Well Plan Line Color:</td><td> <input type="text" readonly="true" size='7' id="colorrawwp" name="colorrawwp" 
+			<!--  <tr><td>Well Plan Line Color:</td><td> <input type="text" readonly="true" size='7' id="colorrawwp" name="colorrawwp" 
 				value="<?echo "#$colorwp"?>" 
 				style="vertical-align:bottom;background-color:#<?echo "$colorwp";?>;color:white;"
-				onclick=''/> </td></tr>
-			<tr><td>Well Plan CSV/LAS: </td><td><input id='userfile' type='file' name='userfile'></td></tr>
+				onclick=''/> </td></tr>-->
+			<tr><td colspan='2' style='text-align:center'><h3>Import Type</h3></td></tr>
+			<tr><td><select name='import_filetype'>
+			<option>Well Plan</option>
+			<option>Control Log</option>
+			<option>Marker Bed</option>
+			<option>Tie In</option>
+			</select></td><td><input id='userfile' type='file' name='userfile'></td></tr>
 			
-			<tr><td></td><td><button>import</button></td></tr>
+			<tr><td></td><td></td></tr>
 			</table>
 			</FORM></td>
 		</tr>
+		<tr><td colspan='2' style='align: right'>
+		<a href ='well_setup_marker_bed_import.php?seldbname=<?php echo $seldbname?>'>Next</a>
+		</td></tr>
 		<tr><td><div id='import_content_display'></div></td></tr>
 	  </TABLE>
 </TD>
@@ -121,12 +131,25 @@ function readExistingFile(){
   
   xhr.onreadystatechange = function () {
 	if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      parseAndDisplayFile(xhr.responseText)
+	  repositionAndResize()
+	  parseAndDisplayFile(xhr.responseText)
     }  
   };
   xhr.send(fd);
 }
 
+function repositionAndResize(){
+  var newHeight = window.outerHeight
+  var newWidth  = window.outerWidth
+  if(window.outerHeight != window.screen.height){
+	newHeight = window.screen.height
+  }
+
+  if(newWidth < 930 && window.screen.width > 930){
+	newWidth = 930
+  }
+  window.resizeTo(newWidth, newHeight)
+}
 function readLasFile(evt) {
 	var xhr = new XMLHttpRequest();	
 	xhr.open('POST', '/sses/upload_raw_file.php', true);
@@ -181,7 +204,8 @@ function generateFromLAS(file_content){
 
 function parseAndDisplayFile(response){
 	if(filetype_check()){
-		window.open('/sses/well_setup_import_assignment.php?seldbname=<?echo $seldbname;?>','sses_variableAssignmentWindow','height=220px,width=400px');
+		var popup_x = determinePopupX()
+		window.open('/sses/well_setup_import_assignment.php?seldbname=<?echo $seldbname;?>','sses_variableAssignmentWindow','resizable,height=220px,width=400px,left='+popup_x+',top=0');
 		generateIneractiveDataTable(response)
 		var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")
 		var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
@@ -190,9 +214,32 @@ function parseAndDisplayFile(response){
 	}
 }
 
+function determinePopupX(){
+  var returnX = 0
+  var screenW = window.screen.width
+  var windowW = window.window.outerWidth
+  var posX = window.screenX
+  console.log(windowW)
+  if(windowW == screenW ||
+     posX > 400 ||
+     windowW + 400 > screenW
+       ){
+	returnX = posX-400
+  } else {
+	if(posX+windowW > screenW){
+		returnX = windowW - 15
+	} else {
+  		returnX = posX+windowW-15
+	}
+  }
+  console.log(returnX)
+  return returnX
+}
+
 var currentSelectedCells = []
 
 var tableSelectionType = 'cell'
+
 var dehighlightCurrent = function(){
 	for(var i = 0 ; i < currentSelectedCells.length;i++){
 		try{
@@ -273,8 +320,12 @@ var deHighlightColumn = function(start_cell){
 }
 
 var onCellClick = function (e){
-	var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")
+	var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")	
 	var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
+	var cellLock = localStorage.getItem(currentSelectedVar.display_name+"_lock", 0)
+	if(cellLock==1){
+		return
+	} 
 	var selection = {
 				   filename: wellplan_filename,
 		           cell_id: this.id,
@@ -335,8 +386,18 @@ function createTable(tableData) {
 function parseLAS(str){
     var lines = str.split("\n")
 	var arr = [];
+  	var inDataSection = false
 	for(c = 0; c < lines.length; c++){
-		arr[c] =  lines[c].split(/[\s]+/);
+		thisline = lines[c] 
+		if(inDataSection){
+		  if(!(/[\s]+/.test(thisline.charAt(0)))){
+			thisline = " "+thisline
+		  }
+		}
+		arr[c] =  thisline.split(/[\s]+/);
+		if(fuzzyMatch(lines[c], "~ASCII LOG DATA SECTION")){
+		  inDataSection = true
+		}
 	}
 	return arr
 }
@@ -377,9 +438,14 @@ function parseCSV(str) {
     return arr;
 }
 window.addEventListener("storage", function(e){
-	var currentSelectedVar = sharedVars.selectable_definitions[e.newValue]
-	var result = JSON.parse(localStorage.getItem(currentSelectedVar.display_name))
-	highlightFromStorage(result)
+    var currentSelectedVar
+  	if(e.key == 'currentVariableAssignmentIdx'){
+	    currentSelectedVar = sharedVars.selectable_definitions[e.newValue]
+    } else {
+        currentSelectedVar = sharedVars.selectable_definitions[localStorage.getItem('currentVariableAssignmentIdx')]
+    }
+    var result = JSON.parse(localStorage.getItem(currentSelectedVar.display_name))
+  	highlightFromStorage(result)
 }, false)
 </script>
 

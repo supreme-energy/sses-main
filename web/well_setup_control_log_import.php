@@ -79,9 +79,13 @@ else {
 			<button>import</button>
 			</FORM></td>
 		</tr>
+		<tr><td colspan='2' style='align: right'>
+		<a href ='well_setup_marker_bed_import.php?seldbname=<?php echo $seldbname?>'>Next</a>
+		</td></tr>
 	  </TABLE>
 </TD>
 </TR>
+
 </TABLE>
 <script>
 

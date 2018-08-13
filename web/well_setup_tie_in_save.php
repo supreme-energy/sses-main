@@ -1,7 +1,8 @@
 <?php 
 require_once("dbio.class.php");
 function get_field($field, $default){
-	return isset($_REQUEST[$field]) ? $_REQUEST[$field] : $default;
+	$val = isset($_REQUEST[$field]) ? $_REQUEST[$field] : $default;
+	return $val ? $val : $default;
 }
 $seldbname=$_REQUEST['seldbname'];
 $bitoffset=$_REQUEST['bitoffset'];

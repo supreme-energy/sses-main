@@ -32,7 +32,7 @@ while($db->FetchRow()) {
 		var selectWell = function(){
 			var el = document.getElementById('selected_db')
 			var db = el.options[el.selectedIndex].value
-			window.location = "/sses/gva_tab4.php?seldbname="+db+"&no_tabs=true"
+			window.open("/sses/gva_tab4.php?seldbname="+db+"&no_tabs=true",db,'resizable,height='+window.screen.height+',width=930px,left=0,top=0');
 		}
 	</script>
    <LINK href="gva_tab0.css?x=<?=time();?>" rel="stylesheet" type="text/css">
