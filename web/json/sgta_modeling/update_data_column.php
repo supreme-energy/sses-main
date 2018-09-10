@@ -2,9 +2,11 @@
 	#include function files
 	include "include_functions/update_data_column/import_wellplan.php";
 	include "include_functions/update_data_column/import_controllog.php";
+	include "include_functions/update_data_column/import_welllog.php";
 	
 	$column_data_map = Array("wellplan" => "md|inc|azm",
-			"controllog" => "md|value|tvd|vs");
+			"controllog" => "md|value|tvd|vs",
+			"welllog" => "md|value");
 	$field = $_REQUEST['field'];
 	$filename = $_REQUEST['filename'];
 	$start_col = $_REQUEST['col_start'];
@@ -83,6 +85,9 @@
 		import_wellplan($db, $table, $fields_for_import, $values, $min_size_cnt);
 	} else if($table == 'controllog'){
 		import_controllog($db,$table,$fields_for_import, $values, $min_size_cnt);	
+	} else if($table == 'welllog'){
+		$survey_for_this = Array('md'=>0, 'inc' => 0, 'azm' => 0);
+		import_welllog($db,$table,$fields_for_import, $values, $min_size_cnt, $survey_for_this);
 	}
 
 	//$query = "update wellinfo set $field = '$value';";

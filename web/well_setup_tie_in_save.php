@@ -30,5 +30,5 @@ echo $query;
 $db->CloseDb();
 
 exec ("./sses_af -d $seldbname");
-header("Location: welllogfilesel.php?seldbname=$seldbname&fromtiein=true");
+header("Location: well_setup_well_plan_import.php?seldbname=$seldbname&fromtiein=true");
 ?>

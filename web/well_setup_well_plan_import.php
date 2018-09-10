@@ -13,6 +13,7 @@ require_once("version.php");
 
 
 $seldbname=$_REQUEST['seldbname'];
+$fromtiein = filter_var($_REQUEST['fromtiein'], FILTER_VALIDATE_BOOLEAN);
 require_once("graph_partials/shared/uploaded_file_list.php");
 $db=new dbio('sgta_index');
 $db->OpenDb();
@@ -69,8 +70,9 @@ table.importContentTable td:hover{
 		   </TD>
 	   </TABLE>
 	   <TABLE class='container' >
-		<tr>
+		<tr>			
 			<td>
+			<?php if($fromtiein==false){?>
 			<table style='float:left'>
 			     <tr><td>Previously loaded files:</td></tr>
 			     <tr><td><select id='previous_loaded_files' onchange="readExistingFile()"><option>--------------------------------</option>
@@ -82,6 +84,7 @@ table.importContentTable td:hover{
 			     </select></td></tr>
 			     <tr><td><a href='#'>File Manager</a></td></tr>
 			</table>
+			<?php } ?>
 			<FORM method='post' action='well_setup_well_plan_import_save.php' enctype="multipart/form-data">
 			<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 			<table style='float:right'>
@@ -90,11 +93,12 @@ table.importContentTable td:hover{
 				style="vertical-align:bottom;background-color:#<?echo "$colorwp";?>;color:white;"
 				onclick=''/> </td></tr>-->
 			<tr><td colspan='2' style='text-align:center'><h3>Import Type</h3></td></tr>
-			<tr><td><select name='import_filetype'>
+			<tr><td><select name='import_filetype' <?php if($fromtiein){ echo 'disabled';}?>>
 			<option>Well Plan</option>
 			<option>Control Log</option>
 			<option>Marker Bed</option>
 			<option>Tie In</option>
+			<option <?php if($fromtiein){ echo 'selected';} ?>>Well Log</option>
 			</select></td><td><input id='userfile' type='file' name='userfile'></td></tr>
 			
 			<tr><td></td><td></td></tr>
@@ -115,7 +119,7 @@ table.importContentTable td:hover{
 
 var filetype = ''
 var wellplan_filename = ''
-
+var currentSelectFieldId = ''
 function readExistingFile(){
   var e = document.getElementById("previous_loaded_files");
   var filename = e.options[e.selectedIndex].text;
@@ -205,7 +209,17 @@ function generateFromLAS(file_content){
 function parseAndDisplayFile(response){
 	if(filetype_check()){
 		var popup_x = determinePopupX()
-		window.open('/sses/well_setup_import_assignment.php?seldbname=<?echo $seldbname;?>','sses_variableAssignmentWindow','resizable,height=220px,width=400px,left='+popup_x+',top=0');
+		var openurl = '/sses/well_setup_import_assignment.php?seldbname=<?echo $seldbname;?>';
+		var windowwidth = 400
+		var windowheight= 220
+		
+		<?php if ($fromtiein){?>
+			windowwidth = 475
+			windowheight = 300
+			openurl += "&fromtiein=true";
+		
+		<?php }?>
+		window.open(openurl,'sses_variableAssignmentWindow','resizable,height='+windowheight+'px,width='+windowwidth+'px,left='+popup_x+',top=0');
 		generateIneractiveDataTable(response)
 		var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")
 		var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
@@ -219,12 +233,16 @@ function determinePopupX(){
   var screenW = window.screen.width
   var windowW = window.window.outerWidth
   var posX = window.screenX
-  console.log(windowW)
+  var windowwidth = 400
+  <?php if ($fromtiein){?>
+
+		windowwidth = 475
+  <?php }?>
   if(windowW == screenW ||
-     posX > 400 ||
-     windowW + 400 > screenW
+     posX > windowwidth ||
+     windowW + windowwidth > screenW
        ){
-	returnX = posX-400
+	returnX = posX-windowwidth
   } else {
 	if(posX+windowW > screenW){
 		returnX = windowW - 15
@@ -232,7 +250,7 @@ function determinePopupX(){
   		returnX = posX+windowW-15
 	}
   }
-  console.log(returnX)
+
   return returnX
 }
 
@@ -320,29 +338,36 @@ var deHighlightColumn = function(start_cell){
 }
 
 var onCellClick = function (e){
-	var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")	
-	var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
-	var cellLock = localStorage.getItem(currentSelectedVar.display_name+"_lock", 0)
-	if(cellLock==1){
-		return
-	} 
-	var selection = {
-				   filename: wellplan_filename,
-		           cell_id: this.id,
-				   cell_value: this.innerHTML,
-				   field_type: currentSelectedVar.field_type
-			   }	
-	if (e.ctrlKey) {
-	   currentSelectedCells.push(selection)  
-	} else{
-       dehighlightCurrent()
-	   currentSelectedCells = [selection]
-	   if (currentSelectedVar.field_type == 'column'){
-           highlightColumn(this.id)
-	   }
+	console.log('cell clicked')
+	console.log(currentSelectFieldId)
+	if(currentSelectFieldId!= ''){
+	  localStorage.setItem("currentFieldAssigmentId",this.innerHTML)	
+	  currentSelectFieldId = ''
+	} else {
+		var currentSelectedIdx = localStorage.getItem("currentVariableAssignmentIdx")	
+		var currentSelectedVar = sharedVars.selectable_definitions[currentSelectedIdx]
+		var cellLock = localStorage.getItem(currentSelectedVar.display_name+"_lock", 0)
+		if(cellLock==1){
+			return
+		} 
+		var selection = {
+					   filename: wellplan_filename,
+			           cell_id: this.id,
+					   cell_value: this.innerHTML,
+					   field_type: currentSelectedVar.field_type
+				   }	
+		if (e.ctrlKey) {
+		   currentSelectedCells.push(selection)  
+		} else{
+	       dehighlightCurrent()
+		   currentSelectedCells = [selection]
+		   if (currentSelectedVar.field_type == 'column'){
+	           highlightColumn(this.id)
+		   }
+		}
+		localStorage.setItem(currentSelectedVar.display_name,  JSON.stringify(currentSelectedCells))
+		this.style.backgroundColor='green'
 	}
-	localStorage.setItem(currentSelectedVar.display_name,  JSON.stringify(currentSelectedCells))
-	this.style.backgroundColor='green'
 }
 
 function createTable(tableData) {
@@ -439,13 +464,17 @@ function parseCSV(str) {
 }
 window.addEventListener("storage", function(e){
     var currentSelectedVar
-  	if(e.key == 'currentVariableAssignmentIdx'){
-	    currentSelectedVar = sharedVars.selectable_definitions[e.newValue]
+    if(e.key == 'currentFieldAssigmentId'){
+      currentSelectFieldId = e.newValue
     } else {
-        currentSelectedVar = sharedVars.selectable_definitions[localStorage.getItem('currentVariableAssignmentIdx')]
+	  	if(e.key == 'currentVariableAssignmentIdx'){
+		    currentSelectedVar = sharedVars.selectable_definitions[e.newValue]
+	    } else {
+	        currentSelectedVar = sharedVars.selectable_definitions[localStorage.getItem('currentVariableAssignmentIdx')]
+	    }
+	    var result = JSON.parse(localStorage.getItem(currentSelectedVar.display_name))
+	  	highlightFromStorage(result)
     }
-    var result = JSON.parse(localStorage.getItem(currentSelectedVar.display_name))
-  	highlightFromStorage(result)
 }, false)
 </script>
 

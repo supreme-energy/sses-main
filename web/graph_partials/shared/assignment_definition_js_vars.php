@@ -108,12 +108,16 @@ function definitionDataObj (display_name, current_value = '', table = '', field_
 			}
 		}else {
 			if(this.db_table == 'wellplan' ||
-			   this.db_table == 'controllog'){
+			   this.db_table == 'controllog' ||
+			   this.db_table == 'welllog' ){
 				let xhr = new XMLHttpRequest();
 				let params = "path=json/sgta_modeling/update_data_column.php&seldbname=<?php echo $seldbname ?>&filename="+this.filename+"&field="+this.db_field_name+"&col_start="+this.column+"&row_start="+this.row+"&table="+this.db_table
 				xhr.open('POST', '/sses/json.php');
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.send(params);
+			} 
+			if(this.db_table=='wellog'){
+			
 			}	
 		}
 		
@@ -152,6 +156,10 @@ var sharedVars = {
     new definitionDataObj('Control Log MD','','controllog','md', 'column'),
     new definitionDataObj('Control Log Gamma','','controllog','value', 'column'),
     new definitionDataObj('Control Log VS','','controllog','vs', 'column'),
-    new definitionDataObj('Control Log TVD','','controllog','tvd', 'column')        
+    new definitionDataObj('Control Log TVD','','controllog','tvd', 'column'),
+    new definitionDataObj('Well Log MD','','welllog','md', 'column'),
+    new definitionDataObj('Well Log Gamma','','welllog','value', 'column'),
+    new definitionDataObj('Well Log VS','','welllog','vs', 'column'),
+    new definitionDataObj('Well Log TVD','','welllog','tvd', 'column')
    ]
 }
