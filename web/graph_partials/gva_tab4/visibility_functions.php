@@ -28,7 +28,7 @@ var viewOnlySelected = function(){
 	document.getElementById('viewselectedbutton').style = 'background-color:green';
 	document.getElementById('viewallbutton').style = '';
 	document.getElementById('viewlastbutton').style = '';
-	document.getElementById("viewallprevval").readOnly=false;
+	document.getElementById("viewallprevval").readOnly=true;
 	setVisibility(index_of_selected, true)
 	viewallds = 0
 	sendAppInfoFieldUpdate('viewallds',viewallds)
@@ -40,6 +40,7 @@ var viewPreviousXMD  = function(){
 	document.getElementById('viewallbutton').style = '';
 	document.getElementById('viewselectedbutton').style = '';
 	document.getElementById('viewlastbutton').style = 'background-color:green';
+	document.getElementById("viewallprevval").readOnly=false;
 	setVisibility(index_of_selected, true)
 	var indexes = []
 	selected = data[index_of_selected]
