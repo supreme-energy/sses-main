@@ -20,6 +20,7 @@ var viewAll = function(vis,noupdate = false){
 	  viewallds = 1
 	  sendAppInfoFieldUpdate('viewallds',viewallds)
 	}
+	document.getElementById("viewallprevval").readOnly=true;
 }
 
 var viewOnlySelected = function(){
@@ -27,6 +28,7 @@ var viewOnlySelected = function(){
 	document.getElementById('viewselectedbutton').style = 'background-color:green';
 	document.getElementById('viewallbutton').style = '';
 	document.getElementById('viewlastbutton').style = '';
+	document.getElementById("viewallprevval").readOnly=false;
 	setVisibility(index_of_selected, true)
 	viewallds = 0
 	sendAppInfoFieldUpdate('viewallds',viewallds)
