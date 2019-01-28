@@ -61,6 +61,9 @@ if($viewallds >= 1){
 foreach($graph_obj->wellogplots as $log){?>	
 	<?php 
 	$startmd = $graph_obj->current_dataset->min_md;
+	echo '<!---'
+	echo $graph_obj->current_dataset->to_js();
+	echo '-->'
 	if ($viewallds==1 || ($log->min_md > ($startmd-$viewallds))){?>
 	data_ls.push(<?php $log->to_js()?>)
     <?php }?>
