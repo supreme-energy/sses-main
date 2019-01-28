@@ -58,13 +58,11 @@ data_ls.push(<?php $log->to_js()?>)
 <?php }?>
 <?php 
 if($viewallds >= 1){
+$startmd = $graph_obj->current_dataset.md[0];
+
 foreach($graph_obj->wellogplots as $log){?>	
 	<?php 
-	$startmd = $graph_obj->current_dataset->min_md;
-	echo '<!---'
-	echo $graph_obj->current_dataset->to_js();
-	echo '-->'
-	if ($viewallds==1 || ($log->min_md > ($startmd-$viewallds))){?>
+	if ($viewallds==1 || (($startmd - viewallds) <= $log->md[length($log->md) - 1]){?>
 	data_ls.push(<?php $log->to_js()?>)
     <?php }?>
 <?php }
