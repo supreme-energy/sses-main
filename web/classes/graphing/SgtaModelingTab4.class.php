@@ -59,15 +59,17 @@ class SgtaModelingTab4 {
 		$this->cur_tvd_min = $this->db->FetchField('mintvd');
 
 		$this->db->DoQuery("Select * from wld_$tableid order by md;");
-		
+		$md  = Array();
 		while($this->db->FetchRow()){
 			array_push($cur_x_plot, $this->db->FetchField("depth"));
 			$val = $this->db->FetchField("value");
 			$val *= $table_info['scalefactor'];
 			$val += $table_info['scalebias'] + $this->plotbias;
 			array_push($cur_y_plot, $val);
+			array_push($md, $this->db->FetchField("md"));
 		}
 		$this->current_dataset = new PlotObject($cur_x_plot,$cur_y_plot);
+		$this->current_dataset->md = $md;
 		$this->current_dataset->set_line_color( '#ff0000');
 		$this->current_dataset->set_name('Current');
 		$this->current_dataset->set_showledgend(false && $this->no_ledgends);
