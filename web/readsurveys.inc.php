@@ -92,6 +92,27 @@ for ($i=0; $i<$svy_total; $i++) {
 	$svy_plan[]=$plan;
 	$svy_isghost[]=$db->FetchField("isghost");
 	if($plan<=0) $svy_cnt++;
+	$srvys_joined[]= array(
+			'id' => $id,
+			'md' => sprintf("%.2f",$md) ,
+			'inc' =>sprintf("%.2f", $db->FetchField("inc")),
+			'azm' =>sprintf("%.2f", $db->FetchField("azm")),
+			'tvd' =>$db->FetchField("tvd"),
+			'vs' =>sprintf("%.2f", $db->FetchField("vs")),
+			'ns' =>sprintf("%.2f", $db->FetchField("ns")),
+			'ew' =>sprintf("%.2f", $db->FetchField("ew")),
+			'ca' =>sprintf("%.2f", $db->FetchField("ca")),
+			'cd' =>sprintf("%.2f", $db->FetchField("cd")),
+			'dl' =>sprintf("%.2f", $db->FetchField("dl")),
+			'cl' =>sprintf("%.2f", $db->FetchField("cl")),
+			'tcl'=>$db->FetchField("tot"),
+			'tot'=>$tot,
+			'bot'=>$bot,
+			'dip'=>$db->FetchField("tot"),
+			'fault'=>sprintf("%.2f", $db->FetchField("fault")),
+			'plan'=> $plan,
+			'ghost'=>$db->FetchField("isghost")
+	);
 }
 $db2->CloseDb();
 ?>
