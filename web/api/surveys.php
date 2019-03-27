@@ -1,7 +1,7 @@
  <?php
  header("Access-Control-Allow-Origin: *");
  header('Content-type: application/json');
- require_once 'dbio.class.php';
+ require_once '../dbio.class.php';
  if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_REQUEST['seldbname']) ? $_REQUEST['seldbname'] : '');
  $db=new dbio("sgta_index");
  $db->OpenDb();
@@ -13,6 +13,6 @@
  $db->CloseDb();
  $db=new dbio($seldbname);
  $db->OpenDb();
- include("readsurveys.inc.php");
+ include("../readsurveys.inc.php");
  echo json_encode($srvys_joined);
  ?>
