@@ -186,6 +186,9 @@
 				$edata = array();
 				//$cols[$column->mnemonic]=$i;
 				$mnemo =$column->mnemonic;
+				if(isset($cols["$mnemo"])){
+					continue; 
+				}
 				array_push($edata,$i);
 				array_push($headersmnemo,$mnemo);
 				$query ="select * from edatalogs where label='".$column->mnemonic."';";
