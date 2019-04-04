@@ -9,7 +9,7 @@ while($db->FetchRow()) {
 	$id=$db->FetchField("id");
 	$dbn=$db->FetchField("dbname");
 	$dbreal=$db->FetchField("realname");
-	$response->push({"sgta_index_id" => $id, "jobname" => $dbn, "realjobname" => $dbreal})	
+	array_push($response, array("sgta_index_id" => $id, "jobname" => $dbn, "realjobname" => $dbreal));	
 }
 echo json_encode($response);	
 ?>
