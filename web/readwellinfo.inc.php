@@ -81,6 +81,13 @@ if($db->FetchRow()) {
 	$smtp_password=$db->FetchField("smtp_password");
 	$smtp_from=$db->FetchField("smtp_from");
 }
+
+$emailinfo_joined = array(
+	"smtp_server" => $smtp_server,
+	"smtp_login"  => $smtp_login,
+	"smtp_password" => $smtp_password,
+	"smtp_from"     => $smtp_from
+);
 $db->DoQuery("select * from witsml_details");
 if($db->FetchRow()){
 	$witsml_id = $db->FetchField("id");
@@ -91,6 +98,14 @@ if($db->FetchRow()){
 } else {
 	$witsml_id=-1;
 }
+
+$witsml_joined = array(
+		"endpoint" => $witsml_endpoint , 
+		"username" => $witsml_username,
+		"password" => $witsml_password,
+		"send_data"=> $witsml_active
+);
+
 $db->DoQuery("select * from rigminder_connection");
 if($db->FetchRow()){
 	$autorc_type=$db->FetchField("connection_type");
@@ -100,4 +115,78 @@ if($db->FetchRow()){
 	$autorc_host = $db->FetchField("host");
 	$autorc_sd = $db->FetchField("aisd");
 }
+
+$autorc_joined = array(
+		"connection_type" => $autorc_type,
+		"dbname"          => $autorc_dbname,
+		"password"        => $autorc_password,
+		"username"        => $autorc_username,
+		"host"            => $autorc_host,
+		"aisd"            => $autorc_sd
+);
+
+$wellinfo_joined = array(		
+		"jobnumber" => $jobnumber,
+		"propazm"   => $propazm,
+		"wellborename" => $wellname,
+		"rigid"        => $rigid,
+		"wellid" => $wellid,
+		"location" => $location,
+		"field"    => $field,
+		"description" => $welldesc,
+		"country" => $country,
+		"county" => $county,
+		"stateprov" => $stateprov,
+		"operatorname" => $opname, 
+		"operatorcontact1" => $opcontact1,
+		"operatorcontact2" => $opcontact2,
+		"operatoremail1"   => $opemail1,
+		"operatoremail2"   => $opemail2,
+		"operatorphone1"   => $opphone1,
+		"operatorphone2"   => $opphone2,
+		"directionalname"  => $dirname,
+		"directionalzip"   => $dirzip,
+		"directionaladdress1" => $diraddress1,
+		"directionaladdress2" => $diraddress2,
+		"directionalcontact1" => $dircontact1,
+		"directionalcontact2" => $dircontact2,
+		"directionalemail1"   => $diremail1,
+		"directionalemail2"   => $diremail2,
+		"directionalphone1"   => $dirphone1,
+		"directionalphone2"   => $dirphone2,
+		"tot"                 => $plantot, #plantot maps to wellinfo tot
+		"bot"                 => $planbot,
+		"projection"          => $projection,
+		"bitoffset"           => $bitoffset,
+		"projdip"			  => $projdip,
+		'motoryield'          => $wi_motoryield,
+		'pterm_method'        => $pterm_method,
+		"colortot"            => $colortot,
+		"colorwp"             => $colorwp,
+		"xaxis"               => $xaxis3d,
+		"zaxis"               => $zaxis3d,
+		"zoom3d"              => $zoom3d,
+		"originh3d"           => $originh3d,
+		"originv3d"           => $originv3d,		
+		"pbhl_easting"	      => $pbhl_easting,
+		"pbhl_northing"		  => $pbhl_northing,
+		"survey_easting"      => $survey_easting,
+		"survey_northing"     => $survey_northing,
+		"landing_easting"     => $landing_easting,
+		"landing_northing"    => $landing_northing,
+		"elev_ground"         => $elev_ground,
+		"elev_rkb"            => $elev_rkb,
+		"correction"          => $correction,
+		"coordsys"            => $coordsys,
+		"startdate"           => $startdate,
+		"enddate"			  => $enddate, 
+		"padata"			  => $padata,
+		"pbdata"			  => $pbdata,
+		"pamethod"			  => $pamethod,
+		"autoposdec"          => $autoposdec,
+		"pbmethod"			  => $pbmethod,
+		"sgta_show_formations"=> $sgta_show_forms,
+		"wb_show_formations"  => $wb_show_forms,
+		"refwellname" 		  => $refwellname,			
+);
 ?>
