@@ -1,7 +1,5 @@
 <?php 
 require_once("../dbio.class.php");
-if(!isset($seldbname) or $seldbname == '')	$seldbname = (isset($_GET['seldbname']) ? $_GET['seldbname'] : '';
-
 
 $db=new dbio("sgta_index");
 $db->OpenDb();
