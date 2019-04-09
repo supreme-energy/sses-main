@@ -1,14 +1,21 @@
 <?php 
 require_once("../dbio.class.php");
 
+$fav_only = ($_REQUEST['favorite'] == '1');
+
 $db=new dbio("sgta_index");
 $db->OpenDb();
-$db->DoQuery("SELECT * FROM dbindex ORDER BY id DESC;");
+$filter_add = '';
+if($fav_only){
+	"where favorite = 1";
+}
+$db->DoQuery("SELECT * FROM dbindex $filer_add ORDER BY id DESC;");
 $response = array();
 while($db->FetchRow()) {
 	$id=$db->FetchField("id");
 	$dbn=$db->FetchField("dbname");
 	$dbreal=$db->FetchField("realname");
+	$favorite = $db->FetchField("favorite");
 	$db2 = new dbio($dbn);
 	$db2->OpenDb();
 	$db2->DoQuery("select * from wellinfo");
@@ -24,6 +31,7 @@ while($db->FetchRow()) {
 	$correction=$db2->FetchField("correction");
 	$coordsys=$db2->FetchField("coordsys");
 	array_push($response, array("sgta_index_id" => $id, "jobname" => $dbn, "realjobname" => $dbreal,
+			"favorite" => $favorite,
 			"pbhl_easting" => $pbhl_easting,
 			"pbhl_northing" => $pbhl_northing,
 			"survey_easting" => $survey_easting,
