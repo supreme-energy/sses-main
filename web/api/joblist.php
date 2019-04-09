@@ -12,7 +12,7 @@ while($db->FetchRow()) {
 	$db2 = new dbio($dbn);
 	$db2->OpenDb();
 	$db2->DoQuery("select * from wellinfo");
-	$db->FetchRow();
+	$db2->FetchRow();
 	$pbhl_easting=$db2->FetchField("pbhl_easting");
 	$pbhl_northing=$db2->FetchField("pbhl_northing");
 	$survey_easting=$db2->FetchField("survey_easting");
