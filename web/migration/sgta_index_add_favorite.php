@@ -1,6 +1,6 @@
 
 <?php
-require_once("dbio.class.php");
+require_once("../dbio.class.php");
 $db=new dbio("sgta_index");
 $db->OpenDb();
 echo "\ndbupdate: Checking database $newdbname for updates...\n";
