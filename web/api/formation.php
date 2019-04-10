@@ -28,7 +28,7 @@
  			"bot" => $db->FetchField("bot"),
  			"fault" => $db->FetchField("fault"),
  			"thickness" => $db->FetchField("thickness"),
- 			"pos" => printf("%.2f",$tot-$tvd)
+ 			"pos" => ($tot-$tvd)
  	)); 	
  }
  $results['data'] = $data;
