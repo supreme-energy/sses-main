@@ -14,23 +14,7 @@
  		"show_line"  => $db->FetchField('show_line'),
  		"data" => array()
  );
- $db->DoQuery("SELECT * FROM addformsdata WHERE infoid=$id order by md");
- $data = array();
- while($db->FetchRow()) {
- 	$tvd = $db->FetchField("tvd");
- 	$tot = $db->FetchField("tot");
- 	array_push($data,array(
- 			"id" => $db->FetchField("id"),
- 			"md" => $db->FetchField("md"),
- 			"tvd" => $tvd,
- 			"vs"  => $db->FetchField("vs"),
- 			"tot" => $tot,
- 			"bot" => $db->FetchField("bot"),
- 			"fault" => $db->FetchField("fault"),
- 			"thickness" => $db->FetchField("thickness"),
- 			"pos" => ($tot-$tvd)
- 	)); 	
- }
+ include('read_formation_include.php');
  $results['data'] = $data;
  echo json_encode($results);
  ?>
