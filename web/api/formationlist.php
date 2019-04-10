@@ -17,7 +17,7 @@
  			"pat_color"  => $db->FetchField('pat_color'),
  			"pat_num"    => $db->FetchField('pat_num'),
  			"show_line"  => $db->FetchField('show_line')
- 	)
+ 	);
  	if($with_data){
  		include("read_formation_include.php");
  		$result['data'] = $data;
