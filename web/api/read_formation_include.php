@@ -3,7 +3,7 @@ $db2=new dbio($seldbname);
 $db2->OpenDb();
 $db2->DoQuery("SELECT * FROM addformsdata WHERE infoid=$id order by md");
 $data = array();
-while($db->FetchRow()) {
+while($db2->FetchRow()) {
 	$tvd = $db2->FetchField("tvd");
 	$tot = $db2->FetchField("tot");
 	array_push($data,array(
