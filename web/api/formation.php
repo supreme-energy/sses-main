@@ -12,7 +12,7 @@
  		"pat_color"  => $db->FetchField('pat_color'),
  		"pat_num"    => $db->FetchField('pat_num'),
  		"show_line"  => $db->FetchField('show_line'),
- 		"data" = array()
+ 		"data" => array()
  );
  $db->DoQuery("SELECT * FROM addformsdata WHERE infoid=$id order by md");
  $data = array();
