@@ -209,7 +209,7 @@ class WitsmlData {
     function prepare_soap(){
     	if(!$this->client){
     		$this->client = new SoapClient(
-    			'http://gameit.s3-website-us-west-2.amazonaws.com/WMLS.WSDL',
+    			dirname(dirname(__FILE__)).'/soap/WMLS.WSDL',
     			array(
     				'soap_version'=>$this->soap_v,
     				'location'=>$this->endpoint,
