@@ -164,9 +164,9 @@ class WitsmlData {
 		//echo "<pre>body=" . htmlspecialchars($body) . "</p>";
 		//echo "<p>witsml_query=" . htmlspecialchars($this->witsml_query) . "</p>";
     	$this->resp = $this->client->WMLS_GetFromStore($type,$this->witsml_query,'None','');
-    	echo "REQUEST:\n" . $this->client->__getLastRequest() . "\n";
+    	//echo "REQUEST:\n" . $this->client->__getLastRequest() . "\n";
 		//echo "<pre>resp="; print_r($this->resp); echo "</pre>";
-		echo "<p>resp['XMLout']=" . htmlspecialchars($this->resp['XMLout']) . "</p>";
+		//echo "<p>resp['XMLout']=" . htmlspecialchars($this->resp['XMLout']) . "</p>";
     	return $this->resp;
     }
     function send($body,$type){
