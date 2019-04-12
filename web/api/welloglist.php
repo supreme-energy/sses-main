@@ -2,6 +2,7 @@
 	include ("api_header.php");
 	$db->DoQuery ( "SELECT * FROM welllogs order by startmd asc" );
 	$with_data = $_REQUEST ['data'] == '1';
+	$results = array();
 	while ( $db->FetchRow () ) {
 		$id = $db->FetchField ( "id" );
 		$tablename = $db->FetchField ( "tablename" );
