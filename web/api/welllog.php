@@ -3,7 +3,7 @@
 	$tablename = $_REQUEST ['tablename'];
 	$results = array ();
 	if (isset ( $tablename ) && ! empty ( $tablename )) {
-		$db->DoQuery ( "SELECT * FROM welllogs where tablename=$tablename" );
+		$db->DoQuery ( "SELECT * FROM welllogs where tablename='$tablename'" );
 		$db->FetchRow ();
 		$results = array (
 				"id" => $id,
