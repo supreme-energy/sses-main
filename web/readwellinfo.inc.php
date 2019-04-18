@@ -73,6 +73,7 @@ if($db->FetchRow()) {
 	$sgta_show_forms = $db->FetchField("sgta_show_formations");
 	$wb_show_forms   = $db->FetchField("wb_show_formations");
 	$refwellname = $db->FetchField("refwellname");
+	$map_zone    = $db->FetchField("map_zone");
 } 
 $db->DoQuery("select * from emailinfo");
 if($db->FetchRow()) {
@@ -187,6 +188,7 @@ $wellinfo_joined = array(
 		"pbmethod"			  => $pbmethod,
 		"sgta_show_formations"=> $sgta_show_forms,
 		"wb_show_formations"  => $wb_show_forms,
-		"refwellname" 		  => $refwellname,			
+		"refwellname" 		  => $refwellname,
+		"map_zone"            => $map_zone
 );
 ?>
