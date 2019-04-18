@@ -612,6 +612,9 @@ if(!$dbu->ColumnExists('appinfo', 'sgta_off'))
 if(!$dbu->ColumnExists('appinfo', 'anno_settings'))
 	logDoQuery($dbu, "alter table appinfo add anno_settings text not null default '';");
 
+if(!$dbu->ColumnExists('wellinfo', 'map_zone'))
+	logDoQuery($dbu, "alter table wellinfo add map_zone text not null default '';");
+	
 if(!$dbu->ColumnExists('wellinfo', 'bitoffset'))
 	logDoQuery($dbu, "alter table wellinfo add bitoffset float not null default 0.0;");
 if(!$dbu->ColumnExists('wellinfo', 'projdip'))
@@ -869,6 +872,7 @@ if(!$dbu->ColumnExists('edatalogs', 'single_plot')) {
 if(!$dbu->ColumnExists('profile_lines', 'pattern')) {
 	logDoQuery($dbu,"alter table profile_lines add pattern text default '0'");
 }
+
 
 
 // logInfo("dbupdate: Finished");

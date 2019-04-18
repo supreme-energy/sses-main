@@ -26,4 +26,8 @@ if($seldbname){
 	$response = array("status"=>"failed", "message"=>"seldbname not found");
 }
 echo json_encode($response);
+exec("./sses_gva -d $seldbname ");
+exec("./sses_cc -d $seldbname");
+exec("./sses_cc -d $seldbname -p");
+exec ("./sses_af -d $seldbname");
 ?>
