@@ -30,6 +30,7 @@ while($db->FetchRow()) {
 	$elev_rkb=$db2->FetchField("elev_rkb");
 	$correction=$db2->FetchField("correction");
 	$coordsys=$db2->FetchField("coordsys");
+	$map_zone = $db2->FetchFIeld("map_zone");
 	array_push($response, array("sgta_index_id" => $id, "jobname" => $dbn, "realjobname" => $dbreal,
 			"favorite" => $favorite,
 			"pbhl_easting" => $pbhl_easting,
@@ -40,7 +41,8 @@ while($db->FetchRow()) {
 			"elev_groun" => $elev_ground,
 			"elev_rkb"   => $elev_rkb,
 			"correction" => $correction,
-			"coordsys"   => $coordsys
+			"coordsys"   => $coordsys,
+			"map_zone"   => $map_zone
 	));	
 	$db2->CloseDb();
 }
