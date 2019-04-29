@@ -9,6 +9,9 @@ foreach($field_names as $field_name){
 		array_push($updates_array, "$field_name = '$value'");	
 	}
 }
-$query = "update projections set ". implode($updates_array, ',') . ' where id=$id';
-echo $query;
+if(count($updates_array) > 0 ){
+	$query = "update projections set ". implode($updates_array, ',') . " where id=$id";
+	$db->DoQuery($query);
+}
+echo json_encode(array("status" => "Success", "message" => "operation completed"));
 ?>
