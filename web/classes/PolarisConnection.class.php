@@ -524,6 +524,7 @@
 				'<incl uom="rad"></incl>' .
 				'<azi uom="rad"></azi>' .
 				'<vertSect uom="ft"></vertSect></trajectoryStation>' .
+				'<dtimstn></dtimstn>'.
 				'</trajectory>';
 //		echo "<p>body=" . htmlspecialchars($body) . "</p>";
 		$resp = $this->retrieve_fromstore($body,'trajectory');
@@ -531,7 +532,9 @@
 		$surveys = array();
 		$xmlout = simplexml_load_string($resp['XMLout']);
 		foreach($xmlout->trajectory->trajectoryStation as $trajstat){
-			
+			if($this->raw_request['debug']){
+				print(json_encode($trajstat));
+			}
 			array_push($surveys,array('md'=>(string)$trajstat->md,'inc'=>(string)$trajstat->incl,'azm'=>(string)$trajstat->azi,'time'=>(string)$trajstat->dTimStn));
 			
 		}
