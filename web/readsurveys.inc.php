@@ -112,7 +112,8 @@ for ($i=0; $i<$svy_total; $i++) {
 			'fault'=>sprintf("%.2f", $db->FetchField("fault")),
 			'plan'=> $plan,
 			'ghost'=>$db->FetchField("isghost"),
-			'unixtime'=> $db->FetchField("srcts")
+			'unixtime_src'=> $db->FetchField("srcts"),
+			'created_at' => $db->FetchField("created_at") 
 	);
 }
 $db2->CloseDb();
