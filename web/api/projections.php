@@ -17,22 +17,17 @@
  $projections_joined = array();
  $db->DoQuery("SELECT * FROM projections ORDER BY md $surveysort;");
  while($db->FetchRow()){
+ 	$svyid = $db->FetchField("id");
  	if($totid){
- 		if($plan){
- 			$query = "select tot from addformsdata where md=$md and infoid=$totid;";
- 		}else{
- 			$query = "select tot from addformsdata where projid=$svyid and infoid=$totid;";
- 		}
+ 		
+ 		$query = "select tot from addformsdata where projid=$svyid and infoid=$totid;";
+ 		
  		$db2->DoQuery($query);
  		$db2->FetchRow();
  		$tot =sprintf("%.2f", $db2->FetchField("tot"));
  	}
- 	if($botid){
- 		if($plan){
- 			$query = "select tot from addformsdata where md=$md and infoid=$botid;";
- 		}else{
- 			$query = "select tot from addformsdata where projid=$svyid and infoid=$botid;";
- 		}
+ 	if($botid){ 
+ 		$query = "select tot from addformsdata where projid=$svyid and infoid=$botid;";
  		$db2->DoQuery($query);
  		$db2->FetchRow();
  		$bot =sprintf("%.2f", $db2->FetchField("tot"));
