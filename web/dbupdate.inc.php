@@ -873,6 +873,10 @@ if(!$dbu->ColumnExists('profile_lines', 'pattern')) {
 	logDoQuery($dbu,"alter table profile_lines add pattern text default '0'");
 }
 
+if(!$dbu->ColumnExists('surveys', 'created_at')) {
+	logDoQuery($dbu,"alter table surveys add created_at timestamp default NOW()");
+}
+
 
 
 // logInfo("dbupdate: Finished");
