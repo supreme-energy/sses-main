@@ -29,15 +29,19 @@ $svy_isghost=array();
 $db2=new dbio($seldbname);
 $db2->OpenDb();
 $db->DoQuery("select * from addforms");
+$tot_thickness=0;
+$bot_thickness=0;
 $totid =null;
 $botid = null;
 while($db->FetchRow()){
 	
 	if(trim($db->FetchField('label'))=='TOT'){
-		$totid = $db->FetchField('id');
+		$tot_thickness = $db->FetchField('thickness');
+	    $totid = $db->FetchField('id');
 	}
 	if(trim($db->FetchField('label'))=='BOT'){
-		$botid = $db->FetchField('id');
+	    $bot_thickness = $db->FetchField('thickness');
+	    $botid = $db->FetchField('id');
 	}
 }
 $db->DoQuery("SELECT * FROM surveys ORDER BY plan $surveysort,md $surveysort;");
@@ -51,27 +55,8 @@ for ($i=0; $i<$svy_total; $i++) {
 	$tot='NF';
 	$bot='NF';
 	$plan=sprintf("%d", $db->FetchField("plan"));
-	if($totid){
-		if($plan){
-			$query = "select tot from addformsdata where md=$md and infoid=$totid;";
-		}else{
-			$query = "select tot from addformsdata where svyid=$svyid and infoid=$totid;";
-		} 
-		$db2->DoQuery($query);
-		$db2->FetchRow();
-		$tot =sprintf("%.2f", $db2->FetchField("tot"));
-	}
-	if($botid){
-		if($plan){
-			$query = "select tot from addformsdata where md=$md and infoid=$botid;";
-		}else{
-			$query = "select tot from addformsdata where svyid=$svyid and infoid=$botid;";
-		}
-		$db2->DoQuery($query);
-		$db2->FetchRow();
-		$bot =sprintf("%.2f", $db2->FetchField("tot"));
-	}
-
+	$tot = $db->FetchField("tot") + $tot_thickness;
+	$bot = $db->FetchField("tot") + $bot_thickness;
 	$svy_md[]=sprintf("%.2f",$md);
 	$svy_inc[]=sprintf("%.2f", $db->FetchField("inc"));
 	$svy_azm[]=sprintf("%.2f", $db->FetchField("azm"));

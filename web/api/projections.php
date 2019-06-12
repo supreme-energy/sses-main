@@ -5,33 +5,24 @@
  $db->DoQuery("select * from addforms");
  $totid =null;
  $botid = null;
+ $bot_thickness = 0;
+ $tot_thickness = 0;
  while($db->FetchRow()){
- 
  	if(trim($db->FetchField('label'))=='TOT'){
- 		$totid = $db->FetchField('id');
+ 		$tot_thickness = $db->FetchField("thickness");
+ 	    $totid = $db->FetchField('id');
  	}
  	if(trim($db->FetchField('label'))=='BOT'){
- 		$botid = $db->FetchField('id');
+ 	    $bot_thickness = $db->FetchField("thickness");
+ 	    $botid = $db->FetchField('id');
  	}
  }
  $projections_joined = array();
  $db->DoQuery("SELECT * FROM projections ORDER BY md $surveysort;");
  while($db->FetchRow()){
  	$svyid = $db->FetchField("id");
- 	if($totid){
- 		
- 		$query = "select tot from addformsdata where projid=$svyid and infoid=$totid;";
- 		
- 		$db2->DoQuery($query);
- 		$db2->FetchRow();
- 		$tot =sprintf("%.2f", $db2->FetchField("tot"));
- 	}
- 	if($botid){ 
- 		$query = "select tot from addformsdata where projid=$svyid and infoid=$botid;";
- 		$db2->DoQuery($query);
- 		$db2->FetchRow();
- 		$bot =sprintf("%.2f", $db2->FetchField("tot"));
- 	}
+ 	$bot = $db->FetchField("tot")+$bot_thickness;
+ 	$tot = $db->FetchField("tot")+$tot_thickness;
  	$projections_joined[]= array(
  			'id' => $db->FetchField("id") ,
  			'md' => sprintf("%.2f",$db->FetchField("md")) ,
@@ -46,8 +37,8 @@
  			'dl' =>sprintf("%.2f", $db->FetchField("dl")),
  			'cl' =>sprintf("%.2f", $db->FetchField("cl")),
  			'tcl'=>$db->FetchField("tot"),
- 			'tot'=>$tot,
- 			'bot'=>$bot,
+ 	        'tot'=>sprintf("%.2f",$tot),
+ 	        'bot'=>sprintf("%.2f",$bot),
  			'dip'=>sprintf("%.2f", $db->FetchField("dip")),
  			'fault'=>sprintf("%.2f", $db->FetchField("fault")),
  			'method'=>$db->FetchField("method")
