@@ -22,7 +22,7 @@ foreach($field_names as $field_name){
         } 
     }
 }
-if(pos===null){
+if($pos===null){
     if ($method == 6 || $method == 7){ 
         $dexpl = explode(',',$data);
         $pos = $dexpl[2];
