@@ -3,7 +3,7 @@ include("api_header.php");
 include("readwellinfo.inc.php");
 include("readappinfo.inc.php");
 $id = $_REQUEST['id'];
-$field_names = array('md', 'inc', 'azm', 'tvd', 'pos', 'vs', 'ns', 'ew', 'ca', 'cd', 'dl', 'cl', 'bot', 'dip', 'fault', 'method');
+$field_names = array('md', 'inc', 'azm', 'tvd', 'pos', 'vs', 'ns', 'ew', 'ca', 'cd', 'dl', 'cl', 'tot', 'bot', 'dip', 'fault', 'method');
 $updates_array = array();
 $method_updated = false;
 $query = "select * from projections where id = ". $id;
