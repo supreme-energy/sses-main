@@ -42,7 +42,7 @@ else if($method==8) $data="$vs,$pos,$dip,$fault";
 else $data="0,0,0";
 
 if(count($updates_array) > 0 ){
-	$query = "update projections set ". implode($updates_array, ',') . " where id=$id";
+	$query = "update projections set ". implode($updates_array, ',') . ", data='".$data."' where id=$id";
 	$db->DoQuery($query);
 }
 exec("./sses_gva -d $seldbname ");
