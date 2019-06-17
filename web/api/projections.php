@@ -41,7 +41,8 @@
  	        'bot'=>sprintf("%.2f",$bot),
  			'dip'=>sprintf("%.2f", $db->FetchField("dip")),
  			'fault'=>sprintf("%.2f", $db->FetchField("fault")),
- 			'method'=>$db->FetchField("method")
+ 			'method'=>$db->FetchField("method"),
+ 	        'data'=>$db->FetchField("data")
  	);
  }
  echo json_encode($projections_joined);
