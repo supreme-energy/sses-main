@@ -23,8 +23,8 @@ foreach($field_names as $field_name){
     }
 }
 if(pos===null){
-    if ($method == 6 || $method == 7) $pos = explode($data,',')[2];
-    else if($method==8)  $pos = explode($data,',')[1];
+    if ($method == 6 || $method == 7) $pos = explode(',',$data)[2];
+    else if($method==8)  $pos = explode(',',$data)[1];
     else $pos = 0;
 }
 if($method==0) $data="$md,0,0";
