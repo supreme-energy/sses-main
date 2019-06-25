@@ -22,16 +22,20 @@ foreach($dbnames as $dbname){
              ." NEW.updated_at = NOW();"
              ." RETURN NEW;"
              ." END;"
-             ." $$ LANGUAGE plpgsql;"; 
+             ." $$ LANGUAGE plpgsql;";
+    echo $query."\n";
     $db->DoQuery($query);
     
     foreach($timestamp_tables as $tt){
         foreach($timestamp_columns as $tc){
             if(!$db->ColumnExists($tt, $tc)) {
                 $query = "alter table $tt add $tc TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP";
+                echo $query."\n";
+                $db->DoQuery($query);
             }
         }
         $query ="CREATE TRIGGER set_timestamp BEFORE UPDATE ON $tt FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();";
+        echo $query."\n";
         $db->DoQuery($query);
     }
 }
