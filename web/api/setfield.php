@@ -11,16 +11,30 @@ function mapToDbTable($tablein){
 $response = array();
 if($seldbname){
 	$allowed_tables=array("wellinfo","appinfo", "autorc", "emailinfo", "witsml_details");
-	$table = $_REQUEST['table'];
-	if(in_array($table,$allowed_tables)){
-		$table = mapToDbTable($table);
-		$field = $_REQUEST['field'];
-		$value = $_REQUEST['value'];
-		$query = "update $table set $field='$value';";
-		$result = $db->DoQuery($query);		
-		$response = array("status"=>"success", "message" => "operation successful");
+	if($_SERVER['Content-Type'] == 'application/json'){
+	    $json_body = file_get_contents('php://input');
+	    $obj = json_decode($json_body);
+	    foreach($obj as $key => $value){
+	        if(in_array($key, $allowed_tables)){
+	            $table = mapToDbTable($table);
+	            foreach($value as $field => $value){
+	                $query = "update $table set $field = '$value'";
+	                $result = $db->DoQuery($query);
+	            }
+	        }
+	    }
 	} else {
-		$response = array("status"=>"failed", "message"=>"operation not allowed");
+    	$table = $_REQUEST['table'];
+    	if(in_array($table,$allowed_tables)){
+    		$table = mapToDbTable($table);
+    		$field = $_REQUEST['field'];
+    		$value = $_REQUEST['value'];
+    		$query = "update $table set $field='$value';";
+    		$result = $db->DoQuery($query);		
+    		$response = array("status"=>"success", "message" => "operation successful");
+    	} else {
+    		$response = array("status"=>"failed", "message"=>"operation not allowed");
+    	}
 	}
 } else {
 	$response = array("status"=>"failed", "message"=>"seldbname not found");
