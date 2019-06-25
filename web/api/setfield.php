@@ -20,10 +20,12 @@ if($seldbname){
 	            $table = mapToDbTable($table);
 	            foreach($value as $field => $value){
 	                $query = "update $table set $field = '$value'";
+	                echo $query ."\n";
 	                $result = $db->DoQuery($query);
 	            }
 	        }
 	    }
+	    $response = array("status"=>"success", "message" => "operation successful");
 	} else {
     	$table = $_REQUEST['table'];
     	if(in_array($table,$allowed_tables)){
