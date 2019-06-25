@@ -14,7 +14,7 @@ while($db->FetchRow()){
 }
 $db->CloseDb();
 foreach($dbnames as $dbname){
-    $db=new dbio($dname);
+    $db=new dbio($dbname);
     $db->OpenDb();
     $query = "CREATE OR REPLACE FUNCTION trigger_set_timestamp()"
              ." RETURNS TRIGGER AS $$ "
