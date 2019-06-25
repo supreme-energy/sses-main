@@ -11,7 +11,8 @@ function mapToDbTable($tablein){
 $response = array();
 if($seldbname){
 	$allowed_tables=array("wellinfo","appinfo", "autorc", "emailinfo", "witsml_details");
-	if($_SERVER['Content-Type'] == 'application/json'){
+	
+	if($_SERVER['CONTENT_TYPE'] == 'application/json'){
 	    $json_body = file_get_contents('php://input');
 	    $obj = json_decode($json_body);
 	    foreach($obj as $key => $value){
