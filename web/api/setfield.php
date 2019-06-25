@@ -17,10 +17,9 @@ if($seldbname){
 	    $obj = json_decode($json_body);
 	    foreach($obj as $key => $value){
 	        if(in_array($key, $allowed_tables)){
-	            $table = mapToDbTable($table);
+	            $table = mapToDbTable($key);
 	            foreach($value as $field => $value){
-	                $query = "update $table set $field = '$value'";
-	                echo $query ."\n";
+	                $query = "update $table set $field = '$value'";	                
 	                $result = $db->DoQuery($query);
 	            }
 	        }
