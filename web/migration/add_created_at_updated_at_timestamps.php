@@ -1,14 +1,14 @@
 
 <?php
-$timestamp_columns = ['created_at', 'updated_at'];
-$timestamp_tables  = ['surveys', 'projections', 'wellinfo', 'appinfo'];
+$timestamp_columns = Array('created_at', 'updated_at');
+$timestamp_tables  = Array('surveys', 'projections', 'wellinfo', 'appinfo');
 require_once("../dbio.class.php");
 $db=new dbio("sgta_index");
 $db->OpenDb();
 echo "\ndbupdate: Checking database for updates...\n";
 $query = "select * from dbindex";
 $db->DoQuery($query);
-$dbnames = ['sgta_template'];
+$dbnames = Array('sgta_template');
 while($db->FetchRow()){
    array_push($dbnames, $db->FetchField('dbname'));    
 }
