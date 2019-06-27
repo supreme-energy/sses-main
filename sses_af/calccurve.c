@@ -243,7 +243,7 @@ void doFormation(unsigned long infoid) {
 		sprintf(query, "select count(*) as cnt from addformsdata where svyid=%ld and id=%ld", svydata.data[i].id, infoid);
 		DoQuery(res_setin, query);
 		FetchRow(res_setin);
-		entry_exsists = atoi(FetchField(res_seting, "cnt");		
+		entry_exsists = atoi(FetchField(res_setin, "cnt");		
 		FreeResult(res_setin);
 		if(entry_exsists == 1){
 			sprintf(query, "update addformsdata set md=%f , tvd=%f , vs=%f, tot=%f, fault=%f , thickness=%f where svyid=%ld and id=%ld;",							
