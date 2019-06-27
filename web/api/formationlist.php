@@ -9,7 +9,6 @@
  while($db->FetchRow()) {
  	$id = $db->FetchField("id");
  	$query = "select count(*) from addformsdata where infoid=$id";
- 	echo $query;
  	$db2=new dbio($seldbname);
  	$db2->OpenDb();
  	$db2->DoQuery($query);
@@ -23,12 +22,13 @@
  			"pat_color"  => $db->FetchField('pat_color'),
  			"pat_num"    => $db->FetchField('pat_num'),
  			"show_line"  => $db->FetchField('show_line'),
- 	        "data_count" => $db2->FetchField('count')
+ 	        "db_count" => $db2->FetchField('count')
  	);
  	$db2->CloseDb();
  	if($with_data){
  		include("read_formation_include.php");
- 		$result['data'] = $data;
+ 		$result['actual_count'] = count($data);
+ 		$result['data'] = $data; 		
  	}
  	array_push($results, $result); 	
  }
