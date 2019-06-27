@@ -13,8 +13,6 @@
  	$db2->OpenDb();
  	$db2->DoQuery($query);
  	$db2->FetchRow();
- 	$db2->FetchField('cnt');
- 	$db2->CloseDb();
  	$result = array(
  			"id" => $id,
  			"label" => $db->FetchField("label"),
@@ -26,6 +24,7 @@
  			"show_line"  => $db->FetchField('show_line'),
  	        "data_count" => $db2->FetchField('cnt')
  	);
+ 	$db2->CloseDb();
  	if($with_data){
  		include("read_formation_include.php");
  		$result['data'] = $data;
