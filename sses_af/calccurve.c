@@ -201,7 +201,7 @@ void fetchSurveys(char *prog) {
 
 void doFormation(unsigned long infoid) {
 	int i, j, numrows;
-	int svyid, projid, entry_exsists;
+	int svyid, projid;
 	T_AFINFO	afdata;
 	float lastthickness=fStartThickness;
 	float lastfault=0;
@@ -223,14 +223,12 @@ void doFormation(unsigned long infoid) {
 		lastmd=md;
 	}
 	FreeResult(res_setin);
-	//sprintf(query, "DELETE FROM addformsdata WHERE infoid=%ld;", infoid);
-	//DoQuery(res_setout, query);
-	//FreeResult(res_setout);
-
+	
 	DoQuery(res_setout, "BEGIN TRANSACTION;");
+	sprintf(query, "DELETE FROM addformsdata WHERE infoid=%ld;", infoid);
+	DoQuery(res_setout, query);
 	for(i=0; i<svydata.count; i++) {
 		thick=lastthickness;
-		entry_exsists = 0;
 		for(j=0; j<afdata.count; j++) {
 			if(afdata.data[j].md>svydata.data[i].md) break;
 			thick=afdata.data[j].thickness;
@@ -240,41 +238,20 @@ void doFormation(unsigned long infoid) {
 				DoQuery(res_setout, query);
 			}
 		}
-		sprintf(query, "select count(*) as cnt from addformsdata where svyid=%ld and id=%ld", svydata.data[i].id, infoid);
-		DoQuery(res_setin, query);
-		FetchRow(res_setin);
-		entry_exsists = atoi(FetchField(res_setin, "cnt"));		
-		FreeResult(res_setin);
-		if(entry_exsists == 1){
-			sprintf(query, "update addformsdata set md=%f , tvd=%f , vs=%f, tot=%f, fault=%f , thickness=%f where svyid=%ld and id=%ld;",							
-				svydata.data[i].md,
-				svydata.data[i].tvd,
-				svydata.data[i].vs,
-				svydata.data[i].tot + thick,
-				svydata.data[i].fault,				
-				thick,
-				svydata.data[i].id,
-				infoid);
-			DoQuery(res_setout, query);
-		} else {
-			sprintf(query, "INSERT INTO addformsdata (infoid,svyid,md,tvd,vs,tot,fault,thickness) VALUES (%ld,%ld,%f,%f,%f,%f,%f,%f);",
-				infoid,
-				svydata.data[i].id,
-				svydata.data[i].md,
-				svydata.data[i].tvd,
-				svydata.data[i].vs,
-				svydata.data[i].tot + thick,
-				svydata.data[i].fault,
-				thick);
-			DoQuery(res_setout, query);
-		}
+		sprintf(query, "INSERT INTO addformsdata (infoid,svyid,md,tvd,vs,tot,fault,thickness) VALUES (%ld,%ld,%f,%f,%f,%f,%f,%f);",
+			infoid,
+			svydata.data[i].id,
+			svydata.data[i].md,
+			svydata.data[i].tvd,
+			svydata.data[i].vs,
+			svydata.data[i].tot + thick,
+			svydata.data[i].fault,
+			thick);
+		DoQuery(res_setout, query);
 		lastthickness=thick;
 		lastfault=svydata.data[i].fault;
 	}
-	DoQuery(res_setout, "COMMIT");
-	FreeResult(res_setout);
 
-	DoQuery(res_setout, "BEGIN TRANSACTION;");
 	for(i=0; i<projdata.count; i++) {
 		thick=lastthickness;
 		for(j=0; j<afdata.count; j++) {
