@@ -18,7 +18,7 @@ if (isset($tablename) && ! empty($tablename)) {
     );
 
     include ("read_controllog_include.php");
-    $result['data'] = $data;   
+    $results['data'] = $data;   
 } else {
     $results = array(
         "status" => "Failed",
