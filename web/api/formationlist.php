@@ -8,7 +8,8 @@
  $results = array();
  while($db->FetchRow()) {
  	$id = $db->FetchField("id");
- 	$query = "select count(*) as cnt from addformsdata where infoid=$id order by md";
+ 	$query = "select count(*) from addformsdata where infoid=$id";
+ 	echo $query;
  	$db2=new dbio($seldbname);
  	$db2->OpenDb();
  	$db2->DoQuery($query);
@@ -22,7 +23,7 @@
  			"pat_color"  => $db->FetchField('pat_color'),
  			"pat_num"    => $db->FetchField('pat_num'),
  			"show_line"  => $db->FetchField('show_line'),
- 	        "data_count" => $db2->FetchField('cnt')
+ 	        "data_count" => $db2->FetchField('count')
  	);
  	$db2->CloseDb();
  	if($with_data){
