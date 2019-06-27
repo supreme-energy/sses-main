@@ -225,6 +225,7 @@ void doFormation(unsigned long infoid) {
 	FreeResult(res_setin);
 	
 	DoQuery(res_setout, "BEGIN TRANSACTION;");
+	DoQuery(res_setout, "LOCK addformsdata IN exclusive MODE;");
 	sprintf(query, "DELETE FROM addformsdata WHERE infoid=%ld;", infoid);
 	DoQuery(res_setout, query);
 	for(i=0; i<svydata.count; i++) {
