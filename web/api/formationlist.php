@@ -2,7 +2,7 @@
  include("api_header.php");
  include("readappinfo.inc.php");
  include("readwellinfo.inc.php");
- exec ("../sses_af -d $seldbname");
+
  $with_data = $_REQUEST['data'] == '1';
  $db->DoQuery('select * from addforms order by thickness');
  $results = array();
