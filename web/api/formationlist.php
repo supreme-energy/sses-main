@@ -7,7 +7,14 @@
  $db->DoQuery('select * from addforms order by thickness');
  $results = array();
  while($db->FetchRow()) {
- 	$id = $db->FetchField("id");	
+ 	$id = $db->FetchField("id");
+ 	$query = "select count(*) as cnt from addformsdata where infoid=$id order by md";
+ 	$db2=new dbio($seldbname);
+ 	$db2->OpenDb();
+ 	$db2->DoQuery($query);
+ 	$db2->FetchRow();
+ 	$db2->FetchField('cnt');
+ 	$db2->CloseDb();
  	$result = array(
  			"id" => $id,
  			"label" => $db->FetchField("label"),
@@ -16,7 +23,8 @@
  			"bg_percent" => $db->FetchField('bg_percent'),
  			"pat_color"  => $db->FetchField('pat_color'),
  			"pat_num"    => $db->FetchField('pat_num'),
- 			"show_line"  => $db->FetchField('show_line')
+ 			"show_line"  => $db->FetchField('show_line'),
+ 	        "data_count" => $db2->FetchField('cnt')
  	);
  	if($with_data){
  		include("read_formation_include.php");
