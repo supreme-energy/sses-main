@@ -12,7 +12,7 @@ $response = array();
 if($seldbname){
 	$allowed_tables=array("wellinfo","appinfo", "autorc", "emailinfo", "witsml_details");
 	
-	if($_SERVER['CONTENT_TYPE'] == 'application/json'){
+	if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
 	    $json_body = file_get_contents('php://input');
 	    $obj = json_decode($json_body);
 	    foreach($obj as $key => $value){
