@@ -1,5 +1,6 @@
  <?php 
  include("../api_header.php");
+ include("../request_presence_validation.php");
  $response = Array();
  list($request_fields, $errors) = request_presence_validation($request,
      Array(           
