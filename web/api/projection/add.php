@@ -1,9 +1,9 @@
  <?php 
  include("../api_header.php");
- include("../request_presence_validation.php");
- $response = Array();
- list($request_fields, $errors) = request_presence_validation($request,
-     Array(           
+ include("../shared_functions/request_presence_validation.php");
+ $response = array();
+ list($request_fields, $errors) = presenceValidation($_REQUEST,
+     array(           
            'method', 
            'md',
            'inc',
@@ -52,8 +52,8 @@
     $svyid = $db->FetchField("id");
     $bot = $db->FetchField("tot")+$bot_thickness;
     $tot = $db->FetchField("tot")+$tot_thickness;
-    $response = Array("status" => "success", "projection"=>
-        Array(
+    $response = array("status" => "success", "projection"=>
+        array(
             'id' => $db->FetchField("id") ,
             'md' => sprintf("%.2f",$db->FetchField("md")) ,
             'inc' =>sprintf("%.2f", $db->FetchField("inc")),
@@ -76,7 +76,7 @@
             )
     );
  } else {
-     $response = Array("status"=>"failed", "errors" => $errors);
+     $response = array("status"=>"failed", "errors" => $errors);
  }
  echo json_encode($response);
  ?>
