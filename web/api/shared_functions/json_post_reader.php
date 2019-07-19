@@ -11,7 +11,7 @@ function jsonPostReader($json, $allowed){
             array_push($updates_array, "$query_field_name = '$value'");
         }
     }
-    return array($updates_array, $obj['id']);
+    return array($updates_array, $obj->id);
 }
 
 function queryReader($request, $allowed){
