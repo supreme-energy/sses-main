@@ -21,7 +21,7 @@ foreach ($field_names as $field_name) {
         if($filed_name == 'sectdip' ){
             $query_field_name = 'dip';
         }
-        array_push($updates_array, "$field_name = '$value'");
+        array_push($updates_array, "$query_field_name = '$value'");
     }
 }
 if (count($updates_array) > 0) {
