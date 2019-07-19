@@ -24,10 +24,10 @@ if (count($updates_array) > 0) {
     $query = "update welllogs set " . implode($updates_array, ',') . " where id=$id";
     $db->DoQuery($query);
 }
-exec("./sses_gva -d $seldbname ");
-exec("./sses_cc -d $seldbname");
-exec("./sses_cc -d $seldbname -p");
-exec("./sses_af -d $seldbname");
+exec("../../sses_gva -d $seldbname");
+exec("../../sses_cc -d $seldbname");
+exec("../../sses_cc -d $seldbname -p");
+exec("../../sses_af -d $seldbname");
 $db->DoQuery("SELECT * FROM welllogs where id='$id'");
 $db->FetchRow();
 $tablename = $db->FetchField('tablename');

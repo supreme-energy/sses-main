@@ -47,7 +47,7 @@
     $db->DoQuery("INSERT INTO projections (method, data, md, inc, azm, dip, fault, tvd, vs, tot, bot)
 		VALUES ('$method','$data','$md','$inc','$azm','$dip','$fault','$tvd','$vs','$tot','$bot');");
     $db->DoQuery("SELECT * FROM projections order by id desc limit 1");
-    exec ("./sses_af -d $seldbname");    
+    exec ("../../sses_af -d $seldbname");    
     $db->FetchRow();
     $svyid = $db->FetchField("id");
     $bot = $db->FetchField("tot")+$bot_thickness;
