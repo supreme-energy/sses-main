@@ -4,11 +4,17 @@
  include("readwellinfo.inc.php");
  exec ("../sses_af -d $seldbname");
  $with_data = $_REQUEST['data'] == '1';
- $db->DoQuery('select * from edatalogs order by id');
+ $db->DoQuery('select * from edatalogs order by id'); 
  $results = array();
  while($db->FetchRow()) {
  	$id = $db->FetchField("id");	
  	$tablename = $db->FetchField("tablename");
+ 	$db3=new dbio($seldbname);
+ 	$db3->OpenDb();
+ 	$db3->DoQuery('select count(*) as cnt from '.$tablename);
+ 	$db3->FetchRow();
+ 	$data_count = $db3->FetchField('cnt');
+ 	$db3->CloseDb();
  	$result = array(
  			"id" => $id,
  	        "tablename" => $tablename,
@@ -19,7 +25,8 @@
  			"logscale"  => $db->FetchField('logscale'),
  			"enabled"    => $db->FetchField('enabled'),
  			"color"  => $db->FetchField('color'),
- 	        "single_plot" => $db->FetchField('single_plot')
+ 	        "single_plot" => $db->FetchField('single_plot'),
+ 	        "data_count"  => $data_count
  	);
  	if($with_data){
  		include("read_edata_log.include.php");
