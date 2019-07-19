@@ -3,7 +3,7 @@ include ("../api_header.php");
 $id = $_REQUEST['id'];
 $field_names = array(
     'fault',
-    'sectdip',
+    'dip',
     'secttot',
     'sectbot',
     'scalebias',
