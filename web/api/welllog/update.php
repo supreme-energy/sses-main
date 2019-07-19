@@ -4,6 +4,7 @@ $id = $_REQUEST['id'];
 $field_names = array(
     'fault',
     'dip',
+    'sectdip',
     'secttot',
     'sectbot',
     'scalebias',
@@ -16,6 +17,9 @@ foreach ($field_names as $field_name) {
         $query_field_name = $field_name;
         if ($field_name == 'unixtime_src') {
             $query_field_name = 'srcts';
+        }
+        if($filed_name == 'sectdip' ){
+            $query_field_name = 'dip';
         }
         array_push($updates_array, "$field_name = '$value'");
     }
