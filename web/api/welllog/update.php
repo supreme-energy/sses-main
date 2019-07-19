@@ -1,6 +1,6 @@
  <?php
 include ("../api_header.php");
-$id = $_REQUEST['id'];
+include ("../shared_functions/json_post_reader.php");//queryReader(request, allowed) and jsonPostReader(json, allowed)
 $field_names = array(
     'fault',
     'dip',
@@ -11,18 +11,10 @@ $field_names = array(
     'scalefactor'
 );
 $updates_array = array();
-foreach ($field_names as $field_name) {
-    if (isset($_REQUEST[$field_name])) {
-        $value = $_REQUEST[$field_name];
-        $query_field_name = $field_name;
-        if ($field_name == 'unixtime_src') {
-            $query_field_name = 'srcts';
-        }
-        if($filed_name == 'sectdip' ){
-            $query_field_name = 'dip';
-        }
-        array_push($updates_array, "$query_field_name = '$value'");
-    }
+if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){    
+    list($updates_array, $id) = jsonPostReader(file_get_contents('php://input'), $allowed);
+} else {
+    list($updates_array, $id) = queryReader($_REQUEST, $allowed);
 }
 if (count($updates_array) > 0) {
     $query = "update welllogs set " . implode($updates_array, ',') . " where id=$id";
