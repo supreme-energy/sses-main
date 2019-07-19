@@ -1,6 +1,6 @@
  <?php
 include ("../api_header.php");
-include ("../shared_functions/json_post_reader.php");//queryReader(request, allowed) and jsonPostReader(json, allowed)
+include ("../shared_functions/json_post_reader.php");//queryReader(request, allowed) and jsonPostReader(json_body, allowed)
 $field_names = array(
     'fault',
     'dip',
@@ -12,9 +12,9 @@ $field_names = array(
 );
 $updates_array = array();
 if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){    
-    list($updates_array, $id) = jsonPostReader(file_get_contents('php://input'), $allowed);
+    list($updates_array, $id) = jsonPostReader(file_get_contents('php://input'), $field_names);
 } else {
-    list($updates_array, $id) = queryReader($_REQUEST, $allowed);
+    list($updates_array, $id) = queryReader($_REQUEST, $field_names);
 }
 if (count($updates_array) > 0) {
     $query = "update welllogs set " . implode($updates_array, ',') . " where id=$id";
