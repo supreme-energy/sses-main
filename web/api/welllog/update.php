@@ -21,7 +21,7 @@ foreach ($field_names as $field_name) {
     }
 }
 if (count($updates_array) > 0) {
-    $query = "update wellogs set " . implode($updates_array, ',') . " where id=$id";
+    $query = "update welllogs set " . implode($updates_array, ',') . " where id=$id";
     $db->DoQuery($query);
 }
 exec("./sses_gva -d $seldbname ");
