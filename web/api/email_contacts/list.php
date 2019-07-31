@@ -13,5 +13,5 @@ while($db->FetchRow()){
             "cat" => $db->FetchField("cat")
             ));
 }
-echo json_encdoe($results);
+echo json_encode($results);
 ?>
