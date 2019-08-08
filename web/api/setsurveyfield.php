@@ -17,9 +17,9 @@ if(count($updates_array) > 0 ){
 	$query = "update surveys set ". implode($updates_array, ',') . " where id=$id";
 	$db->DoQuery($query);
 }
-exec("./sses_gva -d $seldbname ");
-exec("./sses_cc -d $seldbname");
-exec("./sses_cc -d $seldbname -p");
-exec ("./sses_af -d $seldbname");
+exec("../sses_gva -d $seldbname ");
+exec("../sses_cc -d $seldbname");
+exec("../sses_cc -d $seldbname -p");
+exec ("../sses_af -d $seldbname");
 echo json_encode(array("status" => "Success", "message" => "operation completed"));
 ?>
