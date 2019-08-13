@@ -74,6 +74,9 @@ if($db->FetchRow()) {
 	$wb_show_forms   = $db->FetchField("wb_show_formations");
 	$refwellname = $db->FetchField("refwellname");
 	$map_zone    = $db->FetchField("map_zone");
+	
+	$analytics_job_id = $db->FetchField("analytics_job_id");
+	$analytics_well_connected = $db->FetchField("analytics_well_connected");
 } 
 $db->DoQuery("select * from emailinfo");
 if($db->FetchRow()) {
