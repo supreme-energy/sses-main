@@ -9,7 +9,7 @@ while($row = $db->FetchRow()){
     array_push($deleted_groups,array("id" => $group_id, "created" => $row['created']));
     if($with_data){
         include ("./cleaned.php");
-        $result ['data'] = $data;
+        $deleted_groups ['data'] = $data;
     }
 }
 echo json_encode($deleted_groups);
