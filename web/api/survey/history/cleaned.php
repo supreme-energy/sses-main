@@ -29,7 +29,7 @@ while($row = $db2->FetchRow()) {
 	    'fault' => $fault
 	));
 }
-$md0 = $data[0]['md'];
+$md0 = $cldata[0]['md'];
 $db2->DoQuery("select * from surveys where md < $md0 order by md limit 1");
 $db2->FetchRow();
 $last_md =  $db2->FetchField('md');
