@@ -66,7 +66,7 @@ for($i=0; $i<$etablecount; $i++) {
 // open up files for transfer
 $infile=fopen("$filename", "r");
 if(!$infile){
-    echo json_encode(array("status" => "error", "message" => "filename required."));
+    echo json_encode(array("status" => "error", "message" => "file not found. Send again with file_check."));
     exit;
 }
     
