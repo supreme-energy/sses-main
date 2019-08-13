@@ -1,7 +1,7 @@
 <?php 
 include ("../../api_header.php");
 $group_id = $_REQUEST['id'];
-$query="select * from deleted_survey_group order where id = $group_id";
+$query="select * from deleted_survey_group where id = $group_id";
 $db->DoQuery($query);
 while($row = $db->FetchRow()){
     $this_group = array("id" => $group_id, "created" => $row['created']);    

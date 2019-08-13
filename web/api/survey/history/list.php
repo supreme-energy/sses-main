@@ -5,8 +5,8 @@ $query="select * from deleted_survey_group order by id desc";
 $db->DoQuery($query);
 $deleted_groups = array();
 while($row = $db->FetchRow()){
-    $this_group = array("id" => $group_id, "created" => $row['created']);
     $group_id = $row['id'];
+    $this_group = array("id" => $group_id, "created" => $row['created']);    
     if($with_data){
         include ("./cleaned.php");
         $this_group ['data'] = $data;
