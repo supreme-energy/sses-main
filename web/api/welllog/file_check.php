@@ -1,6 +1,6 @@
 <?php 
-function load_import_result($status, $retstr){
-   return array("status" => $status, "results" => $retstr);
+function load_import_result($status, $retstr, $filename){
+   return array("status" => $status, "filename" => $filename, "results" => $retstr);
 }
 require 'HTTP/Upload.php';
 include ("../api_header.php");
@@ -36,8 +36,8 @@ $retstr=array();
 $retval=0;
 exec("../../sses_laschk -f $filename -d $seldbname", &$retstr, &$retval);
 if($retval!=0){
-    echo json_encode(load_import_result('error', $retstr));
+    echo json_encode(load_import_result('error', $retstr, $filename));
 } else {
-    echo json_encode(load_import_result('success', $retstr));
+    echo json_encode(load_import_result('success', $retstr, $filename));
 }
 ?>
