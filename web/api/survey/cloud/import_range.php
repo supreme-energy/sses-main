@@ -3,8 +3,9 @@ include ("../../api_header.php");
 require_once("../../../classes/WitsmlData.class.php");
 $startdepth=$_REQUEST['sdepth'];
 $enddepth = $_REQUEST['edepth'];
-$wo = $_REQUEST['wo']=='true'?true:false;
+
 $groupid  = isset($_REQUEST['groupid'])?($_REQUEST['groupid']=='false'?false:$_REQUEST['groupid']):false;
+
 include("../../../readwellinfo.inc.php");
 $db->CloseDb();
 if($autorc_type=='rigminder'){
