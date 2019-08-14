@@ -20,13 +20,13 @@
   include("../../readwellinfo.inc.php");
   $db->CloseDb();
   if($autorc_type=='rigminder'){
-      require_once('../classes/RigMinderConnection.php');
+      require_once('../../classes/RigMinderConnection.php');
       header('Content-type: application/json');
       $obj= new RigMinderConnection($_REQUEST);
       $next = $obj->load_next_survey($do_load);
       echo json_encode($next);
   }elseif($autorc_type=='polaris' || $autorc_type=='digidrill' || $autorc_type=='welldata'){
-      require_once('../classes/PolarisConnection.class.php');
+      require_once('../../classes/PolarisConnection.class.php');
       header('Content-type: application/json');
       $obj= new PolarisConnection($_REQUEST);
       $obj->autorc_type=$autorc_type;
