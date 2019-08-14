@@ -1,5 +1,7 @@
   <?php 
+  include ("../../api_header.php");
   function cloudSurveyCheck($do_load, $do_cleanup){
+      global $db;
       require_once("../../../classes/WitsmlData.class.php");  
       include("../../../readwellinfo.inc.php");
       $db->CloseDb();
