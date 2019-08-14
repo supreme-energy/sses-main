@@ -3,7 +3,6 @@ include ("../../api_header.php");
 require_once("../../../classes/WitsmlData.class.php");
 $startdepth=$_REQUEST['sdepth'];
 $enddepth = $_REQUEST['edepth'];
-
 $groupid  = isset($_REQUEST['groupid'])?($_REQUEST['groupid']=='false'?false:$_REQUEST['groupid']):false;
 
 include("../../../readwellinfo.inc.php");
