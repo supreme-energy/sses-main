@@ -77,6 +77,9 @@ if($db->FetchRow()) {
 	
 	$analytics_job_id = $db->FetchField("analytics_job_id");
 	$analytics_well_connected = $db->FetchField("analytics_well_connected");
+	
+	$pull_data = $db->FetchField("pull_data");
+	$pull_data_interval = $db->FetchField("pull_data_interval");
 } 
 $db->DoQuery("select * from emailinfo");
 if($db->FetchRow()) {
@@ -192,6 +195,8 @@ $wellinfo_joined = array(
 		"sgta_show_formations"=> $sgta_show_forms,
 		"wb_show_formations"  => $wb_show_forms,
 		"refwellname" 		  => $refwellname,
-		"map_zone"            => $map_zone
+		"map_zone"            => $map_zone,
+        "pull_data"           => $pull_data,
+        "pull_data_interval"  => $pull_data_interval
 );
 ?>
