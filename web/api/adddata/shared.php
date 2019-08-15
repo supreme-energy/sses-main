@@ -1,7 +1,7 @@
 <?php 
 function addDataJson($id, $with_data){
     global $db;
-    $db->DoQuery('select * from edatalogs order by id');
+    $db->DoQuery('select * from edatalogs where id='.$id);
     $results = array();
     while($db->FetchRow()) {
         $id = $db->FetchField("id");

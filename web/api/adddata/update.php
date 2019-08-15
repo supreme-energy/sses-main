@@ -16,7 +16,7 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
 } else {
     list($updates_array, $id) = queryReader($_REQUEST, $field_names);
 }
-if ($id == 0) echo json_encode(array("status"=>"failed", "message" => "id is required")); 
+if ($id == 0){ echo json_encode(array("status"=>"failed", "message" => "id is required")); }
 if (count($updates_array) > 0) {
     $query = "update edatalogs set " . implode($updates_array, ',') . " where id=$id";
     $db->DoQuery($query);
