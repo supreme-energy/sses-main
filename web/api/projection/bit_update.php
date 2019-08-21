@@ -89,5 +89,5 @@ md='$md',inc='$inc',azm='$azm',dip='$dip',fault='$fault',tot='$tot',bot='$bot',t
 
 exec ("../../sses_af -d $seldbname");
 include ("../../readsurveys.inc.php");
-echo json_encode(array_slice($srvys_joined, 0 , 3));
+echo json_encode(array_slice(array_reverse ($srvys_joined), 0 , 3));
 ?>
