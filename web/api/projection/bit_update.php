@@ -5,7 +5,7 @@ echo $json_body;
 $method= $json_body->meth;
 $autoposdec = $json_body->autoposdec;
 $bprjtpos = $json_body->bprjpostcl;
-$data=$json_body->data
+$data=$json_body->data;
 $project=$json_body->project;
 $bitoffset=$json_body->bitoffset;
 $md=$json_body->md;
