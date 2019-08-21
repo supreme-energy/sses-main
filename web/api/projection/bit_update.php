@@ -2,10 +2,7 @@
 include("../api_header.php");
 $body = file_get_contents('php://input');
 $json_body = json_decode($body);
-
 $method= $json_body->meth;
-echo $method;
-echo $seldbname;
 $autoposdec = $json_body->autoposdec;
 $bprjtpos = $json_body->bprjpostcl;
 $data=$json_body->data;
@@ -92,5 +89,5 @@ md='$md',inc='$inc',azm='$azm',dip='$dip',fault='$fault',tot='$tot',bot='$bot',t
 
 exec ("../../sses_af -d $seldbname");
 include ("../../readsurveys.inc.php");
-echo json_encode($srvys_joined);
+echo json_encode(array_slice($srvys_joined, 0 , 3));
 ?>
