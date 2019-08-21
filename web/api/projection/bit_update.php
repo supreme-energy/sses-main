@@ -1,7 +1,8 @@
 <?php
 include("../api_header.php");
-$json_body = json_decode(file_get_contents('php://input'));
-echo $json_body;
+$body = file_get_contents('php://input');
+$json_body = json_decode($body);
+echo $body;
 $method= $json_body->meth;
 $autoposdec = $json_body->autoposdec;
 $bprjtpos = $json_body->bprjpostcl;
