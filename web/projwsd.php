@@ -4,7 +4,7 @@
 //	All rights reserved.
 //	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
 //	or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
-
+$json_only = strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false;
 $seldbname=$_POST['seldbname'];
 $ret=$_POST['ret'];
 $method=$_POST['meth'];
@@ -95,31 +95,38 @@ md='$md',inc='$inc',azm='$azm',dip='$dip',fault='$fault',tot='$tot',bot='$bot',t
 	}
 }
 
-$db->CloseDb();
-if($newid==""){
 
-?>
-	<HTML>
-	<HEAD>
-	<LINK rel='stylesheet' type='text/css' href='projws.css'/>
-	<TITLE>Project <?echo $project?></TITLE>
-	</HEAD>
-	<BODY onload='closeupanddie()'>
-	<SCRIPT language="javascript">
-	function closeupanddie()
-	{
-		if(window.opener && !window.opener.closed) {
-			// window.opener.location.href="<?php echo $ret ?>?seldbname=<?echo $seldbname?>";
-			// window.opener.location.load();
-			window.opener.location.reload();
-		}
-		window.close();
-	}
-	</SCRIPT>
-	</BODY>
-	</HTML>
-<?} else {
-	$currid=$newid;
-	exec ("./sses_af -d $seldbname");
-	include("projws.php");
+exec ("./sses_af -d $seldbname");
+if($json_only){
+    include ("readsurveys.inc.php");
+    echo json_encode($srvys_joined);
+} else {
+    $db->CloseDb();
+    if($newid==""){
+    
+    ?>
+    	<HTML>
+    	<HEAD>
+    	<LINK rel='stylesheet' type='text/css' href='projws.css'/>
+    	<TITLE>Project <?echo $project?></TITLE>
+    	</HEAD>
+    	<BODY onload='closeupanddie()'>
+    	<SCRIPT language="javascript">
+    	function closeupanddie()
+    	{
+    		if(window.opener && !window.opener.closed) {
+    			// window.opener.location.href="<?php echo $ret ?>?seldbname=<?echo $seldbname?>";
+    			// window.opener.location.load();
+    			window.opener.location.reload();
+    		}
+    		//window.close();
+    	}
+    	</SCRIPT>
+    	</BODY>
+    	</HTML>
+    <?} else {
+    	$currid=$newid;
+    
+    	include("projws.php");
+    }
 }
