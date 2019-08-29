@@ -80,6 +80,9 @@ if($db->FetchRow()) {
 	
 	$pull_data = $db->FetchField("pull_data");
 	$pull_data_interval = $db->FetchField("pull_data_interval");
+	
+	$draftcolor = $db->FetchField("draftcolor");
+	$selectedsurveycolor = $db->FetchField("selectedsurveycolor");
 } 
 $db->DoQuery("select * from emailinfo");
 if($db->FetchRow()) {
@@ -197,6 +200,8 @@ $wellinfo_joined = array(
 		"refwellname" 		  => $refwellname,
 		"map_zone"            => $map_zone,
         "pull_data"           => $pull_data,
-        "pull_data_interval"  => $pull_data_interval
+        "pull_data_interval"  => $pull_data_interval,
+        "draftcolor"          => $draftcolor,
+        "selectedsurveycolor" => $selectedsurveycolor
 );
 ?>
