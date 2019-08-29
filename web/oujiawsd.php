@@ -137,7 +137,7 @@ exec("./sses_af -d $seldbname");
 			window.opener.location="<?php echo $ret ?>?seldbname=<?echo $seldbname?>";
 			//window.opener.location.load();
 		}
-		window.close();
+		//window.close();
 	}
 	</SCRIPT>
 	</BODY>

@@ -1,50 +1,39 @@
 <?
 include("../api_header.php");
-
+include("./functions.php");
+$seldbname=$_REQUEST['seldbname'];
+$ret=$_REQUEST['ret'];
 $method=3;
-
-$obj = json_decode(file_get_contents('php://input'));
-$data = $obj->data;
-$project = $obj->project;
-$bitoffset = $obj->bitoffset;
-$current   = $obj->current;
-$previous  = $obj->previous;
-$skiprot   = $obj->skiprot;
-$pavsdel   = $obj->pavsdel;
-$delpa = explode(',', $pavsdel );
-$motoryield = $obj->motoryield;
-
-$data=$_POST['data'];
-$project=$_POST['project'];
-$bitoffset=$_POST['bitoffset'];
-$md=$_POST['md'];
-$inc=$_POST['inc'];
-$azm=$_POST['azm'];
-$tvd=$_POST['tvd'];
-$vs=$_POST['vs'];
-$ca=$_POST['ca'];
-$cd=$_POST['cd'];
-$tpos=$_POST['tpos'];
-$tot=$_POST['tot'];
-$bot=$_POST['bot'];
-$dip=$_POST['dip'];
-$fault=$_POST['fault'];
+$data=$_REQUEST['data'];
+$project=$_REQUEST['project'];
+$bitoffset=$_REQUEST['bitoffset'];
+$md=$_REQUEST['md'];
+$inc=$_REQUEST['inc'];
+$azm=$_REQUEST['azm'];
+$tvd=$_REQUEST['tvd'];
+$vs=$_REQUEST['vs'];
+$ca=$_REQUEST['ca'];
+$cd=$_REQUEST['cd'];
+$tpos=$_REQUEST['tpos'];
+$tot=$_REQUEST['tot'];
+$bot=$_REQUEST['bot'];
+$dip=$_REQUEST['dip'];
+$fault=$_REQUEST['fault'];
 // $fault=0;
-$pmd=$_POST['pmd'];
-$pinc=$_POST['pinc'];
-$tinc=$_POST['tinc'];
-$tazm=$_POST['tazm'];
-$pazm=$_POST['pazm'];
-$ptvd=$_POST['ptvd'];
-$pca=$_POST['pca'];
-$pcd=$_POST['pcd'];
-$currid=$_POST['currid'];
-$newid=$_POST['newid'];
-$tf = $_POST['tf'];
-
-
-
-// echo "passed currid=$currid, newid=$newid";
+$pmd=$_REQUEST['pmd'];
+$pinc=$_REQUEST['pinc'];
+$tinc=$_REQUEST['tinc'];
+$tazm=$_REQUEST['tazm'];
+$pazm=$_REQUEST['pazm'];
+$ptvd=$_REQUEST['ptvd'];
+$pca=$_REQUEST['pca'];
+$pcd=$_REQUEST['pcd'];
+$currid=$_REQUEST['currid'];
+$newid=$_REQUEST['newid'];
+$tf = $_REQUEST['tf'];
+$skiprot = $_REQUEST['skiprot']=='true'?true:false;
+$delpa = explode(',',$_REQUEST['pavsdel']);
+$motoryield = $_REQUEST['motoryield'];
 
 $dmd=$md-$pmd;
 $dinc=$inc-$pinc;
@@ -53,7 +42,7 @@ $dtvd=$tvd-$ptvd;
 $dcd=$cd-$pcd;
 $dca=$ca-$pca;
 
-require_once("dbio.class.php");
+
 $db=new dbio($seldbname);
 $db->OpenDb();
 $db->DoQuery("Update projections set inc=$tinc,azm=$tazm where ptype='rot'");
@@ -88,19 +77,6 @@ if($project!='ahead') {
 		else if($method==7) $data="$tot,$vs,$tpos";
 		else if($method==8) $data="$vs,$tpos,$dip,$fault";
 		else $data="0,0,0";
-		/*
-		$db->DoQuery("UPDATE projections SET method='$method' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET data='$data' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET md='$md' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET inc='$inc' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET azm='$azm' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET dip='$dip' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET fault='$fault' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET tot='$tot' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET bot='$bot' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET tvd='$tvd' WHERE id=$currid;");
-		$db->DoQuery("UPDATE projections SET vs='$vs' WHERE id=$currid;");
-		*/
 		$db->DoQuery("UPDATE projections SET method='$method',data='$data',
 md='$md',inc='$inc',azm='$azm',dip='$dip',fault='$fault',tot='$tot',bot='$bot',tvd='$tvd',vs='$vs' WHERE id=$currid;");
 	} else {
@@ -118,14 +94,12 @@ md='$md',inc='$inc',azm='$azm',dip='$dip',fault='$fault',tot='$tot',bot='$bot',t
 	}
 }
 
-$db->CloseDb();
-	
-//$currid=$newid;
-//exec ("./sses_af -d $seldbname");
-
 exec("./sses_gva -d $seldbname");
 exec("./sses_cc -d $seldbname");
 exec("./sses_cc -d $seldbname -p");
 exec("./sses_af -d $seldbname");
+
+echo jsonListProjections();
 ?>
+	
 
