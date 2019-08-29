@@ -46,6 +46,6 @@ function jsonListProjections() {
             'data'=>$db->FetchField("data")
         );
     }
-    return json_encode(projections_joined);
+    return json_encode($projections_joined);
 }
 ?>
