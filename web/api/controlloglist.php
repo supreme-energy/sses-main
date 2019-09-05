@@ -7,13 +7,15 @@
 		$id = $db->FetchField ( "id" );
 		$tablename = $db->FetchField ( "tablename" );
 		$result = array (
-				"id" => $id,
-				"tablename" => $tablename,				
-				"startmd" => $db->FetchField ( 'startmd' ),
-				"endmd" => $db->FetchField ( 'endmd' ),
-                "tot" => $db->FetchField("tot"),				
-		        "bot" => $db->FetchField("tot"),
-		        "azm" => $db->FetchField("amz")
+		    "id" => $id,
+		    "tablename" => $tablename,
+		    "realname" =>  $db->FetchField('realname'),
+		    "startmd" => $db->FetchField('startmd'),
+		    "endmd" => $db->FetchField('endmd'),
+		    "tot" => $db->FetchField("tot"),
+		    "bot" => $db->FetchField("bot"),
+		    "dip" => $db->FetchField("dip"),
+		    "azm" => $db->FetchField("azm")
 		);
 		if ($with_data) {
 			include ("read_controllog_include.php");

@@ -10,11 +10,13 @@ if (isset($tablename) && ! empty($tablename)) {
     $results = array(
         "id" => $id,
         "tablename" => $tablename,
+        "realname" =>  $db->FetchField('realname'),
         "startmd" => $db->FetchField('startmd'),
         "endmd" => $db->FetchField('endmd'),
         "tot" => $db->FetchField("tot"),
-        "bot" => $db->FetchField("tot"),
-        "azm" => $db->FetchField("amz")
+        "bot" => $db->FetchField("bot"),
+        "dip" => $db->FetchField("dip"),
+        "azm" => $db->FetchField("azm")
     );
 
     include ("read_controllog_include.php");
