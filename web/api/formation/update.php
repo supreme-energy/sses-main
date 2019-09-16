@@ -8,7 +8,8 @@ $field_names = array(
     'bg_percent',
     'pat_color',
     'pat_num',
-    'show_line'
+    'show_line',
+    'thickness'
 );
 $updates_array = array();
 if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){    
@@ -17,8 +18,13 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
     list($updates_array, $id) = queryReader($_REQUEST, $field_names);
 }
 if (count($updates_array) > 0) {
+    $thickness = $updates_array['thickness'];
     $query = "update addforms set " . implode($updates_array, ',') . " where id=$id";
     $db->DoQuery($query);
+    if($thickness){
+        $query = "update addformsdata set ". $thickness . " where infoid=$id";
+        $db->DoQuery($query);
+    }
 }
 exec ("../../sses_af -d $seldbname");
 $db->DoQuery("select * from addforms where id=$id");

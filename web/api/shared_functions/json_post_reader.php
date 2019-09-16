@@ -1,4 +1,22 @@
 <?php 
+function jsonPostReadCreate($json, $allowed){
+    $updates_array = array();
+    $values_array  = array();
+    $obj = json_decode($json);
+    foreach($obj as $key => $value){
+        if(in_array($key, $allowed)){
+            $query_field_name = $key;
+            if($key == 'sectdip' ){
+                $query_field_name = 'dip';
+            }
+            
+            $updates_array[$query_field_name] = "'$value'";
+            array_push($values_array, "$query_field_name");
+        }
+    }
+    return array($updates_array, $values_array);
+}
+
 function jsonPostReader($json, $allowed){
     $updates_array = array();
     $obj = json_decode($json);
@@ -8,7 +26,7 @@ function jsonPostReader($json, $allowed){
             if($key == 'sectdip' ){
                 $query_field_name = 'dip';
             }
-            array_push($updates_array, "$query_field_name = '$value'");
+            $updates_array[$query_field_name] = "$query_field_name = '$value'";
         }
     }
     return array($updates_array, $obj->id);
