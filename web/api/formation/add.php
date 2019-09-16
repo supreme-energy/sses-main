@@ -30,6 +30,7 @@ if (count($updates_array) > 0) {
     exec ("../../sses_af -d $seldbname");
     if($thickness){
         $query = "update addformsdata set thickness = ". $thickness . " where infoid=$id";
+        echo $query;
         $db->DoQuery($query);
     }  
 }
