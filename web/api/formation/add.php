@@ -21,6 +21,7 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
 if (count($updates_array) > 0) {
     $thickness = $updates_array['thickness'];
     unset($updates_array['thickness']);
+    unset($values_array['thickness']);
     $query = "insert into addforms (".implode($values_array, ",").") values (" . implode($updates_array, ',') . ");";
     $db->DoQuery($query);
     $query = "select * from addforms order by id desc limit 1";

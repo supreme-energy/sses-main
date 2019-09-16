@@ -11,7 +11,7 @@ function jsonPostReadCreate($json, $allowed){
             }
             
             $updates_array[$query_field_name] = "'$value'";
-            array_push($values_array, "$query_field_name");
+            $values_array[$query_field_name] =  "$query_field_name";
         }
     }
     return array($updates_array, $values_array);
