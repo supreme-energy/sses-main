@@ -8,7 +8,8 @@ $field_names = array(
     'bg_percent',
     'pat_color',
     'pat_num',
-    'show_line'
+    'show_line',
+    'thickness'
 );
 $updates_array = array();
 $values_array  = array();
@@ -29,8 +30,7 @@ if (count($updates_array) > 0) {
     $db->DoQuery($query);
     exec ("../../sses_af -d $seldbname");
     if($thickness){
-        $query = "update addformsdata set thickness = ". $thickness . " where infoid=$id";
-        echo $query;
+        $query = "update addformsdata set thickness = ". $thickness . " where infoid=$id";        
         $db->DoQuery($query);
     }  
 }
