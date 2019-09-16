@@ -21,6 +21,7 @@ if (count($updates_array) > 0) {
     $thickness = $updates_array['thickness'];
     unset($updates_array['thickness']);
     $query = "insert into addforms (".implode(values_array, ",").") values (" . implode($updates_array, ',') . ");";
+    $db->DoQuery($query);
     $query = "select * from addforms order by id desc limit 1";
     $db->DoQuery($query);
     $db->FetchRow();
