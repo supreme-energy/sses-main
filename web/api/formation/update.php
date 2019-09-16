@@ -17,7 +17,7 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
     list($updates_array, $id) = queryReader($_REQUEST, $field_names);
 }
 if (count($updates_array) > 0) {
-    $query = "update addformsdata set " . implode($updates_array, ',') . " where infoid=$id";
+    $query = "update addforms set " . implode($updates_array, ',') . " where id=$id";
     $db->DoQuery($query);
 }
 exec ("../../sses_af -d $seldbname");
