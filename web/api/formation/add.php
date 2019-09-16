@@ -18,12 +18,19 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
     list($updates_array, $id) = queryReader($_REQUEST, $field_names);
 }
 if (count($updates_array) > 0) {
+    $thickness = $updates_array['thickness'];
+    unset($updates_array['thickness']);
     $query = "insert into addforms (".implode(values_array, ",").") values (" . implode($updates_array, ',') . ");";
-    $db->DoQuery($query);
     $query = "select * from addforms order by id desc limit 1";
     $db->DoQuery($query);
     $db->FetchRow();
     $id = $db->FetchField("id");
+    $db->DoQuery($query);
+    exec ("../../sses_af -d $seldbname");
+    if($thickness){
+        $query = "update addformsdata set thickness = ". $thickness . " where infoid=$id";
+        $db->DoQuery($query);
+    }  
 }
 exec ("../../sses_af -d $seldbname");
 $db->DoQuery("select * from addforms where id=$id");

@@ -19,6 +19,7 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
 }
 if (count($updates_array) > 0) {
     $thickness = $updates_array['thickness'];
+    unset($updates_array['thickness']);
     $query = "update addforms set " . implode($updates_array, ',') . " where id=$id";
     $db->DoQuery($query);
     if($thickness){
