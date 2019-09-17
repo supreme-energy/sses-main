@@ -39,13 +39,13 @@ if(!$infile){
     exit;
 }
 
-const NUMERICREGEX = "/[^0-9.]/";
+const NUMERICREGEX = "/[!^0-9.]/";
 while (($data = fgetcsv($infile, 5000, ",")) !== FALSE) {
     
-    preg_match(NUMERICREGEX,$data[0],$md);
-    preg_match(NUMERICREGEX,$data[1],$inc);
-    preg_match(NUMERICREGEX,$data[2],$azm);
-	$query = "INSERT INTO wellplan (md,inc,azm) VALUES ('$md[0]','$inc[0]','$azm[0]');";
+    $md=preg_replace(NUMERICREGEX,"",$data[0]);
+    $inc=preg_replace(NUMERICREGEX,"",$data[1]);
+    $azm=preg_replace(NUMERICREGEX,"",$data[2]);
+	$query = "INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');";
 	echo $query;
 	$result=$db->DoQuery($query);	
 }
