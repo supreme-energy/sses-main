@@ -39,7 +39,7 @@ if(!$infile){
     exit;
 }
 
-const NUMERICREGEX = "/[!^0-9.]/";
+const NUMERICREGEX = "/[^0-9.]/";
 while (($data = fgetcsv($infile, 5000, ",")) !== FALSE) {
     print_r($data);
     echo $data[0]."\n";
