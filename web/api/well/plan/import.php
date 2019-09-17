@@ -40,16 +40,11 @@ if(!$infile){
 }
 
 const NUMERICREGEX = "/[^0-9.]/";
-while (($data = fgetcsv($infile, 5000, ",")) !== FALSE) {
-    print_r($data);
-    echo $data[0]."\n";
-    echo $data[1]."\n";
-    echo $data[2]."\n";
+while (($data = fgetcsv($infile, 5000, ",")) !== FALSE) {    
     $md=preg_replace(NUMERICREGEX,"",$data[0]);
     $inc=preg_replace(NUMERICREGEX,"",$data[1]);
     $azm=preg_replace(NUMERICREGEX,"",$data[2]);
 	$query = "INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');";
-	echo $query;
 	$result=$db->DoQuery($query);	
 }
 $db->DoQuery("COMMIT");
@@ -58,5 +53,5 @@ fclose($infile);
 
 $output = shell_exec("../../../sses_cc -d $seldbname -w");
 // $output = shell_exec("./sses_cc -d $seldbname -w -i ./tmp/wellplan.dat");
-//header("Location: ../../wellplan.php?seldbname=$seldbname");
+header("Location: ../../wellplan.php?seldbname=$seldbname");
 ?>
