@@ -41,14 +41,12 @@ if(!$infile){
 
 
 while (($data = fgetcsv($infile, 5000, ",")) !== FALSE) {
-	$md=$data[0];
-	$inc=$data[1];
-	$azm=$data[2];
+    $md=preg_replace("/[^0-9.]/",$data[0]);
+    $inc=preg_replace("/[^0-9.]/",$data[1]);
+    $azm=preg_replace("/[^0-9.]/",$data[2]);
 	$query = "INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');";
 	echo $query;
-	$result=$db->DoQuery($query);
-	
-	if($result==FALSE) die("<pre>Error on SQL statement for table: wellplan\n</pre>");
+	$result=$db->DoQuery($query);	
 }
 $db->DoQuery("COMMIT");
 $db->CloseDb();
