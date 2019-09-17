@@ -27,6 +27,8 @@ if ($file->isValid()) {
 	exit;
 }
 
+$db->DoQuery("BEGIN TRANSACTION");
+
 $result=$db->DoQuery("DELETE FROM \"wellplan\";");
 if($result==FALSE) die("<pre>Error on SQL statement for table: wellplan\n</pre>");
 
@@ -37,12 +39,15 @@ if(!$infile){
     exit;
 }
 
-$db->DoQuery("BEGIN TRANSACTION");
+
 while (($data = fgetcsv($infile, 5000, ",")) !== FALSE) {
 	$md=$data[0];
 	$inc=$data[1];
 	$azm=$data[2];
-	$result=$db->DoQuery("INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');");
+	$query = "INSERT INTO wellplan (md,inc,azm) VALUES ('$md','$inc','$azm');";
+	echo $query;
+	$result=$db->DoQuery($query);
+	
 	if($result==FALSE) die("<pre>Error on SQL statement for table: wellplan\n</pre>");
 }
 $db->DoQuery("COMMIT");
@@ -51,5 +56,5 @@ fclose($infile);
 
 $output = shell_exec("../../../sses_cc -d $seldbname -w");
 // $output = shell_exec("./sses_cc -d $seldbname -w -i ./tmp/wellplan.dat");
-header("Location: ../../wellplan.php?seldbname=$seldbname");
+//header("Location: ../../wellplan.php?seldbname=$seldbname");
 ?>
