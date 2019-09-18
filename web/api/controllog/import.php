@@ -128,4 +128,4 @@ fclose($temp);
 unlink($filename);
 $db->DoQuery("UPDATE controllogs SET startmd=$startmd,endmd=$endmd WHERE id=$id;");
 $db->CloseDb();
-header("Location: ../controllog.php?seldbname=$seldbname&id=$id");
+header("Location: ../controllog.php?seldbname=$seldbname&tablename=$tablename");
