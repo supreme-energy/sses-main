@@ -1,6 +1,6 @@
 
 <?php
-include("../../api_header.php");
+include("../api_header.php");
 require 'HTTP/Upload.php';
 // print_r($HTTP_POST_FILES);
 $upload = new http_upload('en');
