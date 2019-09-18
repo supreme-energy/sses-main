@@ -10,7 +10,7 @@ if (PEAR::isError($file)) {
 }
 if ($file->isValid()) {
 	$file->setName('uniq');
-	$dest_dir = '../../../tmp/';
+	$dest_dir = '../../tmp/';
 	$dest_name = $file->moveTo($dest_dir);
 	if (PEAR::isError($dest_name)) {
 		die ($dest_name->getMessage());
