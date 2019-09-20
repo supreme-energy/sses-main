@@ -22,6 +22,10 @@ foreach($dbnames as $dbname){
             $query = "alter table $tt add $col_name $col_type";
             echo $dbname.":".$query. "\n";
             $db->DoQuery($query);
+            $query = "alter table $tt alter column $col_name set default true";
+            $db->DoQuery($query);
+            $query = "update $tt set $col_name = true";
+            $db->DoQuery($query);
         }
     }
 }
