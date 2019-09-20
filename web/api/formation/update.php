@@ -9,7 +9,13 @@ $field_names = array(
     'pat_color',
     'pat_num',
     'show_line',
-    'thickness'
+    'thickness',
+    'interp_pattern_show',
+    'interp_line_show',
+    'interp_fill_show',
+    'vert_pattern_show',
+    'vert_line_show',
+    'vert_fill_show'
 );
 $updates_array = array();
 if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){    
@@ -39,6 +45,12 @@ $results = array(
     "pat_color"  => $db->FetchField('pat_color'),
     "pat_num"    => $db->FetchField('pat_num'),
     "show_line"  => $db->FetchField('show_line'),
+    "interp_pattern_show" => $db->FetchField("interp_pattern_show"),
+    "interp_line_show" => $db->FetchField("interp_line_show"),
+    "interp_fill_show" => $db->FetchField("interp_fill_show"),
+    "vert_pattern_show" => $db->FetchField("vert_pattern_show"),
+    "vert_line_show" => $db->FetchField("vert_line_show"),
+    "vert_fill_show" => $db->FetchField("vert_fill_show"),
     "data" => array()
 );
 include('../read_formation_include.php');
