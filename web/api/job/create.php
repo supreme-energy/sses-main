@@ -28,9 +28,17 @@ else {
     echo json_encode(array("status"=>"error", "message"=>"Failed to update dbindex!"));		   
     exit();
 }
-$db->CloseDb();
-$db = new dbio($newdbname);
-initialize_formations($db);
+
+$db2 = new dbio($newdbname);
+if($db2->OpenDb() == 1){
+    initialize_formations($db2); 
+    $db2->CloseDb();
+} else {
+    $db->DoQuery("delete from dbindex where dbname='xxx' or dbname='$newdbname';");
+    $db->DoQuery("drop database if exists $newdbname");
+    echo json_encode(array("status"=>"error", "message"=>"db failed to initialize properly"));		
+    exit();
+}
 $db->CloseDb();
 header("Location: ./show.php?seldbname=$newdbname");
 exit();
