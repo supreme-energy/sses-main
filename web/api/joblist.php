@@ -17,8 +17,12 @@ while($db->FetchRow()) {
 	$dbreal=$db->FetchField("realname");
 	$favorite = $db->FetchField("favorite");
 	$db2 = new dbio($dbn);
+	try {
+	   $db2->OpenDb();
+	} catch (Exception $e){
+	    $db2=null;
+	}
 	if($db2){
-    	$db2->OpenDb();
     	$db2->DoQuery("select * from wellinfo");
     	$db2->FetchRow();
     	$pbhl_easting=$db2->FetchField("pbhl_easting");
