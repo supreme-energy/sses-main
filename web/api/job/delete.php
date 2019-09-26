@@ -8,8 +8,7 @@ $db->OpenDb();
 $db->DoQuery('SELECT datname FROM pg_database WHERE datistemplate = false;');
 $db2 = new dbio("sgta_index");
 $db3 = new dbio("sgta_index");
-//$db2->DoQuery("delete from dbindex where name='$todelete'");
-echo "delete from dbindex where name='$todelete'";
+$db2->DoQuery("delete from dbindex where name='$todelete'");
 $db2->OpenDb();
 $db3->OpenDb();
 while($db->FetchRow()){
@@ -17,15 +16,13 @@ while($db->FetchRow()){
     if(in_array($name, $never_delete) === true){
         continue;
     }
-    echo "$name\n";
     if(strpos($name, 'sgta_') !== false ){
         $db3->DoQuery("select * from dbindex where dbname='$name'");
         $res = $db3->FetchRow();
-        print_r($res);
-        if($res){
-            //$db2->DoQuery("Drop database if exists $name");
-            echo "Drop database if exists $name\n";
+        if(!$res){
+            $db2->DoQuery("Drop database if exists $name");            
         }
     }
 }
+echo json_encode(array("status"=>"success", "message"=>"job deleted"));
 ?>
