@@ -39,6 +39,9 @@ class dbio {
 	}
 
 	function DoQuery($qbuf) {
+	    if(!$this->dbh){
+	        throw new Exception('db accessor not avialable');
+	    }
 		$q=$qbuf;
 		// special case for MySQL equivilent
 		if(stripos($q, "SHOW TABLES")!==false) {

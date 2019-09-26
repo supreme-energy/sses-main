@@ -13,7 +13,7 @@ while($db->FetchRow()) {
     $dbreal=$db->FetchField("realname");
     $favorite = $db->FetchField("favorite");
     $db2 = new dbio($dbn);
-    if($db2->OpenDb()){
+    try{
         $db2->DoQuery("select * from wellinfo");
         $db2->FetchRow();
         $pbhl_easting=$db2->FetchField("pbhl_easting");
@@ -41,7 +41,7 @@ while($db->FetchRow()) {
             "map_zone"   => $map_zone
         ));
         $db2->CloseDb();
-    }
+    } catch(Exception $e){}
 }
 echo json_encode(array_shift($response));
 ?>
