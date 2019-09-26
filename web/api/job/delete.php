@@ -8,9 +8,9 @@ $db->OpenDb();
 $db->DoQuery('SELECT datname FROM pg_database WHERE datistemplate = false;');
 $db2 = new dbio("sgta_index");
 $db3 = new dbio("sgta_index");
-$db2->DoQuery("delete from dbindex where name='$todelete'");
 $db2->OpenDb();
 $db3->OpenDb();
+$db2->DoQuery("delete from dbindex where dbname='$todelete'");
 while($db->FetchRow()){
     $name = $db->FetchField("datname");
     if(in_array($name, $never_delete) === true){
