@@ -1,7 +1,7 @@
 <?php 
 require_once("../dbio.class.php");
 
-$fav_only = ($_REQUEST['favorite'] == '1');
+$fav_only = (isset($_REQUEST['favorite']) ? true : false);
 
 $db=new dbio("sgta_index");
 $db->OpenDb();
@@ -9,7 +9,7 @@ $filter_add = '';
 if($fav_only){
 	"where favorite = 1";
 }
-$db->DoQuery("SELECT * FROM dbindex $filer_add ORDER BY id DESC;");
+$db->DoQuery("SELECT * FROM dbindex $filter_add ORDER BY id DESC;");
 $response = array();
 while($db->FetchRow()) {
 	$id=$db->FetchField("id");
