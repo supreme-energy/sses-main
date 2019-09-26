@@ -17,6 +17,7 @@ while($db->FetchRow()){
     if(in_array($name, $never_delete) === true){
         continue;
     }
+    echo "$name\n";
     if(strpos($name, 'sgta_') !== false ){
         $db3->DoQuery("select * from dbindex where name='$name'");
         $res = $db3->FetchRow();
