@@ -20,9 +20,12 @@ while($db->FetchRow()){
         $db3->DoQuery("select * from dbindex where dbname='$name'");
         $res = $db3->FetchRow();
         if(!$res){
-            $db2->DoQuery("Drop database if exists $name");            
+            $db3->DoQuery("Drop database if exists $name");            
         }
     }
 }
+$db->CloseDb();
+$db2->CloseDb();
+$db3->CloseDb();
 echo json_encode(array("status"=>"success", "message"=>"job deleted"));
 ?>
