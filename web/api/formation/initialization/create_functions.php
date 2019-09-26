@@ -13,11 +13,11 @@ function initialize_formations($dbconn){
         }
     }
     if(!$tot_present){
-        $query_tot = 'insert into addforms(label,thickness) values("TOT", -15);';
+        $query_tot = "insert into addforms(label,thickness) values('TOT', -15);";
         $dbconn->DoQuery($query_tot);
     }
     if(!$bot_present){
-        $query_bot = 'insert into addforms(label,thickness) values("BOT", 15);';
+        $query_bot = "insert into addforms(label,thickness) values('BOT', 15);";
         $dbconn->DoQuery($query_bot);
     }
     
