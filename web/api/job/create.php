@@ -2,7 +2,7 @@
 require_once("../../dbio.class.php");
 require_once("../formation/initialization/create_functions.php");
 $name=$_REQUEST['name'];
-
+$copy_from= isset($_REQUEST['copy']) ? $_REQUEST['copy'] : 'sgta_template';
 
 $db=new dbio("sgta_index");
 $db->OpenDb();
@@ -12,7 +12,7 @@ $db->DoQuery("SELECT id,dbname FROM dbindex WHERE dbname='xxx';");
 if($db->FetchRow()) $id = $db->FetchField("id");
 if($id!="") {
 	$newdbname="sgta_$id";
-	$query="CREATE DATABASE $newdbname TEMPLATE $dbname;";
+	$query="CREATE DATABASE $newdbname TEMPLATE $copy_from;";
 	$result=$db->DoQuery($query);
 	if($result!=FALSE) {
 		$query="UPDATE dbindex SET dbname='$newdbname',realname='$name' WHERE id='$id';";
