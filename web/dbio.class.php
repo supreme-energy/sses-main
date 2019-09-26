@@ -28,7 +28,7 @@ class dbio {
 			$this->dbh = new PDO("pgsql:host=$this->hostname; dbname=$this->dbname",$this->username,$this->password);
 		}
 		catch(PDOException $e) {
-			echo $e->getMessage();
+			//echo $e->getMessage();
 			return 0;
 		}
 		return 1;
