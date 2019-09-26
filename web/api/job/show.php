@@ -7,7 +7,9 @@ $db->OpenDb();
 
 $db->DoQuery("SELECT * FROM dbindex where dbname = '$seldbname';");
 $response = array();
+$nowell = true;
 while($db->FetchRow()) {
+    $nowell = false;
     $id=$db->FetchField("id");
     $dbn=$db->FetchField("dbname");
     $dbreal=$db->FetchField("realname");
@@ -41,7 +43,14 @@ while($db->FetchRow()) {
             "map_zone"   => $map_zone
         ));
         $db2->CloseDb();
-    } catch(Exception $e){}
+    } catch(Exception $e){
+        echo json_encode(array("status"=>"error", "message"=>"job $seldbname database does not exsist"));
+        exit();
+    }
 }
-echo json_encode(array_shift($response));
+if($nowell){
+    echo json_encode(array("status"=>"error", "message"=>"job $seldbname database does not exsist"));
+} else {
+    echo json_encode(array_shift($response));
+}
 ?>
