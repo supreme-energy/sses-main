@@ -19,7 +19,7 @@ while($db->FetchRow()){
     }
     echo "$name\n";
     if(strpos($name, 'sgta_') !== false ){
-        $db3->DoQuery("select * from dbindex where name='$name'");
+        $db3->DoQuery("select * from dbindex where dbname='$name'");
         $res = $db3->FetchRow();
         print_r($res);
         if($res){
