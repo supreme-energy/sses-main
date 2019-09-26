@@ -11,7 +11,7 @@ $db2 = new dbio("sgta_index");
 echo "delete from dbindex where name='$todelete'";
 $db2->OpenDb();
 while($db->FetchRow()){
-    $name = $db->FetchField("Name");
+    $name = $db->FetchField("datname");
     if(in_array($name, $never_delete) === true){
         continue;
     }
