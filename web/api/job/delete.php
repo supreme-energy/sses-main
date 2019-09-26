@@ -3,12 +3,12 @@ require_once("../../dbio.class.php");
 
 $todelete = isset($_REQUEST['seldbname']) ? $_REQUEST['seldbname'] : '';
 $never_delete = array("sgta_template", "sgta_index", "template0", "template1", "postgres");
-$db=new dbio("sgta_index");
+$db=new dbio("postgres");
 $db->OpenDb();
-//$db->DoQuery("delete from dbindex where name='$todelete'");
-echo "delete from dbindex where name='$todelete'";
-$db->DoQuery('\l');
+$db->DoQuery('SELECT datname FROM pg_database WHERE datistemplate = false;');
 $db2 = new dbio("sgta_index");
+//$db2->DoQuery("delete from dbindex where name='$todelete'");
+echo "delete from dbindex where name='$todelete'";
 $db2->OpenDb();
 while($db->FetchRow()){
     $name = $db->FetchField("Name");
