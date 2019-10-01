@@ -203,6 +203,7 @@ $wellinfo_joined = array(
         "pull_data"           => $pull_data,
         "pull_data_interval"  => $pull_data_interval,
         "draftcolor"          => $draftcolor,
-        "selectedsurveycolor" => $selectedsurveycolor
+        "selectedsurveycolor" => $selectedsurveycolor,
+        "autodipconfig"       => $autodipconfig
 );
 ?>
