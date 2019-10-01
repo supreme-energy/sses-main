@@ -83,6 +83,7 @@ if($db->FetchRow()) {
 	
 	$draftcolor = $db->FetchField("draftcolor");
 	$selectedsurveycolor = $db->FetchField("selectedsurveycolor");
+	$autodipconfig = $db->FetchField("autodipconfig");
 } 
 $db->DoQuery("select * from emailinfo");
 if($db->FetchRow()) {

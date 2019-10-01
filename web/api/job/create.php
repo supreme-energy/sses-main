@@ -28,8 +28,11 @@ else {
     echo json_encode(array("status"=>"error", "message"=>"Failed to update dbindex!"));		   
     exit();
 }
-
 $db->CloseDb();
+$db = new dbio("$newdbname");
+$db->OpenDb();
+$db->DoQuery("update wellinfo set created_at = now(), update_at=now()");
+$db->DoQuery("update appinfo set created_at = now(), update_at=now()");
 header("Location: ./show.php?seldbname=$newdbname");
 exit();
 ?>
