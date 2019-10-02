@@ -52,6 +52,7 @@ $db->CloseDb();
 fclose($infile);
 
 $output = shell_exec("../../../sses_cc -d $seldbname -w");
+exec ("../../../sses_af -d $seldbname");
 // $output = shell_exec("./sses_cc -d $seldbname -w -i ./tmp/wellplan.dat");
 header("Location: ../../wellplan.php?seldbname=$seldbname");
 ?>
