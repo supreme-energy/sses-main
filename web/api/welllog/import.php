@@ -253,5 +253,6 @@ $db->CloseDb();
 exec("../../sses_cc -d $seldbname");
 exec("../../sses_gva -d $seldbname");
 exec("../../sses_cc -d $seldbname -p");
+exec ("../../sses_af -d $seldbname");
 echo json_encode(array("status" => "success", "message" => "log data imported succesfully"));
 ?>
