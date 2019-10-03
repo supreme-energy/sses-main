@@ -92,5 +92,5 @@ exec("../../sses_cc -d $seldbname");
 exec("../../sses_cc -d $seldbname -p");
 exec("../../sses_af -d $seldbname");
 include ("../../readsurveys.inc.php");
-echo json_encode(array_slice(array_reverse ($srvys_joined), 0 , 3));
+echo json_encode($srvys_joined);
 ?>
