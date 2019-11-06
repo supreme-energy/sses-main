@@ -60,21 +60,6 @@ function initializeFirstTimePas($db, $db2){
 }
 
 function addProjection($prev_row, $well_plan_row, $db2){    
-    $db2->DoQuery("select * from addforms");
-    $totid =null;
-    $botid = null;
-    $bot_thickness = 0;
-    $tot_thickness = 0;
-    while($db->FetchRow()){
-        if(trim($db->FetchField('label'))=='TOT'){
-            $tot_thickness = $db->FetchField("thickness");
-            $totid = $db->FetchField('id');
-        }
-        if(trim($db->FetchField('label'))=='BOT'){
-            $bot_thickness = $db->FetchField("thickness");
-            $botid = $db->FetchField('id');
-        }
-    }
     $dmd = $well_plan_row['md'] - $prev_row['md'];
     $dinc = $well_plan_row['inc'] - $prev_row['inc'];
     $dazm = $well_plan_row['azm'] - $prev_row['azm'];
@@ -90,6 +75,6 @@ function addProjection($prev_row, $well_plan_row, $db2){
     $inc = $well_plan_row['inc'];    
     $md = $well_plan_row['md'];
     
-    $db->DoQuery("INSERT INTO projections (method, data, md, inc, azm, dip, fault, tvd, vs, tot, bot)
+    $db2->DoQuery("INSERT INTO projections (method, data, md, inc, azm, dip, fault, tvd, vs, tot, bot)
 		VALUES ('$method','$data','$md','$inc','$azm','$dip','$fault','$tvd','$vs','$tot','$bot');");                
 }
