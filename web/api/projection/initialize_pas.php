@@ -15,7 +15,7 @@ function initializeFirstTimePas($db, $db2){
     while($row = $db->FetchRow()){
         $curwp_md = $db->FetchField('md');
         $curwp_inc = $db->FetchField('inc');
-        $vs = $db->FetchfField('vs');
+        $vs = $db->FetchField('vs');
         if($step == 'pa1'){
             if($curwp_md > $last_depth){
                 addProjection($prev_row, $row, $db2);
