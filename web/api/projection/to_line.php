@@ -96,10 +96,10 @@ md='$md',inc='$inc',azm='$azm',dip='$dip',fault='$fault',tot='$tot',bot='$bot',t
 	}
 }
 
-exec("./sses_gva -d $seldbname");
-exec("./sses_cc -d $seldbname");
-exec("./sses_cc -d $seldbname -p");
-exec("./sses_af -d $seldbname");
+exec("../../sses_gva -d $seldbname");
+exec("../../sses_cc -d $seldbname");
+exec("../../sses_cc -d $seldbname -p");
+exec("../../sses_af -d $seldbname");
 
 echo jsonListProjections();
 ?>
