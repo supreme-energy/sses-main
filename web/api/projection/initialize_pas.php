@@ -1,6 +1,5 @@
 <?php 
-function initializeFirstTimePas(){
-    global $db, $seldbname;
+function initializeFirstTimePas($db, $db2){    
     $bit_depth_query = "select * from surveys order by md asc limit 1";
     $db->DoQuery($bit_depth_query);
     $last_survey_or_bit = $db->FetchRow();
@@ -19,28 +18,28 @@ function initializeFirstTimePas(){
         $vs = $db->FetchfField('vs');
         if($step == 'pa1'){
             if($curwp_md > $last_depth){
-                addProjection($prev_row, $row);
+                addProjection($prev_row, $row, $db2);
                 $pa_count++;
                 $step = 'pa2';
                 $prev_row = $row;
             }
         }else if($step == 'pa2'){
             if ($curwp_inc <= 35 && $curwp_inc >= 25){
-                addProjection($prev_row, $row);
+                addProjection($prev_row, $row, $db2);
                 $pa_count++;
                 $step = 'pa3';
                 $prev_row = $row;
             }            
         }else if($step == 'pa3'){
             if ($curwp_inc <= 65 && $curwp_inc >= 55){
-                addProjection($prev_row, $row);
+                addProjection($prev_row, $row, $db2);
                 $pa_count++;
                 $step = 'pa4';
                 $prev_row = $row;
             }  
         }else if($step == 'pa4'){
             if ($curwp_inc <= 98 && $curwp_inc >= 82){
-                addProjection($prev_row, $row);
+                addProjection($prev_row, $row, $db2);
                 $pa_count++;
                 $step = 'pa5';
                 $last_vs = $vs;
@@ -48,7 +47,7 @@ function initializeFirstTimePas(){
             }  
         } else {
             if(($curwp_md - $prev_row['md']) > 200){
-                addProjection($prev_row, $row);
+                addProjection($prev_row, $row, $db2);
                 $prev_row = $row;
                 $last_vs = $vs;
                 $pa_count++;
@@ -60,8 +59,7 @@ function initializeFirstTimePas(){
     }
 }
 
-function addProjection($prev_row, $well_plan_row){
-    global $db2;
+function addProjection($prev_row, $well_plan_row, $db2){    
     $db2->DoQuery("select * from addforms");
     $totid =null;
     $botid = null;

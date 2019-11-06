@@ -256,7 +256,7 @@ if($initialize_pas){
     include_once("../projection/initialize_pas.php");
     $db2=new dbio($seldbname);
     $db2->OpenDb();    
-    initializeFirstTimePas();
+    initializeFirstTimePas($db, $db2);
     $db2->CloseDb();
 }
 $db->CloseDb();
