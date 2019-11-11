@@ -21,6 +21,10 @@
            'pca',
            'pcd'
          ));
+ $proj_dip_query = "select projdip from wellinfo limit 1";
+ $db->DoQuery($proj_dip_query);
+ $db->FetchRow();
+ $proj_dip = $db->FetchField("projdip");
  if(count($errors)<=0){
      $db->DoQuery("select * from addforms");
      $totid =null;
@@ -39,6 +43,27 @@
      }
     extract($request_fields);
     $data="0,0,0";
+    $dmd=$md-$pmd;
+    $dinc=$inc-$pinc;
+    $dazm=$azm-$pazm;
+    $dtvd=$tvd-$ptvd;
+    if($inc >= 83 || $inc <= 97){
+        $wellplan_query = "select * from wellplan where md >= $pmd";
+        $db->DoQuery($wellplan_query);
+        $best_row = null;
+        $last_dif = 1000000;
+        while($cur_row = $db->FetchRow()){
+            $cur_diff = abs($cur_row['md']- $md);
+            if($cur_diff < $last_diff){
+                $last_diff = $cur_diff;
+                $best_row = $cur_row;
+            }
+        }
+        
+        $dip = $best_row['inc']- 90;
+    } else {
+        $dip = $proj_dip;
+    }
     if($method==0) $data="$dmd,0,0";
     else if($method>=3 && $method<=5) $data="$dmd,$dinc,$dazm";
     else if($method==6) $data="$tvd,$vs,$tpos";
