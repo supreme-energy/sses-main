@@ -41,7 +41,9 @@
              $botid = $db->FetchField('id');
          }
      }
-     $wellplan_query = "select * from wellplan where vs >= $vs-200";
+     $vs_start = $vs - 200;
+     $vs_end   = $vs + 100;
+     $wellplan_query = "select * from wellplan where vs >= $vs_start and vs <= $vs_end";
      $db->DoQuery($wellplan_query);
      $best_row = null;
      $last_dif = 1000000;
@@ -53,9 +55,11 @@
          }
      }
     extract($request_fields);
-    $inc = $best_row['inc'];
-    $azm = $best_row['azm'];
-    $md  = $best_row['md'];
+    if($best_row){
+        $inc = $best_row['inc'];
+        $azm = $best_row['azm'];
+        $md  = $best_row['md'];
+    }
     $data="0,0,0";
     $dmd=$md-$pmd;
     $dinc=$inc-$pinc;
