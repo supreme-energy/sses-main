@@ -44,10 +44,12 @@
      $vs_start = $vs - 200;
      $vs_end   = $vs + 100;
      $wellplan_query = "select * from wellplan where vs >= $vs_start and vs <= $vs_end";
+     echo $wellplan_query;
      $db->DoQuery($wellplan_query);
      $best_row = null;
      $last_dif = 1000000;
      while($cur_row = $db->FetchRow()){
+         print_r($cur_row);
          $cur_diff = abs($cur_row['vs']- $vs);
          if($cur_diff < $last_diff){
              $last_diff = $cur_diff;
