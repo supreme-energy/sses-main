@@ -46,7 +46,7 @@
      $best_row = null;
      $last_dif = 1000000;
      while($cur_row = $db->FetchRow()){
-         $cur_diff = abs($cur_row['md']- $md);
+         $cur_diff = abs($cur_row['vs']- $vs);
          if($cur_diff < $last_diff){
              $last_diff = $cur_diff;
              $best_row = $cur_row;
