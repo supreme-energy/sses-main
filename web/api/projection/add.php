@@ -69,7 +69,7 @@
     $dazm=$azm-$pazm;
     $dtvd=$tvd-$ptvd;
     
-    if($inc >= 83 || $inc <= 97){              
+    if($inc >= 83 && $inc <= 97){              
         $dip = $best_row['inc']- 90;
     } else {
         $dip = $proj_dip;
