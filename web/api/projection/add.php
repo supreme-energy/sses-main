@@ -49,20 +49,14 @@
     $best_row = null;
     $last_diff = 1000000;
     while($cur_row = $db->FetchRow()){
-        echo $cur_row['vs']."\n";
-        echo $vs."\n";
-        echo "+++++++++\n";
         $cur_diff = abs($cur_row['vs']- $vs);
-        echo $cur_diff. "\n";
-        echo $last_diff. "\n";
-        echo "------------\n";
         if($cur_diff < $last_diff){
             $last_diff = $cur_diff;
             $best_row = $cur_row;
         }
     }
     if($best_row){
-        print_r($best_row);
+
         $inc = $best_row['inc'];
         $azm = $best_row['azm'];
         $md  = $best_row['md'];
