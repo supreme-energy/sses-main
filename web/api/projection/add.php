@@ -41,25 +41,28 @@
              $botid = $db->FetchField('id');
          }
      }
+     $wellplan_query = "select * from wellplan where vs >= $vs-200";
+     $db->DoQuery($wellplan_query);
+     $best_row = null;
+     $last_dif = 1000000;
+     while($cur_row = $db->FetchRow()){
+         $cur_diff = abs($cur_row['md']- $md);
+         if($cur_diff < $last_diff){
+             $last_diff = $cur_diff;
+             $best_row = $cur_row;
+         }
+     }
     extract($request_fields);
+    $inc = $best_row['inc'];
+    $azm = $best_row['azm'];
+    $md  = $best_row['md'];
     $data="0,0,0";
     $dmd=$md-$pmd;
     $dinc=$inc-$pinc;
     $dazm=$azm-$pazm;
     $dtvd=$tvd-$ptvd;
-    if($inc >= 83 || $inc <= 97){
-        $wellplan_query = "select * from wellplan where md >= $pmd";
-        $db->DoQuery($wellplan_query);
-        $best_row = null;
-        $last_dif = 1000000;
-        while($cur_row = $db->FetchRow()){
-            $cur_diff = abs($cur_row['md']- $md);
-            if($cur_diff < $last_diff){
-                $last_diff = $cur_diff;
-                $best_row = $cur_row;
-            }
-        }
-        
+    
+    if($inc >= 83 || $inc <= 97){              
         $dip = $best_row['inc']- 90;
     } else {
         $dip = $proj_dip;
