@@ -4,7 +4,10 @@ function initializeFirstTimePas($db, $db2){
     $db->DoQuery($bit_depth_query);
     $last_survey_or_bit = $db->FetchRow();
     $last_depth = $db->FetchField('md');
-    
+    $proj_dip_query = "select projdip from wellinfo limit 1";
+    $db->DoQuery($proj_dip_query);
+    $db->FetchRow();
+    $proj_dip = $db->FetchField("projdip");
     $well_plan_query = "select * from wellplan order by md ASC";
     $db->DoQuery($well_plan_query);
     $step = 'pa1';
@@ -18,28 +21,28 @@ function initializeFirstTimePas($db, $db2){
         $vs = $db->FetchField('vs');
         if($step == 'pa1'){
             if($curwp_md > $last_depth){
-                addProjection($prev_row, $row, $db2);
+                addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
                 $step = 'pa2';
                 $prev_row = $row;
             }
         }else if($step == 'pa2'){
             if ($curwp_inc <= 35 && $curwp_inc >= 25){
-                addProjection($prev_row, $row, $db2);
+                addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
                 $step = 'pa3';
                 $prev_row = $row;
             }            
         }else if($step == 'pa3'){
             if ($curwp_inc <= 65 && $curwp_inc >= 55){
-                addProjection($prev_row, $row, $db2);
+                addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
                 $step = 'pa4';
                 $prev_row = $row;
             }  
         }else if($step == 'pa4'){
             if ($curwp_inc <= 98 && $curwp_inc >= 82){
-                addProjection($prev_row, $row, $db2);
+                addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
                 $step = 'pa5';
                 $last_vs = $vs;
@@ -47,7 +50,8 @@ function initializeFirstTimePas($db, $db2){
             }  
         } else {
             if(($curwp_md - $prev_row['md']) > 200){
-                addProjection($prev_row, $row, $db2);
+                $dip = $curwp_inc - 90;
+                addProjection($prev_row, $row, $db2, $dip);
                 $prev_row = $row;
                 $last_vs = $vs;
                 $pa_count++;
@@ -59,7 +63,7 @@ function initializeFirstTimePas($db, $db2){
     }
 }
 
-function addProjection($prev_row, $well_plan_row, $db2){    
+function addProjection($prev_row, $well_plan_row, $db2 , $dip){    
     $dmd = $well_plan_row['md'] - $prev_row['md'];
     $dinc = $well_plan_row['inc'] - $prev_row['inc'];
     $dazm = $well_plan_row['azm'] - $prev_row['azm'];
@@ -70,7 +74,6 @@ function addProjection($prev_row, $well_plan_row, $db2){
     $vs = $well_plan_row['vs'];
     $tvd = $well_plan_row['tvd'];
     $fault = 0;
-    $dip = 0;
     $azm = $well_plan_row['azm'];
     $inc = $well_plan_row['inc'];    
     $md = $well_plan_row['md'];
