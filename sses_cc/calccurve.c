@@ -959,7 +959,7 @@ int main (int argc, char *argv[])
 					if(strcmp(pterm_method,cmprto)!=0){
 						csvy.method = 6;
 					}
-					if(csvy.method==6 || csvy.method==7 || csvy.method==8 || ) {
+					if(csvy.method==6 || csvy.method==7 || csvy.method==8 ) {
 						if(csvy.method==8) {
 							tok=strtok(csvy.data, ","); if(tok!=NULL) t_csvy.vs=atof(tok);
 							tok=strtok(NULL, ","); if(tok!=NULL) t_csvy.tpos=atof(tok);
