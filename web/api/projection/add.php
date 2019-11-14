@@ -56,7 +56,6 @@
         }
     }
     if($best_row){
-        print_r($best_row);
         $inc = $best_row['inc'];
         $azm = $best_row['azm'];
         $md  = $best_row['md'];
