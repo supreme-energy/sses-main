@@ -10,13 +10,14 @@ $query = "select * from projections where id = ". $id;
 $db->DoQuery($query);
 $db->FetchRow();
 $data = $db->FetchField('data');
+
 $pos = null;
 $method_change = false;
 foreach($field_names as $field_name){	
     if(isset($_REQUEST[$field_name])){
 		$value = $_REQUEST[$field_name];
 		if($field_name != 'pos'){
-		  array_push($updates_array, "$field_name = '$value'");
+		  array_push($updates_array, "$field_name = '$value'");		  
 		}
 		if($field_name == 'method'){
 		    $method_change = true;
@@ -41,7 +42,7 @@ if($pos===null){
             $pos = 0;
         }
     } else {
-        
+        $pos = $tot - $tvd;
     }
 } 
 $query = "select * from projections where id < ". $id. "order by id desc limit 1";

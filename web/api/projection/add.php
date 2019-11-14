@@ -68,14 +68,17 @@
     $dinc=$inc-$pinc;
     $dazm=$azm-$pazm;
     $dtvd=$tvd-$ptvd;
-    $tpos = $tot - $tvd;
     
     if($inc >= 83 && $inc <= 97){              
         $dip = $best_row['inc']- 90;
     } else {
         $dip = $proj_dip;
     }
-
+    if($method==0) $data="$dmd,0,0";
+    else if($method>=3 && $method<=5) $data="$dmd,$dinc,$dazm";
+    else if($method==6) $data="$tvd,$vs,$tpos";
+    else if($method==7) $data="$tot,$vs,$tpos";
+    else if($method==8) $data="$vs,$tpos,$dip,$fault";
     $db->DoQuery("INSERT INTO projections (method, data, md, inc, azm, dip, fault, tvd, vs, tot, bot)
 		VALUES ('$method','$data','$md','$inc','$azm','$dip','$fault','$tvd','$vs','$tot','$bot');");
     $db->DoQuery("SELECT * FROM projections order by id desc limit 1");
@@ -84,8 +87,6 @@
     $svyid = $db->FetchField("id");
     $bot = $db->FetchField("tot")+$bot_thickness;
     $tot = $db->FetchField("tot")+$tot_thickness;
-
-
     $response = array("status" => "success", "projection"=>
         array(
             'id' => $db->FetchField("id") ,
