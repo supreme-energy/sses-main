@@ -40,7 +40,7 @@ if($filename==""){
     exit;
 }
 if($pterm_method == 'bp'){
-    ptermChange($value, $db);
+    ptermChange($pterm_method, $db);
 }
 // find the last depth of data already imported
 $db->DoQuery("SELECT endmd,scalebias,scalefactor FROM welllogs ORDER BY endmd DESC LIMIT 1;");

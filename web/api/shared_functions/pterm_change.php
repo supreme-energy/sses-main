@@ -16,7 +16,7 @@ function ptermChange($pterm_val, $db){
             $data="$tvd,$vs,$tpos";
             array_push($queries, "update projections set method=6, data='$data' where id=$id");
         }
-        foreach($queries as $query){
+        foreach($queries as $query){            
             $db->DoQuery($query);
         }
     }
