@@ -42,7 +42,7 @@ if($pos===null){
             $pos = 0;
         }
     } else {
-        $pos = $tot - $tvd;
+        $pos = $tvd - $tot;
     }
 } 
 $query = "select * from projections where id < ". $id. "order by id desc limit 1";
