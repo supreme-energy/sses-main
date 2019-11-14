@@ -21,6 +21,10 @@ if($seldbname){
 	            foreach($value as $field => $value){
 	                $query = "update $table set $field = '$value'";	                
 	                $result = $db->DoQuery($query);
+	                if($table == 'wellinfo' && $field == 'tot'){
+	                    $query = "update controllogs set tot = '$value'";
+	                    $result = $db->DoQuery($query);
+	                }
 	            }
 	        }
 	    }
