@@ -3,7 +3,8 @@
 // if (!isset($submit)) { exit; }
 require 'HTTP/Upload.php';
 include ("../api_header.php");
-
+include("../shared_functions/pterm_change.php");
+include("../../readwellinfo.inc.php");
 function StripExtraSpace($s) {
 	$newstr="";
 	$tok=strtok($s, " ,\t");
@@ -38,7 +39,9 @@ if($filename==""){
     echo json_encode(array("status" => "error", "message" => "filename required."));
     exit;
 }
-
+if($pterm_method == 'bp'){
+    ptermChange($value, $db);
+}
 // find the last depth of data already imported
 $db->DoQuery("SELECT endmd,scalebias,scalefactor FROM welllogs ORDER BY endmd DESC LIMIT 1;");
 $lastbias=0;
