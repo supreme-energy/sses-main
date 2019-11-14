@@ -56,7 +56,7 @@
         }
     }
     if($best_row){
-
+        print_r($best_row);
         $inc = $best_row['inc'];
         $azm = $best_row['azm'];
         $md  = $best_row['md'];
@@ -81,8 +81,12 @@
     else if($method==8) $data="$vs,$tpos,$dip,$fault";
     $db->DoQuery("INSERT INTO projections (method, data, md, inc, azm, dip, fault, tvd, vs, tot, bot)
 		VALUES ('$method','$data','$md','$inc','$azm','$dip','$fault','$tvd','$vs','$tot','$bot');");
-    $db->DoQuery("SELECT * FROM projections order by id desc limit 1");
+    exec("../../sses_gva -d $seldbname ");
+    exec("../../sses_cc -d $seldbname");
+    exec("../../sses_cc -d $seldbname -p");
     exec ("../../sses_af -d $seldbname");    
+    
+    $db->DoQuery("SELECT * FROM projections order by id desc limit 1");
     $db->FetchRow();
     $svyid = $db->FetchField("id");
     $bot = $db->FetchField("tot")+$bot_thickness;
@@ -113,8 +117,5 @@
  } else {
      $response = array("status"=>"failed", "errors" => $errors);
  }
- 
- exec("../../sses_cc -d $seldbname -p");
- exec ("../../sses_af -d $seldbname");
  echo json_encode($response);
  ?>
