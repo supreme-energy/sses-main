@@ -5,7 +5,7 @@ function ptermChange($pterm_val, $db){
         $db->DoQuery($query);
         $queries = array();
         while($db->FetchRow()){
-            if($db->FetchField('method')!=6){
+            if($db->FetchField('method')==6){
                 continue;
             }
             $id = $db->FetchField('id');
