@@ -113,5 +113,8 @@
  } else {
      $response = array("status"=>"failed", "errors" => $errors);
  }
+ 
+ exec("../../sses_cc -d $seldbname -p");
+ exec ("../../sses_af -d $seldbname");
  echo json_encode($response);
  ?>
