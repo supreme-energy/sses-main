@@ -11,11 +11,15 @@ $db->DoQuery($query);
 $db->FetchRow();
 $data = $db->FetchField('data');
 $pos = null;
+$method_change = false;
 foreach($field_names as $field_name){	
     if(isset($_REQUEST[$field_name])){
 		$value = $_REQUEST[$field_name];
 		if($field_name != 'pos'){
 		  array_push($updates_array, "$field_name = '$value'");
+		}
+		if($field_name == 'method'){
+		    $method_change = true;
 		}
 		$$field_name = $value;
     } else {
@@ -25,15 +29,19 @@ foreach($field_names as $field_name){
     }
 }
 if($pos===null){
-    if ($method == 6 || $method == 7){ 
-        $dexpl = explode(',',$data);
-        $pos = $dexpl[2];
-    } else if($method==8){
-        $dexpl = explode(',',$data);
-        $pos = $dexpl[1];
-    }
-    else { 
-        $pos = 0;
+    if(!$method_change){
+        if ($method == 6 || $method == 7){ 
+            $dexpl = explode(',',$data);
+            $pos = $dexpl[2];
+        } else if($method==8){
+            $dexpl = explode(',',$data);
+            $pos = $dexpl[1];
+        }
+        else { 
+            $pos = 0;
+        }
+    } else {
+        
     }
 } 
 $query = "select * from projections where id < ". $id. "order by id desc limit 1";
