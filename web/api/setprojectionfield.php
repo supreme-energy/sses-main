@@ -13,6 +13,7 @@ $data = $db->FetchField('data');
 
 $pos = null;
 $method_change = false;
+$inc_or_azm_change = false;
 foreach($field_names as $field_name){	
     if(isset($_REQUEST[$field_name])){
 		$value = $_REQUEST[$field_name];
@@ -21,6 +22,9 @@ foreach($field_names as $field_name){
 		}
 		if($field_name == 'method'){
 		    $method_change = true;
+		}
+		if($field_name == 'inc' || $field_name == 'azm'){
+		    $inc_or_azm_change = true;
 		}
 		$$field_name = $value;
     } else {
@@ -84,7 +88,32 @@ else $data="0,0,0";
 
 if(count($updates_array) > 0 ){    
 	$query = "update projections set ". implode($updates_array, ',') . ", data='".$data."' where id=$id";
-	$db->DoQuery($query);
+	$db->DoQuery($query);	
+}
+
+if($inc_or_azm_change){
+    $query = "select * from projections where id > $id";
+    $db->DoQuery($query);
+    $pcazm = $azm;
+    $pcinc = $inc;
+    $pcmd  = $md;
+    $db2=new dbio($seldbname);
+    $db2->OpenDb();
+    while($row = $db->FetchRow()){
+        $cid = $db->FetchField('id');
+        $cazm = $db->FetchField('azm');
+        $cinc = $db->FetchField('inc');
+        $md   = $db->FetchField('md');
+        $dmd=$cmd-$pcmd;
+        $dinc=$cinc-$pcinc;
+        $dazm=$cazm-$pcazm;
+        $data="$dmd,$dinc,$dazm";
+        $query = "update projections set data='$data', method=3 where id= $cid";
+        $db2->DoQuery($query);
+        $pcazm = $cazm;
+        $pcinc = $cinc;
+        $pcmd  = $cmd;
+    }
 }
 if($autoposdec>0){
     $db2=new dbio($seldbname);
