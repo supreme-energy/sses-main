@@ -26,6 +26,8 @@ foreach($field_names as $field_name){
     } else {
         if($field_name != 'pos'){
             $$field_name = $db->FetchField($field_name);
+            $value = $$field_name;
+            array_push($updates_array, "$field_name = '$value'");	
         } 
     }
 }
@@ -80,7 +82,7 @@ else if($method==7) $data="$tot,$vs,$pos";
 else if($method==8) $data="$vs,$pos,$dip,$fault";
 else $data="0,0,0";
 
-if(count($updates_array) > 0 ){
+if(count($updates_array) > 0 ){    
 	$query = "update projections set ". implode($updates_array, ',') . ", data='".$data."' where id=$id";
 	$db->DoQuery($query);
 }
