@@ -23,7 +23,7 @@ foreach($field_names as $field_name){
 		if($field_name == 'method'){
 		    $method_change = true;
 		}
-		if($field_name == 'inc' || $field_name == 'azm'){
+		if($field_name == 'inc' || $field_name == 'azm' || $field_name == 'md'){
 		    $inc_or_azm_change = true;
 		}
 		$$field_name = $value;
