@@ -1,7 +1,7 @@
  <?php 
  include("../api_header.php");
  $id = $_REQUEST['id'];
- $query = "select * from surverys where plan=0 and id = " .$id;
+ $query = "select * from surveys where plan=0 and id = " .$id;
  $db->DoQuery($query);
  $row = $db->FetchRow();
  if($row){
