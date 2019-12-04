@@ -32,7 +32,7 @@ if($seldbname){
 	        if(in_array($key, $allowed_tables)){
 	            $table = mapToDbTable($key);
 	            foreach($value as $field => $value){
-	                $field_adjusted = mapToDbTableField9($table, $field);
+	                $field_adjusted = mapToDbTableField($table, $field);
 	                $query = "update $table set $field_adjusted = '$value'";	                
 	                $result = $db->DoQuery($query);
 	                if($table == 'wellinfo' && $field == 'tot'){
@@ -49,7 +49,7 @@ if($seldbname){
     		$table = mapToDbTable($table);
     		$field = $_REQUEST['field'];
     		$value = $_REQUEST['value'];
-    		$field_adjusted = mapToDbTableField9($table, $field);
+    		$field_adjusted = mapToDbTableField($table, $field);
     		$query = "update $table set $field_adjusted='$value';";
     		$result = $db->DoQuery($query);		
     		$response = array("status"=>"success", "message" => "operation successful");
