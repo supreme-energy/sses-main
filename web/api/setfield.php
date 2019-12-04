@@ -9,6 +9,18 @@ function mapToDbTable($tablein){
 	return $tablein;
 }
 
+function mapToDbTableField($tablein, $fieldname){
+    if($tablein == 'witsml_details'){
+        if($fieldname == 'welluid'){
+            return 'wellid';
+        }
+        if($fieldname == 'boreuid'){
+            return 'boreid';
+        }
+    }
+    return $fieldname;
+}
+
 $response = array();
 if($seldbname){
 	$allowed_tables=array("wellinfo","appinfo", "autorc", "emailinfo", "witsml_details");
@@ -20,7 +32,8 @@ if($seldbname){
 	        if(in_array($key, $allowed_tables)){
 	            $table = mapToDbTable($key);
 	            foreach($value as $field => $value){
-	                $query = "update $table set $field = '$value'";	                
+	                $field_adjusted = mapToDbTableField9($table, $field);
+	                $query = "update $table set $field_adjusted = '$value'";	                
 	                $result = $db->DoQuery($query);
 	                if($table == 'wellinfo' && $field == 'tot'){
 	                    $query = "update controllogs set tot = '$value'";
@@ -36,7 +49,8 @@ if($seldbname){
     		$table = mapToDbTable($table);
     		$field = $_REQUEST['field'];
     		$value = $_REQUEST['value'];
-    		$query = "update $table set $field='$value';";
+    		$field_adjusted = mapToDbTableField9($table, $field);
+    		$query = "update $table set $field_adjusted='$value';";
     		$result = $db->DoQuery($query);		
     		$response = array("status"=>"success", "message" => "operation successful");
     	} else {

@@ -106,6 +106,9 @@ if($db->FetchRow()){
 	$witsml_username =$db->FetchField("username");
 	$witsml_password =$db->FetchField("password");
 	$witsml_active =$db->FetchField("send_data");
+	$witsml_welluid = $db->FetchField("wellid");
+	$witsml_boreuid = $db->FetchField("boreid");
+	$witsml_logid = $db->FetchField("logid");
 } else {
 	$witsml_id=-1;
 }
@@ -114,7 +117,10 @@ $witsml_joined = array(
 		"endpoint" => $witsml_endpoint , 
 		"username" => $witsml_username,
 		"password" => $witsml_password,
-		"send_data"=> $witsml_active
+		"send_data"=> $witsml_active,
+        "welluid"  => $witsml_welluid,
+        "boreuid"  => $witsml_boreuid,
+        "logid"    => $witsml_logid
 );
 
 $db->DoQuery("select * from rigminder_connection");
