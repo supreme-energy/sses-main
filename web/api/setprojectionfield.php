@@ -91,7 +91,7 @@ if(count($updates_array) > 0 ){
 	$db->DoQuery($query);	
 }
 
-if($inc_or_azm_change){
+/*if($inc_or_azm_change){
     $query = "select * from projections where id > $id";
     $db->DoQuery($query);
     $pcazm = $azm;
@@ -114,7 +114,7 @@ if($inc_or_azm_change){
         $pcinc = $cinc;
         $pcmd  = $cmd;
     }
-}
+}*/
 if($autoposdec>0){
     $db2=new dbio($seldbname);
     $db2->OpenDb();
