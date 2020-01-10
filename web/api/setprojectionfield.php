@@ -10,7 +10,6 @@ $query = "select * from projections where id = ". $id;
 $db->DoQuery($query);
 $db->FetchRow();
 $data = $db->FetchField('data');
-
 $pos = null;
 $method_change = false;
 $inc_or_azm_change = false;
@@ -21,7 +20,7 @@ foreach($field_names as $field_name){
 		  array_push($updates_array, "$field_name = '$value'");		  
 		}
 		if($field_name == 'method'){
-		    $method_change = true;
+		    $method_change = true;		    
 		}
 		if($field_name == 'inc' || $field_name == 'azm' || $field_name == 'md'){
 		    $inc_or_azm_change = true;
