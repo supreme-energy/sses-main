@@ -262,7 +262,7 @@ if($initialize_pas){
     initializeFirstTimePas($db, $db2);
     $db2->CloseDb();
 }
-$db->CloseDb();
+
 
 exec("../../sses_cc -d $seldbname");
 exec("../../sses_gva -d $seldbname");
@@ -271,6 +271,7 @@ exec ("../../sses_af -d $seldbname");
 if($pterm_method == 'bp'){
     ptermRevert($db);
 }
+$db->CloseDb();
 exec("../../sses_cc -d $seldbname");
 exec("../../sses_gva -d $seldbname");
 exec("../../sses_cc -d $seldbname -p");
