@@ -124,7 +124,7 @@ if($autoposdec>0 && $method_change){
     $sql = "select (tot-tvd) as bprjtops from projections where md < $md order by md desc limit 1";
     $db->DoQuery($sql);
     $bprjtpos_r=$db->FetchRow();
-    if(!$bprjtpos){
+    if(!$bprjtpos_r){
         $sql = "select (tot-tvd) as bprjtops from surverys where plan = 1";
         $db->DoQuery($sql);
         $bprjtpos_r=$db->FetchRow();
