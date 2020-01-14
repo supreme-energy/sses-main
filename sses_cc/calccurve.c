@@ -858,7 +858,7 @@ int main (int argc, char *argv[])
 				// sprintf(query, "UPDATE projections SET tot=%f,bot=%f WHERE id=%ld;", csvy.tot, csvy.bot, csvy.id);
 				sprintf(query, "UPDATE surveys SET tot=%f,bot=%f,dip=%f WHERE md=%lf;",
 					csvy.tot, csvy.bot, csvy.dip, csvy.depth);
-				// printf("query:%s\n", query);
+				printf("query:%s\n", query);
 				DoQuery(res_set2, query);
 				// pre-calculate the deltas for dogleg projections
 				deltamd=csvy.depth-psvy.depth;
