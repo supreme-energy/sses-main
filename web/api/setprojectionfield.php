@@ -125,9 +125,17 @@ if($autoposdec>0 && $method_change){
     $db->DoQuery($sql);
     $bprjtpos_r=$db->FetchRow();
     if(!$bprjtpos_r){
-        $sql = "select (tot-tvd) as bprjtops from surverys where plan = 1";
+        $sql = "select (tot-tvd) as bprjtops, tot, tvd from surverys where plan = 1";
         $db->DoQuery($sql);
         $bprjtpos_r=$db->FetchRow();
+        if($bprjtpos_r['tot']== 0 ){
+            $query = "select * from surveys order by md desc limit 2";
+            $db->DoQuery($query);
+            $db->FetchRow();
+            $bitprj = $db->FetchRow();
+            $psurvy = $db->FetchRow();
+            $bprjtpos_r['bprjtops'] = $psurvy['tot']+(-tan($bitprj['dip']/57.29578)*($bitprj['vs']-$psurvy['vs']));
+        }
     }
     $sval = $bprjtpos_r['bprjtops'];
     if($sval>0){
