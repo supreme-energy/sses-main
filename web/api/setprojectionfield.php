@@ -47,7 +47,7 @@ if($pos===null){
             $pos = 0;
         }
     } else {
-        $pos = $tvd - $tot;
+        $pos = $tvd - $tot;        
     }
 } 
 $query = "select * from projections where id < ". $id. "order by id desc limit 1";
@@ -118,37 +118,17 @@ exec("../sses_gva -d $seldbname ");
 exec("../sses_cc -d $seldbname");
 exec("../sses_cc -d $seldbname -p");
 exec ("../sses_af -d $seldbname");
-if($autoposdec>0 && $method_change){
+/* if($autoposdec>0 && $method_change){
     $db2=new dbio($seldbname);
     $db2->OpenDb();
-    $sql = "select (tot-tvd) as bprjtops from projections where md < $md order by md desc limit 1";
+    $sql = "select * from surveys where plan = 1";    
     $db->DoQuery($sql);
-    $bprjtpos_r=$db->FetchRow();
-    if(!$bprjtpos_r){
-        $sql = "select (tot-tvd) as bprjtops, tot, tvd from surverys where plan = 1";
-        $db->DoQuery($sql);
-        $bprjtpos_r=$db->FetchRow();
-        if($bprjtpos_r['tot']== 0 ){
-            $query = "select * from surveys order by md desc limit 2";
-            $db->DoQuery($query);
-            $db->FetchRow();
-            $bitprj = $db->FetchRow();
-            $psurvy = $db->FetchRow();
-            $bprjtpos_r['bprjtops'] = $psurvy['tot']+(-tan($bitprj['dip']/57.29578)*($bitprj['vs']-$psurvy['vs']));
-        }
-    }
-    $sval = $bprjtpos_r['bprjtops'];
-    if($sval>0){
-        $svalsign='positive';
-    } else{
-        $svalsign='negative';
-    }
-    $decval= $autoposdec;
-    if($svalsign=='negative') $decval=$decval*-1;
+    $prev_proj = $db->FetchRow();
     $sql = "select * from projections order by md";
     $db->DoQuery($sql);
+    
     while($r1 = $db->FetchRow()){
-        $sval = $sval - $decval;
+        $pos = $prev_proj['tvd']-$prev_proj['tot'];
         if($db->FetchField('method')==8){
             $rowid = $db->FetchField('id');
             $data = $db->FetchField('data');
@@ -170,6 +150,6 @@ if($autoposdec>0 && $method_change){
     exec("../sses_cc -d $seldbname -p");
     exec ("../sses_af -d $seldbname");
 }
-
+ */
 echo json_encode(array("status" => "Success", "message" => "operation completed"));
 ?>

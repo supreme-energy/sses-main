@@ -34,7 +34,7 @@ $db=new dbio($seldbname);
 $db->OpenDb();
 include("readwellinfo.inc.php");
 include("readappinfo.inc.php");
-if($autoposdec>0){
+/* if($autoposdec>0){
 	$db2=new dbio($seldbname);
 	$db2->OpenDb();
 	$sql = "select (tot-tvd) as bprjtops from surveys where plan = 1;";
@@ -68,7 +68,7 @@ if($autoposdec>0){
 		}
 	}
 	$db2->CloseDb();
-}
+} */
 $jsurvs = '';
 if($sgta_off){
 	$jsurvs= '  --justsurveys';
