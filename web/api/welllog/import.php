@@ -259,8 +259,12 @@ if($initialize_pas){
     include_once("../projection/initialize_pas.php");
     $db2=new dbio($seldbname);
     $db2->OpenDb();    
-    initializeFirstTimePas($db, $db2);
-    $db2->CloseDb();
+    initializeFirstTimePas($db, $db2);       
+    exec("../../sses_cc -d $seldbname");
+    exec("../../sses_gva -d $seldbname");
+    exec("../../sses_cc -d $seldbname -p");
+    exec ("../../sses_af -d $seldbname");    
+    reMethodProjections($db, $db2);
 }
 
 
@@ -270,11 +274,12 @@ exec("../../sses_cc -d $seldbname -p");
 exec ("../../sses_af -d $seldbname");
 if($pterm_method == 'bp'){
     ptermRevert($db);
+    exec("../../sses_cc -d $seldbname");
+    exec("../../sses_gva -d $seldbname");
+    exec("../../sses_cc -d $seldbname -p");
+    exec ("../../sses_af -d $seldbname");
 }
 $db->CloseDb();
-exec("../../sses_cc -d $seldbname");
-exec("../../sses_gva -d $seldbname");
-exec("../../sses_cc -d $seldbname -p");
-exec ("../../sses_af -d $seldbname");
+
 echo json_encode(array("status" => "success", "message" => "log data imported succesfully"));
 ?>

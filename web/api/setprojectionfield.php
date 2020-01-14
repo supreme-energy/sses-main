@@ -117,9 +117,14 @@ if(count($updates_array) > 0 ){
 if($autoposdec>0){
     $db2=new dbio($seldbname);
     $db2->OpenDb();
-    $sql = "select (tot-tvd) as bprjtops from surveys where plan = 1;";
+    $sql = "select (tot-tvd) as bprjtops from projections where md < $md order by md desc limit 1";
     $db->DoQuery($sql);
     $bprjtpos_r=$db->FetchRow();
+    if(!$bprjpos){
+        $sql = "select (tot-tvd) as bprjtops from surverys where plan = 1";
+        $db->DoQuery($sql);
+        $bprjtpos_r=$db->FetchRow();
+    }
     $sval = $bprjtpos_r['bprjtops'];
     if($sval>0){
         $svalsign='positive';

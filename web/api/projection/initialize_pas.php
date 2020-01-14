@@ -37,9 +37,16 @@ function initializeFirstTimePas($db, $db2){
             if ($curwp_inc <= 65 && $curwp_inc >= 55){
                 addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
-                $step = 'pa4';
+                $step = 'pa3.5';
                 $prev_row = $row;
             }  
+        }else if($step == 'pa3.5'){
+            if ($curwp_inc <= 81 && $curwp_inc >= 66 ){
+                addProjection($prev_row, $row, $db2, $proj_dip);
+                $pa_count++;
+                $step = 'pa4';
+                $prev_row = $row;
+            }
         }else if($step == 'pa4'){
             if ($curwp_inc <= 98 && $curwp_inc >= 82){
                 addProjection($prev_row, $row, $db2, $proj_dip);
@@ -63,6 +70,47 @@ function initializeFirstTimePas($db, $db2){
     }
 }
 
+function reMethodProjections($db, $db2){
+    $query = "select (tot-tvd) as bprjtops from projections where inc < 70 order by md desc limit 1";
+    $db->DoQuery($query);
+    $pl_proj = $db->FetchRow();
+    $query = "select count(tvd) as cnt,(max(tvd) - min(tot)) as total_diff  from projections where inc > 70";
+    $db->DoQuery($query);
+    $ap_data_row = $db->FetchRow();
+    $posi = $pl_proj['bprjtops'];
+    if($row1){
+        $autopos_dec = ceil(floatval($posi)/floatval($ap_data_row['cnt']));
+    } else {
+        $autopos_dec = 5;
+    }
+    $query = "select * from projections where inc > 70";
+    $db->DoQuery($query);
+    while($row = $db->FetchRow()){
+        if(floatval($posi) < 0){
+            $pos = floatval($posi) + $autopos_dec;
+            if($pos > 0){
+                $pos = 0;
+            }
+        } else {
+            $pos = floatval($posi) - $autopos_dec;
+            if($pos < 0 ){
+                $pos = 0;
+            }
+        }
+        
+        $posi = $pos;
+        $rowid = $row['id'];
+        $vs = $row['vs'];        
+        $dip = $row['dip'];
+        $fault = $row['fault'];
+        $data="$vs,$pos,$dip,$fault";
+        $method = 8;
+        $sql = "update projections set data='$data', method=$method where id=$rowid";
+        $db2->DoQuery($sql);
+    }
+    $sql = "update wellinfo set autoposdec = $autopos_dec";
+    $db->DoQuery($sql);
+}
 function addProjection($prev_row, $well_plan_row, $db2 , $dip){    
     $dmd = $well_plan_row['md'] - $prev_row['md'];
     $dinc = $well_plan_row['inc'] - $prev_row['inc'];
