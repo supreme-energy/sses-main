@@ -114,7 +114,11 @@ if(count($updates_array) > 0 ){
         $pcmd  = $cmd;
     }
 }*/
-if($autoposdec>0){
+exec("../sses_gva -d $seldbname ");
+exec("../sses_cc -d $seldbname");
+exec("../sses_cc -d $seldbname -p");
+exec ("../sses_af -d $seldbname");
+if($autoposdec>0 && $method_change){
     $db2=new dbio($seldbname);
     $db2->OpenDb();
     $sql = "select (tot-tvd) as bprjtops from projections where md < $md order by md desc limit 1";
@@ -153,10 +157,11 @@ if($autoposdec>0){
         }
     }
     $db2->CloseDb();
+    exec("../sses_gva -d $seldbname ");
+    exec("../sses_cc -d $seldbname");
+    exec("../sses_cc -d $seldbname -p");
+    exec ("../sses_af -d $seldbname");
 }
-exec("../sses_gva -d $seldbname ");
-exec("../sses_cc -d $seldbname");
-exec("../sses_cc -d $seldbname -p");
-exec ("../sses_af -d $seldbname");
+
 echo json_encode(array("status" => "Success", "message" => "operation completed"));
 ?>

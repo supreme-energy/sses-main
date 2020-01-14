@@ -37,10 +37,10 @@ function initializeFirstTimePas($db, $db2){
             if ($curwp_inc <= 65 && $curwp_inc >= 55){
                 addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
-                $step = 'pa3.5';
+                $step = 'pa3_5';
                 $prev_row = $row;
             }  
-        }else if($step == 'pa3.5'){
+        }else if($step == 'pa3_5'){
             if ($curwp_inc <= 81 && $curwp_inc >= 66 ){
                 addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
@@ -64,7 +64,7 @@ function initializeFirstTimePas($db, $db2){
                 $pa_count++;
             }
         }
-        if($pa_count > 7){
+        if($pa_count > 8){
             break;
         }
     }
