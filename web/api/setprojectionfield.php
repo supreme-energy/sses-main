@@ -47,9 +47,21 @@ if($pos===null){
             $pos = 0;
         }
     } else {
-        $query = "select (tvd-tot) from projections where md < $md order by md desc limit 1";
-        
-        $pos = $tvd - $tot;        
+        if($method == 8){
+            $query = "select (tvd-tot) as pos from projections where md < $md order by md desc limit 1";
+            $db->DoQuery($query);
+            $row = $db->FetchRow();
+            $pos = $row['pos'];
+            if($pos > 0){
+                $pos = $pos - $autoposdec;
+                if($pos < 0) $pos = 0;
+            } else{
+                $pos = $pos + $autoposdec;
+                if($pos > 0) $pos = 0;
+            }
+        } else {
+            $pos = $tvd - $tot;
+        }
     }
 } 
 $query = "select * from projections where id < ". $id. "order by id desc limit 1";

@@ -272,12 +272,34 @@ exec("../../sses_cc -d $seldbname");
 exec("../../sses_gva -d $seldbname");
 exec("../../sses_cc -d $seldbname -p");
 exec ("../../sses_af -d $seldbname");
+
+$query = "select * from surveys where plan = 1";
+$db->DoQuery($query);
+$bit_projection = $db->FetchRow();
+$query = "select * from projection order by md asc limit 1";
+$db->DoQuery($query);
+$first_proj = $db->FetchRow();
+if($bit_projection['inc'] > 70){
+    $pterm_method = 'bp';
+    $query = "update wellinfo set pterm_method='bp'";
+    $db->DoQuery();
+}
+
 if($pterm_method == 'bp'){
     ptermRevert($db);
     exec("../../sses_cc -d $seldbname");
     exec("../../sses_gva -d $seldbname");
     exec("../../sses_cc -d $seldbname -p");
     exec ("../../sses_af -d $seldbname");
+} else {
+    if(($first_proj['md'] - $bit_proj['md']) < 100){
+        $query = 'delete from projections where id = '. $first_proj['id'];
+        $db->DoQuery($query);
+        exec("../../sses_cc -d $seldbname");
+        exec("../../sses_gva -d $seldbname");
+        exec("../../sses_cc -d $seldbname -p");
+        exec ("../../sses_af -d $seldbname");
+    }
 }
 $db->CloseDb();
 
