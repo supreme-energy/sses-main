@@ -39,7 +39,7 @@ function ptermRevert($db){
         if($cur_method==$pmethod){
             continue;
         }
-        if($pmethod == null || $pmethod == '' || $pmethod == '3'){
+        if($pmethod == null || $pmethod == '' || $pmethod == 3){
             continue;
         }
         $method = $pmethod;
