@@ -279,10 +279,9 @@ $bit_projection = $db->FetchRow();
 $query = "select * from projection order by md asc limit 1";
 $db->DoQuery($query);
 $first_proj = $db->FetchRow();
-if($bit_projection['inc'] > 70){
-    $pterm_method = 'bp';
+if($bit_projection['inc'] > 70){    
     $query = "update wellinfo set pterm_method='bp'";
-    $db->DoQuery();
+    $db->DoQuery($query);
 }
 
 if($pterm_method == 'bp'){
