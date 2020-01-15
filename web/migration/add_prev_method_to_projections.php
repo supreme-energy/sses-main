@@ -1,6 +1,6 @@
 <?php 
 $tables  = Array('projections');
-$columns = Array(Array('prev_method', 'string'), Array('prev_data', 'string'));
+$columns = Array(Array('prev_method', 'text'), Array('prev_data', 'text'));
 require_once("../dbio.class.php");
 $db=new dbio("sgta_index");
 $db->OpenDb();
