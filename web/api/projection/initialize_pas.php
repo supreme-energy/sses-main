@@ -74,12 +74,12 @@ function reMethodProjections($db, $db2){
     $query = "select (tot-tvd) as bprjtops from projections where inc > 70 order by md asc limit 1";
     $db->DoQuery($query);
     $pl_proj = $db->FetchRow();
-    $query = "select (max(tvd) - min(tot))/3 as autodec from projections where inc > 70";
+    $query = "select (min(tvd) - max(tot))/3 as autodec from projections where inc > 70";
     $db->DoQuery($query);    
     $ap_data_row = $db->FetchRow();
     
     if($ap_data_row){
-        $autopos_dec = ceil(floatval($ap_data_row['autodec']));
+        $autopos_dec = abs(ceil(floatval($ap_data_row['autodec'])));
     } else {
         $autopos_dec = 5;
     }
