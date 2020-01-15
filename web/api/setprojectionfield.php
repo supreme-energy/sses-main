@@ -47,6 +47,8 @@ if($pos===null){
             $pos = 0;
         }
     } else {
+        $query = "select (tvd-tot) from projections where md < $md order by md desc limit 1";
+        
         $pos = $tvd - $tot;        
     }
 } 

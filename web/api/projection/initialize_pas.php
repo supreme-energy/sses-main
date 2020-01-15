@@ -37,7 +37,7 @@ function initializeFirstTimePas($db, $db2){
             if ($curwp_inc <= 65 && $curwp_inc >= 55){
                 addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
-                $step = 'pa3_5';
+                $step = 'pa4';
                 $prev_row = $row;
             }  
         }else if($step == 'pa3_5'){
@@ -71,19 +71,19 @@ function initializeFirstTimePas($db, $db2){
 }
 
 function reMethodProjections($db, $db2){
-    $query = "select (tot-tvd) as bprjtops from projections where inc < 70 order by md desc limit 1";
+    $query = "select (tot-tvd) as bprjtops from projections where inc > 70 order by md asc limit 1";
     $db->DoQuery($query);
     $pl_proj = $db->FetchRow();
     $query = "select count(tvd) as cnt,(max(tvd) - min(tot)) as total_diff  from projections where inc > 70";
-    $db->DoQuery($query);
+    $db->DoQuery($query);    
     $ap_data_row = $db->FetchRow();
     $posi = $pl_proj['bprjtops'];
-    if($row1){
+    if($ap_data_row){
         $autopos_dec = ceil(floatval($posi)/floatval($ap_data_row['cnt']));
     } else {
         $autopos_dec = 5;
     }
-    $query = "select * from projections where inc > 70";
+    $query = "select * from projections where inc > 70 order by md asc offset 1";
     $db->DoQuery($query);
     while($row = $db->FetchRow()){
         if(floatval($posi) < 0){
