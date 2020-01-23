@@ -44,35 +44,26 @@ $dtvd=$tvd-$ptvd;
 $dcd=$cd-$pcd;
 $dca=$ca-$pca;
 
+if($project=='ahead') {
+    $db=new dbio($seldbname);
+    $db->OpenDb();
+    $db->DoQuery("Update projections set inc=$tinc,azm=$tazm where ptype='rot'");
+    if($motoryield){
+    	$db->DoQuery("Update wellinfo set motoryield=$motoryield");
+    }
+    if($skiprot){
+    	$query = "delete from projections where ptype='rot';";
+    	$db->DoQuery($query);
+    }
+    foreach($delpa as $paid){
+    	if($paid){
+    		$query = "delete from projections where id=$paid";
+    		$db->DoQuery($query);
+    	}
+    }
+    
 
-$db=new dbio($seldbname);
-$db->OpenDb();
-$db->DoQuery("Update projections set inc=$tinc,azm=$tazm where ptype='rot'");
-if($motoryield){
-	$db->DoQuery("Update wellinfo set motoryield=$motoryield");
-}
-if($skiprot){
-	$query = "delete from projections where ptype='rot';";
-	$db->DoQuery($query);
-}
-foreach($delpa as $paid){
-	if($paid){
-		$query = "delete from projections where id=$paid";
-		$db->DoQuery($query);
-	}
-}
-if($project!='ahead') {
-	$plan = 1;
-	$db->DoQuery("UPDATE wellinfo SET pbmethod=$method");
-	$db->DoQuery("UPDATE wellinfo SET projdip='$dip';");
-	$db->DoQuery("UPDATE wellinfo SET bitoffset='$bitoffset';");
-	if($method==0) $db->DoQuery("UPDATE wellinfo SET pbdata='$dmd,0,0';");
-	else if($method==1) $db->DoQuery("UPDATE wellinfo SET pbdata='$dtvd,$dcd,$dca';");
-	else if($method==2) $db->DoQuery("UPDATE wellinfo SET pbdata='$dtvd,$dcd,$dca';");
-	else if($method>=3 && $method<=5) $db->DoQuery("UPDATE wellinfo SET pbdata='$dmd,$dinc,$dazm';");
-	else $db->DoQuery("UPDATE wellinfo SET pbdata='0,0,0';");
-} else {
-	if($currid!="") {
+    if($currid!="") {
 		if($method==0) $data="$dmd,0,0";
 		else if($method>=3 && $method<=5) $data="$dmd,$dinc,$dazm";
 		else if($method==6) $data="$tvd,$vs,$tpos";
