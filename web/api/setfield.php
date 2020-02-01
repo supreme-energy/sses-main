@@ -1,6 +1,7 @@
 <?
 include("api_header.php");
 include("shared_functions/pterm_change.php");
+include("projection/functions/projdip_change.php");
 
 function mapToDbTable($tablein){
 	if($tablein == 'autorc'){
@@ -38,6 +39,9 @@ if($seldbname){
 	                if($table == 'wellinfo' && $field == 'tot'){
 	                    $query = "update controllogs set tot = '$value'";
 	                    $result = $db->DoQuery($query);
+	                }
+	                if($table == 'wellinfo' && $field == 'projdip'){
+	                    projdipChange($db, $value);
 	                }
 	            }
 	        }
