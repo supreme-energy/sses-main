@@ -43,6 +43,7 @@
  			'fault'=>sprintf("%.2f", $db->FetchField("fault")),
  			'method'=>$db->FetchField("method"),
  	        'data'=>$db->FetchField("data"),
+ 	        'tf'  =>$db->FetchField("tf"),
  	        'ptype'=>$db->FetchField("ptype")
  	    
  	);
