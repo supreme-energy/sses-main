@@ -23,6 +23,10 @@
  	$svyid = $db->FetchField("id");
  	$bot = $db->FetchField("tot")+$bot_thickness;
  	$tot = $db->FetchField("tot")+$tot_thickness;
+ 	$tf = $db->FetchField("tf");
+    $direction = substr($tf, -1);
+    $tf_numeric = number_format(floatval(substr($tf, 0 , -1), 3, '.', ''));
+    $tf_final = $tf_numeric.$direction;
  	$projections_joined[]= array(
  			'id' => $db->FetchField("id") ,
  			'md' => sprintf("%.2f",$db->FetchField("md")) ,
@@ -43,7 +47,7 @@
  			'fault'=>sprintf("%.2f", $db->FetchField("fault")),
  			'method'=>$db->FetchField("method"),
  	        'data'=>$db->FetchField("data"),
- 	        'tf'  =>$db->FetchField("tf"),
+ 	         'tf'  =>$tf_final,
  	        'ptype'=>$db->FetchField("ptype")
  	    
  	);
