@@ -25,8 +25,8 @@
  	$tot = $db->FetchField("tot")+$tot_thickness;
  	$tf = $db->FetchField("tf");
     $direction = substr($tf, -1);
-    $tf_numeric = substr($tf, 0 , -1);
-    $tf_final = $tf_numeric.$direction;
+    $tf_numeric = floatval(substr($tf, 0 , -1));
+    $tf_final = number_format($tf_numeric, 3).$direction;
  	$projections_joined[]= array(
  			'id' => $db->FetchField("id") ,
  			'md' => sprintf("%.2f",$db->FetchField("md")) ,
