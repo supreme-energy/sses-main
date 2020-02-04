@@ -26,7 +26,7 @@
  	$tf = $db->FetchField("tf");
     $direction = substr($tf, -1);
     $tf_numeric = floatval(substr($tf, 0 , -1));
-    $tf_final = number_format($tf_numeric, 3).$direction;
+    $tf_final = number_format($tf_numeric, 3);
  	$projections_joined[]= array(
  			'id' => $db->FetchField("id") ,
  			'md' => sprintf("%.2f",$db->FetchField("md")) ,
@@ -48,6 +48,7 @@
  			'method'=>$db->FetchField("method"),
  	        'data'=>$db->FetchField("data"),
  	        'tf'  =>$tf_final,
+ 	        'tfdir' => $direction,
  	        'ptype'=>$db->FetchField("ptype")
  	    
  	);
