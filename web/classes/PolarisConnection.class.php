@@ -421,10 +421,10 @@
 				$result=$this->db->DoQuery("COMMIT;");
 				if($result==FALSE) die("<pre>Bad bad errors on COMMIT: welllogs\n</pre>");
 			}
-			exec(__DIR__ ."../sses_gva -d ".$this->db_name);
-			exec(__DIR__ ."../sses_cc -d ".$this->db_name);
-			exec(__DIR__ ."../sses_cc -d ".$this->db_name." -p");
-			exec(__DIR__ ."../sses_af -d $this->db_name"); 
+			exec(__DIR__ ."/../sses_gva -d ".$this->db_name);
+			exec(__DIR__ ."/../sses_cc -d ".$this->db_name);
+			exec(__DIR__ ."/../sses_cc -d ".$this->db_name." -p");
+			exec(__DIR__ ."/../sses_af -d $this->db_name"); 
 			$this->db->CloseDb();
 		}
 	function cleanup_data($cleanup_surveys){
@@ -617,8 +617,8 @@
 								if($svycnt>1){
 									$lastmd+=1;
 								}
-								exec(__DIR__ ."../sses_gva -d $seldbname",$output);
-								exec(__DIR__ ."../sses_cc -d $seldbname",$output);	
+								exec(__DIR__ ."/../sses_gva -d $seldbname",$output);
+								exec(__DIR__ ."/../sses_cc -d $seldbname",$output);	
 				   				$nfquery = "select * from surveys where azm=$azm" .
 		   							" and md=$md" .
 		   							" and inc=$inc";
@@ -634,8 +634,8 @@
    				}
    			}
    		}
-   		exec(__DIR__ ."../sses_gva -d $seldbname",$output);
-   		exec(__DIR__ ."../sses_cc -d $seldbname",$output);	
+   		exec(__DIR__ ."/../sses_gva -d $seldbname",$output);
+   		exec(__DIR__ ."/../sses_cc -d $seldbname",$output);	
 		$this->db->OpenDb();
 		$pterm_query = "update wellinfo set pterm_method = '$pterm_method';";
    		$this->db->DoQuery($pterm_query);
@@ -724,8 +724,8 @@
 									if($svycnt>1){
 										$lastmd+=1;
 									}
-									exec(__DIR__ ."../sses_gva -d $seldbname",$output);
-									exec(__DIR__ ."../sses_cc -d $seldbname",$output);	
+									exec(__DIR__ ."/../sses_gva -d $seldbname",$output);
+									exec(__DIR__ ."/../sses_cc -d $seldbname",$output);	
 									$nfquery = "select * from surveys where azm=$azm" .
 		   							" and md=$md" .
 		   							" and inc=$inc";
