@@ -242,7 +242,7 @@
 		    		    
 		    return $final;
 		}
-		function retrieve_log_file(){
+		function retrieve_log_file($sdepth, $edepth){
 		    $filename="/tmp/custom_import_".$this->db_name.".las";
 		    $body = "";
 		    $infile=fopen("$filename", "r");
@@ -261,6 +261,13 @@
 		    while($line=fgets($infile,1024)) {
 		        $line=trim($line);
 		        $line=preg_replace( '/\s+/', ',', $line );
+		        $md = floatval(explode($line)[0]);
+		        if($md <= $sdepth){
+		            continue;
+		        }
+		        if($md > $edepth){
+		          break;
+		        }
 		        $body.="$line\n";
 		    }
 		    fclose($infile);
@@ -269,7 +276,7 @@
 		
 		function prepare_las_data($sdepth=0,$edepth=100,$pass=1,$include_additional=false,$dip=false,$fault=false){
 			
-			$resp = $this->retrieve_log_file();
+		    $resp = $this->retrieve_log_file($sdepth,$edepth);
 			$headers = $this->retreive_log_headers();
 			
 			$csv_data = str_getcsv($resp);						
