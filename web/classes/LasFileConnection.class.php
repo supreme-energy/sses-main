@@ -223,17 +223,12 @@
 		        }
 		    } while(stristr($line, "~Curve")==FALSE);
 		    
-		    while($line=fgets($infile,1024)) {
+		    $final = array();
+		    do {
+		        $line=fgets($infile,1024);
 		        $line=trim($line);
 		        $line=preg_replace( '/\s+/', ',', $line );
-		        $body.="$line\n";
-		    }
-		    fclose($infile);
-		    $result = str_getcsv($body);
-		    print_r($result);
-		    exit();
-		    $final = array();
-		    foreach($result as $r){
+		        $r = explode(",", $line);
 		        if($r[0]=='GAMA.API'){
 		            array_push($final, 'GR');
 		        } else if($r[0]=='DEPT.ft') {
@@ -241,7 +236,12 @@
 		        } else {
 		            array_push($final,$r[0]);
 		        }
-		    }
+		    } while(stristr($line, "~A")==FALSE);
+		    
+		    fclose($infile);		    
+		    print_r($final);
+		    exit();
+		    
 		    return $final;
 		}
 		function retrieve_log_file(){
