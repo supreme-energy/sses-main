@@ -269,7 +269,7 @@
 		        if($md > $edepth){
 		          break;
 		        }
-		       array_push($line_ex,$final);
+		        array_push($final,$line_ex);
 		    }
 		    fclose($infile);
 		    return $final;
