@@ -3,7 +3,7 @@
   header("Access-Control-Allow-Origin: *");
   header('Content-type: application/json');
   require_once(realpath( dirname( __FILE__ ) ).'/../dbio.class.php');
-  if(!isset($seldbname) or $seldbname == '') $seldbname = (isset($_REQUEST['seldbname']) ? $_REQUEST['seldbname'] : '');
+  if(!isset($seldbname) || $seldbname == '') $seldbname = (isset($_REQUEST['seldbname']) ? $_REQUEST['seldbname'] : '');
   $db=new dbio($seldbname);
   $db->OpenDb();
 ?>

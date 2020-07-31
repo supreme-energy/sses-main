@@ -30,10 +30,11 @@
           }
           return json_encode($next);
       }elseif($autorc_type=='lasfile'){
+          require_once('../../../classes/LasFileConnection.php');
           $filename="/tmp/custom_import_$seldbname.las";
           $f2 = "/tmp/survey_import_$seldbname.las";
-          $infile=file_exists ("$filename", "r");
-          $infile2=file_exists ("$f2","r");
+          $infile=file_exists ("$filename");
+          $infile2=file_exists ("$f2");
           if(!$infile || !$infile2){              
               $next = array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"msg"=>'File not uploaded');
           } else {              
