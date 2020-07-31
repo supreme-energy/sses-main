@@ -542,7 +542,8 @@
    
    function get_survey_from_file(){
        $filename="/tmp/survey_import_".$this->db_name.".las";
-       while (($data = fgetcsv($temp, 5000, ",")) !== FALSE) {
+       $tempf = fopen($filename, 'r');
+       while (($data = fgetcsv($tempf, 5000, ",")) !== FALSE) {
            $md = $data[1];
            $inc = $data[2];
            $azm = $data[3];
@@ -550,6 +551,7 @@
            array_push($surveys,array('md'=>$md,'inc'=>$inc,'azm'=>$azm,'time'=>$time));
        }		
 		usort($surveys,"polaris_sort");
+		fclose($tempf);
 		return $surveys;
    }
    
