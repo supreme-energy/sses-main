@@ -239,9 +239,7 @@
 		    } while(stristr($line, "~A")==FALSE);
 		    
 		    fclose($infile);		    
-		    print_r($final);
-		    exit();
-		    
+		    		    
 		    return $final;
 		}
 		function retrieve_log_file(){
