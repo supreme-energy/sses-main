@@ -1,4 +1,4 @@
 <?php
-$filename="/tmp/custom_import_$seldbname.las";
+$prefix = "custom_import_"
 include("shared_store_file.php");
 ?>

@@ -23,7 +23,7 @@ if ($file->isValid()) {
     exit;
 }
 
-
+$filename="/tmp/".$prefix.$seldbname.".las";
 $ifn=sprintf("$dest_dir%s", $file->getProp('name'));
 if(file_exists($filename))	unlink($filename);
 rename($ifn, $filename);
