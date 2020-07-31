@@ -18,6 +18,7 @@ if($initialize_pas){
     include_once("../../projection/initialize_pas.php");
     $db2=new dbio($seldbname);
     $db2->OpenDb();
+    $db->OpenDb();
     initializeFirstTimePas($db, $db2);
     exec("../../../sses_cc -d $seldbname");
     exec("../../../sses_gva -d $seldbname");
