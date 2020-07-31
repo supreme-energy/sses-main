@@ -30,7 +30,7 @@
           }
           return json_encode($next);
       }elseif($autorc_type=='lasfile'){
-          require_once('../../../classes/LasFileConnection.php');
+          require_once('../../../classes/LasFileConnection.class.php');
           $filename="/tmp/custom_import_$seldbname.las";
           $f2 = "/tmp/survey_import_$seldbname.las";
           $infile=file_exists ("$filename");
