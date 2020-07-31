@@ -301,13 +301,13 @@
 				}
 				array_push($edata,$i);
 				array_push($headersmnemo,$mnemo);
-				$query ="select * from edatalogs where label='".$column->mnemonic."';";
+				$query ="select * from edatalogs where label='".$column."';";
 				$result = $this->db->DoQuery($query);
 				$row = $this->db->FetchRow();
 				if($row){
 					array_push($edata,$row['tablename']);
 				} else {
-					$query = "insert into edatalogs (tablename,label,scalelo,scalehi,enabled,color) values ('edl_xxx','".$column->mnemonic."',0,300,0,'000000')";
+					$query = "insert into edatalogs (tablename,label,scalelo,scalehi,enabled,color) values ('edl_xxx','".$column."',0,300,0,'000000')";
 					$this->db->DoQuery($query);
 					$query = "select * from edatalogs where tablename='edl_xxx'";
 					$this->db->DoQuery($query);
@@ -318,12 +318,13 @@
 						$result=$this->db->DoQuery($query);
 						if($result!=FALSE){
 							$query="UPDATE edatalogs set tablename='$elog_tablename' where id='$elog_id'";
+							echo $query."\n";
 							$this->db->DoQuery($query);
 						}
 						array_push($edata,$elog_tablename);
 					}
 				}
-				array_push($edata,floor((string)$column->columnIndex));
+				array_push($edata,floor((string)$i));
 				$cols["$mnemo"]=$edata;
 				$i++;
 			}
@@ -425,10 +426,10 @@
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
-							//echo $query."\n";
+							echo $query."\n";
 							$result = $this->db->DoQuery($query);
 							if($result==FALSE) {
-							//	echo "rollback";
+								echo "rollback";
 								$this->db->DoQuery("ROLLBACK;");
 							}
 						}
@@ -458,10 +459,10 @@
 				$depth = $tvd;
 				$tvd = round($tvd,2);
 				$query="INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$depth);";
-				//echo "$query\n";
+				echo "$query\n";
 				$result = $this->db->DoQuery($query);
 				if($result==FALSE) {
-					//echo "rollback";
+					echo "rollback";
 					$this->db->DoQuery("ROLLBACK;");
 					die("<pre>Error updating table: $tablename\n</pre>");
 				}
