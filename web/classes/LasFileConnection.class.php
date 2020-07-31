@@ -257,7 +257,7 @@
 		            exit;
 		        }
 		    } while(stristr($line, "~A")==FALSE);
-		    
+		    $final = array();
 		    while($line=fgets($infile,1024)) {
 		        $line=trim($line);
 		        $line=preg_replace( '/\s+/', ',', $line );
@@ -269,25 +269,24 @@
 		        if($md > $edepth){
 		          break;
 		        }
-		        $body.="$line\n";
+		       array_push($line_ex,$final);
 		    }
 		    fclose($infile);
-		    return $body;
+		    return $final;
 		}
 		
 		function prepare_las_data($sdepth=0,$edepth=100,$pass=1,$include_additional=false,$dip=false,$fault=false){
 			
-		    $resp = $this->retrieve_log_file($sdepth,$edepth);
+		    $csv_data = $this->retrieve_log_file($sdepth,$edepth);
 			$headers = $this->retreive_log_headers();
-			
-			$csv_data = str_getcsv($resp);						
+												
 			if($this->debug){
 			    echo "headers data \n";
 			    print_r($headers);
 			    echo "csv data \n";
 			    print_r($csv_data);			    
 			}
-			
+
 			$cols = array();
 			$data = array();
 			$i=0;
