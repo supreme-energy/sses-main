@@ -544,6 +544,7 @@
    function get_survey_from_file(){
        $filename="/tmp/survey_import_".$this->db_name.".las";
        $tempf = fopen($filename, 'r');
+       $surveys = array();
        while (($data = fgetcsv($tempf, 5000, ",")) !== FALSE) {
            $md = $data[1];
            $inc = $data[2];
