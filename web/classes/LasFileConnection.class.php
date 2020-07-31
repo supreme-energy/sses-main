@@ -21,10 +21,10 @@
 	    
 	    function get_witsml_data($field='endpoint'){
 	        $this->client=null;
-	        $db = new dbio($this->db_name);
-	        $db->OpenDb();
-	        $db->DoQuery("SELECT * FROM witsml_details order by id desc limit 1");
-	        if($row=$db->FetchRow()){
+	        $intdb = new dbio($this->db_name);
+	        $intdb->OpenDb();
+	        $intdb->DoQuery("SELECT * FROM witsml_details order by id desc limit 1");
+	        if($row=$intdb->FetchRow()){
 	            $this->endpoint=$row['endpoint'];
 	            $this->send_data =$row['send_data'];
 	            $this->username=$row['username'];
@@ -42,9 +42,9 @@
 	            $this->wellbore = '';
 	            $this->trajectory = '';
 	        }
-	        $db->DoQuery("select * from rigminder_connection");
+	        $intdb->DoQuery("select * from rigminder_connection");
 	        
-	        if($row=$db->FetchRow()){
+	        if($row=$intdb->FetchRow()){
 	            $this->aisd = $row['aisd'];
 	            if($this->endpoint==''){
 	                $this->endpoint =$row['host'];
@@ -54,13 +54,13 @@
 	        } else {
 	            $this->aisd=0;
 	        }
-	        $db->DoQuery("select auto_gr_mnemonic from appinfo;");
-	        if($row=$db->FetchRow()){
+	        $intdb->DoQuery("select auto_gr_mnemonic from appinfo;");
+	        if($row=$intdb->FetchRow()){
 	            $this->grmnemonic=$row['auto_gr_mnemonic'];
 	        } else {
 	            $this->grmnemonic="GR";
 	        }
-	        $db->CloseDb();
+	        $intdb->CloseDb();
 	        return $this->$field;
 	    }
 	    
