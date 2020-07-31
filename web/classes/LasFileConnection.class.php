@@ -670,7 +670,9 @@
 			if($this->db_name){
 					$this->db->OpenDb();
 					$surveys = $this->get_survey_from_file();
-					
+					if($this->raw_request['debug']){
+					    print_r($surveys);
+					}
 					$this->surveys=$surveys;
 					$all_surverys_loaded =true;
 	   				$new_survey_found = false;
