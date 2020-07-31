@@ -328,7 +328,7 @@
 				$cols["$mnemo"]=$edata;
 				$i++;
 			}
-			print_r($cols)
+			
 			$wllastquery = "select * from welllogs order by id desc limit 1";
 			$result = $this->db->DoQuery($wllastquery);
 			$lastwellog= $this->db->FetchRow();
