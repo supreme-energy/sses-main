@@ -672,6 +672,7 @@
 					$this->db->OpenDb();
 					$surveys = $this->get_survey_from_file();
 					if($this->debug){
+					    print 'outputing survey data'."\n";
 					    print_r($surveys);
 					}
 					$this->surveys=$surveys;
