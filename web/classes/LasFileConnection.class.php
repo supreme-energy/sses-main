@@ -426,10 +426,10 @@
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
-							echo $query."\n";
+							//echo $query."\n";
 							$result = $this->db->DoQuery($query);
 							if($result==FALSE) {
-								echo "rollback";
+								//echo "rollback";
 								$this->db->DoQuery("ROLLBACK;");
 							}
 						}
@@ -459,10 +459,10 @@
 				$depth = $tvd;
 				$tvd = round($tvd,2);
 				$query="INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$depth);";
-				echo "$query\n";
+				//echo "$query\n";
 				$result = $this->db->DoQuery($query);
 				if($result==FALSE) {
-					echo "rollback";
+					//echo "rollback";
 					$this->db->DoQuery("ROLLBACK;");
 					die("<pre>Error updating table: $tablename\n</pre>");
 				}
@@ -791,7 +791,7 @@
 									}
 								}
 								if($load){
-									$nquery = "insert into surveys (azm,inc,md,srcts) values ('$azm','$inc','$md',NOW())";
+									$nquery = "insert into surveys (azm,inc,md,srcts) values ('$azm','$inc','$md',extract(epoch from now()))";
 									$this->db->DoQuery($nquery);
 									if($svycnt>1){
 										$lastmd+=1;
