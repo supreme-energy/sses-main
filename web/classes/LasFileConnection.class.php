@@ -438,6 +438,7 @@
 				}
 			}
 			$this->db->DoQuery("COMMIT;");
+			exit();
 			$curpos=0;
 			foreach( $use_data as $delement){
 				$val = implode(',',$delement);
