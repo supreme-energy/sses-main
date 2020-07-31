@@ -82,12 +82,11 @@
 		
 		function drop_empties($dataset,$cols){
 			$new_data_ar = array();
-			foreach($dataset->data as $delement){
-				$val = (string)$delement;
-				$exploded = explode(',',$val);
+			foreach($dataset as $delement){				
+				$exploded = $delement;
 				$grval = $exploded[$cols[$this->grmnemonic][2]-1];
 				if($grval!=''){
-					array_push($new_data_ar,$val);
+				    array_push($new_data_ar,$delement);
 				}
 				
 			}
@@ -104,9 +103,8 @@
 				//first go through the data set and replace all null values 0, negative or no value with the last GR value
 				$newdataset=array();
 				foreach($dataset as $delement){
-					
-					$val = (string)$delement;
-					$exploded = explode(',',$val);
+										
+					$exploded = $delement;
 					$grval = $exploded[$cols[$this->grmnemonic][2]-1];
 					//print "unmodified grval: ".$grval."\n";
 					if($grval <=0 || $grval==''){
@@ -169,7 +167,7 @@
 				//echo "idx at loop end:".$idx."\n";
 				//account for the condition underwhich smoothing doesn't end before reaching the end of the dataset
 				if(count($dataset) != count($smoothedgr)){				
-					if($this->raw_request['debug']){
+					if($this->debug){
 						print "pre final smooth set";
 						print count($smoothedgr);
 						print_r($smoothedgr);
@@ -272,23 +270,22 @@
 		function prepare_las_data($sdepth=0,$edepth=100,$pass=1,$include_additional=false,$dip=false,$fault=false){
 			
 			$resp = $this->retrieve_log_file();
-			$csv_data = str_getcsv($resp);
-						
-			$data = array();
+			$headers = $this->retreive_log_headers();
 			
-			
-			
-			if($this->raw_request['debug']){
-			    echo $csv_data;
+			$csv_data = str_getcsv($resp);						
+			if($this->debug){
+			    echo "headers data \n";
+			    print_r($headers);
+			    echo "csv data \n";
+			    print_r($csv_data);			    
 			}
 			
 			$cols = array();
+			$data = array();
 			$i=0;
 			$this->db->OpenDb();
-			$headersmnemo=array();
-			$mnemoheaders = $this->retreive_log_headers();
-			
-			foreach($mnemoheaders as $column){
+			$headersmnemo=array();						
+			foreach($headers as $column){
 				$edata = array();
 				$mnemo =$column;
 				if(isset($cols["$mnemo"])){
@@ -400,9 +397,9 @@
 			
 			foreach($csv_data as $delement){
 				
-				$val = (string)$delement;
+				$val = implode(',',$delement);
 				array_push($rawdata_ar,$val);
-				$exploded = explode(',',$val);
+				$exploded = $delement;
 				$md =  $exploded[$cols['Mdepth'][2]-1];
 				if(!$md){$md = $exploded[$cols['DEPTH'][2]-1];}
 				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]-1];}
@@ -434,9 +431,9 @@
 			$this->db->DoQuery("COMMIT;");
 			$curpos=0;
 			foreach( $use_data as $delement){
-				$val = (string)$delement;
+				$val = implode(',',$delement);
 				array_push($rawdata_ar,$val);
-				$exploded = explode(',',$val);
+				$exploded = $delement;
 				$md =  $exploded[$cols['Mdepth'][2]-1];
 				if(!$md){$md = $exploded[$cols['DEPTH'][2]-1];}
 				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]-1];}
