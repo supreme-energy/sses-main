@@ -324,12 +324,11 @@
 						array_push($edata,$elog_tablename);
 					}
 				}
-				array_push($edata,floor((string)$i));
+				array_push($edata,$i);
 				$cols["$mnemo"]=$edata;
 				$i++;
 			}
-			print_r($cols);
-			exit();
+			print_r($cols)
 			$wllastquery = "select * from welllogs order by id desc limit 1";
 			$result = $this->db->DoQuery($wllastquery);
 			$lastwellog= $this->db->FetchRow();
@@ -411,9 +410,9 @@
 				$val = implode(',',$delement);
 				array_push($rawdata_ar,$val);
 				$exploded = $delement;
-				$md =  $exploded[$cols['Mdepth'][2]-1];
-				if(!$md){$md = $exploded[$cols['DEPTH'][2]-1];}
-				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]-1];}
+				$md =  $exploded[$cols['Mdepth'][2]];
+				if(!$md){$md = $exploded[$cols['DEPTH'][2]];}
+				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]];}
 				$val = round($grr[$curpos],2);
 				$vs = round($vsr[$curpos],2);
 				$tvd =$tvdr[$curpos];
@@ -428,10 +427,10 @@
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
-							//echo $query."\n";
+							echo $query."\n";
 							$result = $this->db->DoQuery($query);
 							if($result==FALSE) {
-							//	echo "rollback";
+								echo "rollback";
 								$this->db->DoQuery("ROLLBACK;");
 							}
 						}
@@ -445,9 +444,9 @@
 				$val = implode(',',$delement);
 				array_push($rawdata_ar,$val);
 				$exploded = $delement;
-				$md =  $exploded[$cols['Mdepth'][2]-1];
-				if(!$md){$md = $exploded[$cols['DEPTH'][2]-1];}
-				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]-1];}
+				$md =  $exploded[$cols['Mdepth'][2]];
+				if(!$md){$md = $exploded[$cols['DEPTH'][2]];}
+				if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]];}
 				$val = round($grr[$curpos],2);
 				$vs = round($vsr[$curpos],2);
 				$tvd =$tvdr[$curpos];
@@ -461,10 +460,10 @@
 				$depth = $tvd;
 				$tvd = round($tvd,2);
 				$query="INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$depth);";
-				//echo "$query\n";
+				echo "$query\n";
 				$result = $this->db->DoQuery($query);
 				if($result==FALSE) {
-					//echo "rollback";
+					echo "rollback";
 					$this->db->DoQuery("ROLLBACK;");
 					die("<pre>Error updating table: $tablename\n</pre>");
 				}
