@@ -317,7 +317,7 @@
 						$result=$this->db->DoQuery($query);
 						if($result!=FALSE){
 							$query="UPDATE edatalogs set tablename='$elog_tablename' where id='$elog_id'";
-							echo $query."\n";
+							//echo $query."\n";
 							$this->db->DoQuery($query);
 						}
 						array_push($edata,$elog_tablename);
@@ -418,7 +418,7 @@
 				$curpos++;
 				foreach($cols as $edata_log){
 					$edatalog_tn = $edata_log[1];
-					$edlog_val = $exploded[$edata_log[2]-1];
+					$edlog_val = $exploded[$edata_log[2]];
 					//$query = "select * from \"$edatalog_tn\" where md=$md and tvd=$tvd and vs=$vs and value=$edlog_val";
 					//echo $query."\n";
 					//$this->db->DoQuery($query);
@@ -426,10 +426,10 @@
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
-							echo $query."\n";
+							//echo $query."\n";
 							$result = $this->db->DoQuery($query);
 							if($result==FALSE) {
-								echo "rollback";
+								//echo "rollback";
 								$this->db->DoQuery("ROLLBACK;");
 							}
 						}
@@ -438,7 +438,7 @@
 				}
 			}
 			$this->db->DoQuery("COMMIT;");
-			exit();
+			
 			$curpos=0;
 			foreach( $use_data as $delement){
 				$val = implode(',',$delement);
