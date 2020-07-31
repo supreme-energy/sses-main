@@ -261,7 +261,7 @@
 		    while($line=fgets($infile,1024)) {
 		        $line=trim($line);
 		        $line=preg_replace( '/\s+/', ',', $line );
-		        $md = floatval(explode($line)[0]);
+		        $md = floatval(explode(",",$line)[0]);
 		        if($md <= $sdepth){
 		            continue;
 		        }
