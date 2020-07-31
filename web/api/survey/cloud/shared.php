@@ -29,6 +29,18 @@
               $next = $obj->load_next_survey($do_load,$do_cleanup);
           }
           return json_encode($next);
+      }elseif($autorc_type=='lasfile'){
+          $filename="/tmp/custom_import_$seldbname.las";
+          $f2 = "/tmp/survey_import_$seldbname.las";
+          $infile=file_exists ("$filename", "r");
+          $infile2=file_exists ("$f2","r");
+          if(!$infile || !$infile2){              
+              $next = array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"msg"=>'File not uploaded');
+          } else {              
+              $obj = new LasFileConnection($_REQUEST);
+              $next = $obj->load_next_survey($do_load,$do_cleanup);
+          }
+          return json_encode($next);
       }
   }
   ?>
