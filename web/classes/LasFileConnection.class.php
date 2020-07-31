@@ -230,6 +230,8 @@
 		    }
 		    fclose($infile);
 		    $result = str_getcsv($body);
+		    print_r($result);
+		    exit();
 		    $final = array();
 		    foreach($result as $r){
 		        if($r[0]=='GAMA.API'){
