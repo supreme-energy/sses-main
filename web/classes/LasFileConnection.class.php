@@ -12,12 +12,58 @@
 	    function __construct($request) {
 	        $this->db_name = $request['seldbname'];
 	        $this->raw_request = $request;
-	        $this->grmnemonic="GR";
+	        $this->get_witsml_data();
 	        $this->debug = (isset($request['debug']) ? true : false);
 	        $this->db=new dbio("{$this->db_name}");
 	        $this->db2=new dbio("{$this->db_name}");
 	        print $this->debug;
 	    }
+	    
+	    function get_witsml_data($field='endpoint'){
+	        $this->client=null;
+	        $db = new dbio($this->db_name);
+	        $db->OpenDb();
+	        $db->DoQuery("SELECT * FROM witsml_details order by id desc limit 1");
+	        if($row=$db->FetchRow()){
+	            $this->endpoint=$row['endpoint'];
+	            $this->send_data =$row['send_data'];
+	            $this->username=$row['username'];
+	            $this->password=$row['password'];
+	            $this->well = $row['wellid'];
+	            $this->wellbore = $row['boreid'];
+	            $this->logid = $row['logid'];
+	            $this->trajectory = $row['trajid'];
+	        }else{
+	            $this->endpoint='';
+	            $this->send_data=false;
+	            $this->username='';
+	            $this->password='';
+	            $this->well = '';
+	            $this->wellbore = '';
+	            $this->trajectory = '';
+	        }
+	        $db->DoQuery("select * from rigminder_connection");
+	        
+	        if($row=$db->FetchRow()){
+	            $this->aisd = $row['aisd'];
+	            if($this->endpoint==''){
+	                $this->endpoint =$row['host'];
+	                $this->username = $row['username'];
+	                $this->password = $row['password'];
+	            }
+	        } else {
+	            $this->aisd=0;
+	        }
+	        $db->DoQuery("select auto_gr_mnemonic from appinfo;");
+	        if($row=$db->FetchRow()){
+	            $this->grmnemonic=$row['auto_gr_mnemonic'];
+	        } else {
+	            $this->grmnemonic="GR";
+	        }
+	        $db->CloseDb();
+	        return $this->$field;
+	    }
+	    
 		function smooth_range($sval,$eval,$increment,$shift_first=true){
 			$perincrement = ($eval-$sval)/$increment;
 			$vals = array();
