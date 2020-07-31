@@ -233,8 +233,8 @@
 		            array_push($final, 'GR');
 		        } else if($r[0]=='DEPT.ft') {
 		            array_push($final,'Mdepth');
-		        } else {
-		            array_push($final,$r[0]);
+		        } else if($r[0] && $r[0]!='~Ascii'){
+		            array_push($final,$r[0]);		            
 		        }
 		    } while(stristr($line, "~A")==FALSE);
 		    
