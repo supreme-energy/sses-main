@@ -13,9 +13,10 @@
 	        $this->db_name = $request['seldbname'];
 	        $this->raw_request = $request;
 	        $this->grmnemonic="GR";
-	        
+	        $this->debug = (isset($request['debug']) ? true : false);
 	        $this->db=new dbio("{$this->db_name}");
 	        $this->db2=new dbio("{$this->db_name}");
+	        print $this->debug;
 	    }
 		function smooth_range($sval,$eval,$increment,$shift_first=true){
 			$perincrement = ($eval-$sval)/$increment;
@@ -670,7 +671,7 @@
 			if($this->db_name){
 					$this->db->OpenDb();
 					$surveys = $this->get_survey_from_file();
-					if($this->raw_request['debug']){
+					if($this->debug){
 					    print_r($surveys);
 					}
 					$this->surveys=$surveys;
