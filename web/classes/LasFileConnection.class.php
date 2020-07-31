@@ -84,7 +84,7 @@
 			$new_data_ar = array();
 			foreach($dataset as $delement){				
 				$exploded = $delement;
-				$grval = $exploded[$cols[$this->grmnemonic][2]-1];
+				$grval = $exploded[$cols[$this->grmnemonic][2]];
 				if($grval!=''){
 				    array_push($new_data_ar,$delement);
 				}
@@ -105,7 +105,7 @@
 				foreach($dataset as $delement){
 										
 					$exploded = $delement;
-					$grval = $exploded[$cols[$this->grmnemonic][2]-1];
+					$grval = $exploded[$cols[$this->grmnemonic][2]];
 					//print "unmodified grval: ".$grval."\n";
 					if($grval <=0 || $grval==''){
 						$grval=$intlgr;
@@ -791,7 +791,7 @@
 									}
 								}
 								if($load){
-									$nquery = "insert into surveys (azm,inc,md,srcts) values ('$azm','$inc','$md','$ts')";
+									$nquery = "insert into surveys (azm,inc,md,srcts) values ('$azm','$inc','$md',NOW())";
 									$this->db->DoQuery($nquery);
 									if($svycnt>1){
 										$lastmd+=1;
