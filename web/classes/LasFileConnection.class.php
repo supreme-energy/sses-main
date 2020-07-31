@@ -328,6 +328,8 @@
 				$cols["$mnemo"]=$edata;
 				$i++;
 			}
+			print_r($cols);
+			exit();
 			$wllastquery = "select * from welllogs order by id desc limit 1";
 			$result = $this->db->DoQuery($wllastquery);
 			$lastwellog= $this->db->FetchRow();
@@ -426,10 +428,10 @@
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
-							echo $query."\n";
+							//echo $query."\n";
 							$result = $this->db->DoQuery($query);
 							if($result==FALSE) {
-								echo "rollback";
+							//	echo "rollback";
 								$this->db->DoQuery("ROLLBACK;");
 							}
 						}
@@ -459,10 +461,10 @@
 				$depth = $tvd;
 				$tvd = round($tvd,2);
 				$query="INSERT INTO \"$tablename\" (md,value,tvd,vs,depth) VALUES ($md,$val,$tvd,$vs,$depth);";
-				echo "$query\n";
+				//echo "$query\n";
 				$result = $this->db->DoQuery($query);
 				if($result==FALSE) {
-					echo "rollback";
+					//echo "rollback";
 					$this->db->DoQuery("ROLLBACK;");
 					die("<pre>Error updating table: $tablename\n</pre>");
 				}
