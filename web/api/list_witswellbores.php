@@ -10,7 +10,7 @@ try {
     $resp = $witsml->retrieve_fromstore($body,'wellbore');
     //echo "REQUEST:".$witsml->client->__getLastRequest();
     $xml = array('status'=>'error', 'message'=>'soap fault');
-    if(!is_a($xml, SoapFault)){
+    if(!is_a($resp, SoapFault)){
         $xml = simplexml_load_string($resp['XMLout']);
     }
     echo json_encode($xml);
