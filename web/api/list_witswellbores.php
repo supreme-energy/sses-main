@@ -9,7 +9,10 @@ try {
     $body = "<wellbore uidWell='$wellUid'><nameWell/><name/><numGovt/></wellbore>";
     $resp = $witsml->retrieve_fromstore($body,'wellbore');
     //echo "REQUEST:".$witsml->client->__getLastRequest();
-    $xml = simplexml_load_string($resp['XMLout']);
+    $xml = array('status'=>'error', 'message'=>'soap fault');
+    if(!is_a($xml, SoapFault)){
+        $xml = simplexml_load_string($resp['XMLout']);
+    }
     echo json_encode($xml);
 } catch(Exception $e){
     echo json_encode(array('status' => 'error', 'message' => $e->toString()));
