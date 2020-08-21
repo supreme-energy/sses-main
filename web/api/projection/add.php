@@ -90,6 +90,10 @@
     $svyid = $db->FetchField("id");
     $bot = $db->FetchField("tot")+$bot_thickness;
     $tot = $db->FetchField("tot")+$tot_thickness;
+    $tf = $db->FetchField("tf");
+    $direction = substr($tf, -1);
+    $tf_numeric = floatval(substr($tf, 0 , -1));
+    $tf_final = number_format($tf_numeric, 3);
     $response = array("status" => "success", "projection"=>
         array(
             'id' => $db->FetchField("id") ,
@@ -110,7 +114,10 @@
             'dip'=>sprintf("%.2f", $db->FetchField("dip")),
             'fault'=>sprintf("%.2f", $db->FetchField("fault")),
             'method'=>$db->FetchField("method"),
-            'data'=>$db->FetchField("data")
+            'data'=>$db->FetchField("data"),            
+            'tf'  =>$tf_final,
+            'tfdir' => $direction,
+            'ptype'=>$db->FetchField("ptype")
             )
     );
  } else {
