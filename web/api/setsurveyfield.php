@@ -30,8 +30,10 @@ if(count($updates_array) > 0 ){
 	$db->DoQuery($query);
 	$row = $db->FetchRow();
 	$wellogid = $row['id'];
-	$query = "update welllogs set ".implode($welllog_updates, ',')." where id=$id";
-	$db->DoQuery($query);
+	if($welllogid && count($welllog_updates) > 0) {
+	  $query = "update welllogs set ".implode($welllog_updates, ',')." where id=$welllogid";	
+	  $db->DoQuery($query);
+	}
 }
 exec("../sses_gva -d $seldbname ");
 exec("../sses_cc -d $seldbname");
