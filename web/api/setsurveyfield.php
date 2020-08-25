@@ -26,7 +26,7 @@ if(count($updates_array) > 0 ){
     $db->DoQuery($query);
     $row = $db->FetchRow();
     $lmd = $row['md'];
-	$query = "select id from welllogs where startmd > $lmd and endmd <= $lmd limit 1";
+	$query = "select id from welllogs where endmd <= $lmd order by endmd desc limit 1";
 	$db->DoQuery($query);
 	$row = $db->FetchRow();
 	$wellogid = $row['id'];
