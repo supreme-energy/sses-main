@@ -29,7 +29,7 @@ if(count($updates_array) > 0 ){
 	$query = "select id from welllogs where endmd <= $lmd order by endmd desc limit 1";
 	$db->DoQuery($query);
 	$row = $db->FetchRow();
-	$wellogid = $row['id'];
+	$welllogid = $row['id'];
 	if($welllogid && count($welllog_updates) > 0) {
 	  $query = "update welllogs set ".implode($welllog_updates, ',')." where id=$welllogid";	
 	  $db->DoQuery($query);
