@@ -1,5 +1,6 @@
 <?php 
 function initializeFirstTimePas($db, $db2){    
+    
     $bit_depth_query = "select * from surveys order by md asc limit 1";
     $db->DoQuery($bit_depth_query);
     $last_survey_or_bit = $db->FetchRow();
@@ -8,6 +9,11 @@ function initializeFirstTimePas($db, $db2){
     $db->DoQuery($proj_dip_query);
     $db->FetchRow();
     $proj_dip = $db->FetchField("projdip");
+    $dl_flag_query = "select * from wellplan where DL >= 6 order by md ASC limit 1";
+    $db->DoQuery($dl_flag_query);
+    $dl_md = $db->FetchRow();
+    $pre_dl_count = ceil(($dl_md['md'] - ($last_depth+100))/1000);
+    $pre_dl_move = ($dl_md['md'] - ($last_depth+100))/$pre_dl_count; 
     $well_plan_query = "select * from wellplan order by md ASC";
     $db->DoQuery($well_plan_query);
     $step = 'pa1';
@@ -15,18 +21,39 @@ function initializeFirstTimePas($db, $db2){
     $pa_count = 0;
     $prev_row = $last_survey_or_bit;
     
+    
     while($row = $db->FetchRow()){
         $curwp_md = $db->FetchField('md');
-        $curwp_inc = $db->FetchField('inc');
+        $curwp_inc = $db->FetchField('inc');        
         $vs = $db->FetchField('vs');
         if($step == 'pa1'){
             if($curwp_md > $last_depth+100){
                 addProjection($prev_row, $row, $db2, $proj_dip);
-                $pa_count++;
-                $step = 'pa2';
+                $pa_count++;                
+                $step = 'pa2b';
+                $last_dl_depth = $last_depth;
                 $prev_row = $row;
             }
-        }else if($step == 'pa2'){
+        } else if($step == 'pa2b'){
+            if($curwp_md > $last_dl_depth+$pre_dl_move){
+                addProjection($prev_row, $row, $db2, $proj_dip);
+                $pa_count++;
+                $step = 'pa2b';
+                $last_dl_depth = $curwp_md;
+                $prev_row = $row;
+            }
+            if($pa_count >= $pre_dl_count+1){
+                if ($curwp_inc <= 35 && $curwp_inc >= 25){
+                    $step = 'pa3';
+                } else if($curwp_inc <= 65 && $curwp_inc >= 55){
+                    $step = 'pa4';
+                } else if($curwp_inc <= 98 && $curwp_inc >= 82){
+                    $step = 'pa5';
+                } else {
+                    $step = 'pa2';
+                }
+            }
+        } else if($step == 'pa2'){        
             if ($curwp_inc <= 35 && $curwp_inc >= 25){
                 addProjection($prev_row, $row, $db2, $proj_dip);
                 $pa_count++;
@@ -64,7 +91,7 @@ function initializeFirstTimePas($db, $db2){
                 $pa_count++;
             }
         }
-        if($pa_count > 8){
+        if(($pa_count -$pre_dl_count)  > 8){
             break;
         }
     }
