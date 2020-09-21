@@ -48,6 +48,9 @@
  curl_setopt($process, CURLOPT_USERPWD, $up);
  curl_setopt($process, CURLOPT_TIMEOUT, 30);
  curl_setopt($process, CURLOPT_RETURNTRANSFER, TRUE);
+ curl_setopt($process, CURLOPT_SSL_VERIFYHOST, 0);
+ curl_setopt($process, CURLOPT_SSL_VERIFYPEER, 0);
+ 
  $return = curl_exec($process);
  curl_close($process);
  header("Location: gva_tab1.php?seldbname=$seldbname&currtab=4");
