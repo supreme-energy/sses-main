@@ -5,8 +5,8 @@
 //	NOTICE: This file is solely owned by Supreme Source Energy Services, Inc. You may NOT modify, copy,
 //	or distribute this file in any manner without written permission of Supreme Source Energy Services, Inc.
 
-if($seldbname==""||$seldbname==null) $seldbname=$_GET['seldbname'];
-if($title==""||$title==null) $title=$_GET['title'];
+if($seldbname==""||$seldbname==null) $seldbname=$_REQUEST['seldbname'];
+if($title==""||$title==null) $title=$_REQUEST['title'];
 require_once("dbio.class.php");
 $db=new dbio($seldbname);
 $db->OpenDb();
@@ -21,16 +21,21 @@ include("readappinfo.inc.php");
 if($lastptype!="")	$ptype=$lastptype;
 if($lastmtype!="")	$mtype=$lastmtype;
 
+$minvs = isset($_REQUEST['minvs'])? $_REQUEST['minvs'] : null;
+$maxvs = isset($_REQUEST['maxvs']) ? $_REQUEST['maxvs'] : null;
+$mintvd = isset($_REQUEST['mintvd']) ? $_REQUEST['mintvd'] : null;
+$maxtvd = isset($_REQUEST['maxtvd']) ? $_REQUEST['maxtvd'] : null;
 
 $db->DoQuery("SELECT * FROM splotlist WHERE ptype='$ptype' AND mtype='$mtype';");
 if($db->FetchRow()) {
-	$inputa=$db->FetchField("inputa");
+	$inputa= $db->FetchField("inputa");
 	$yscale=$db->FetchField("inputb");
-	$mintvd=$db->FetchField("mintvd");
-	$maxtvd=$db->FetchField("maxtvd");
-	$minvs=$db->FetchField("minvs");
-	$maxvs=$db->FetchField("maxvs");
+	if($mintvd == null) $mintvd=$db->FetchField("mintvd");
+	if($maxtvd == null) $maxtvd=$db->FetchField("maxtvd");
+	if($minvs == null) $minvs=$db->FetchField("minvs");
+	if($maxvs == null) $maxvs=$db->FetchField("maxvs");
 }
+
 $db->CloseDb();
 if ($ptype=="POL") {
 	$program="surveyplotpolar.php";
