@@ -81,6 +81,7 @@ exec("./sses_ps -d $seldbname $args");
 
 // exec("./sses_ps -d $seldbname -t lat -c $cutoff -p $projection -o $imgfn1 -h 1536 -w 2048");
 $imgfn5="tmp/$seldbname.surveyplotcl.png";
+$imgfn5_final = "tmp/".$now->format('Y-m-d_H-i-s_T')."_".$seldbname."surveyplotcl.png";
 if(file_exists($imgfn5)) unlink($imgfn5);
 
 $args=" -t hor";
@@ -90,7 +91,7 @@ $args=$args." -h 698";
 $args=$args." -w 1148";
 $retstr = array(); $retval = 0;
 exec("./sses_ps -d $seldbname $args",$retstr,$retval);
-
+copy($imgfn5, $imgfn5_final);
 class PDF extends FPDF
 {
 	var $db;
@@ -619,14 +620,18 @@ $pdf->PlotImage();
 $pdf->ReportSurveys();
 $pdf->ReportProjections();
 $pdf->ReportAnnos();
-$pdf->AddPage();
-$this->Image($imgfn5, 2.375, 0, 8.5, 8.25);
+#$pdf->AddPage();
+#$pdf->Image($imgfn5, 2.375, 0, 8.5, 8.25);
 $pdf->db->CloseDb();
 $pdf->db2->CloseDb();
 // if($tofile>0) $pdf->Output($filename, "F");
 // else $pdf->Output($filename, "I");
 
 $pdf->Output($filename, "F");
+
+$image_fn_final = str_replace('.pdf','.png', $filename);
+exec("convert -interlace none -density 300 -quality 100 $filename $image_fn_final");
+
 if($approve_send){
 	//echo "inserting into table";
 	$db = new dbio($seldbname);

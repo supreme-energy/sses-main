@@ -19,6 +19,14 @@ require_once("dbio.class.php");
 require_once('classes/WellInfo.class.php');
 require_once('classes/WitsmlData.class.php');
 require_once('classes/Reports.class.php');
+function check_phone_email($email){
+    $email_array = explode("@", $email);
+    if(ereg("^[0-9]*$", $email_array[0])){
+        return true;
+    }
+    return false;
+}
+
 function check_email_address($email) {
   // First, we check that there's one @ symbol, 
   // and that the lengths are right.
@@ -57,13 +65,29 @@ $domain_array[$i])) {
   }
   return true;
 }
+
+function sendphone(){
+    global $smtp_from, $subject, $smtp_server, $smtp_login, $smtp_password, $phone_contacts;
+    global $email_attach, $email_attach_2;
+    $updated_email = str_replace('.pdf','.png', $email_attach);
+    $to = implode(" ",$phone_contacts);
+    $email_attach_str = " -a '$updated_email' '$email_attach_2'";
+    $strcmd=sprintf("sendEmail -l /tmp/sendemail.log -f %s -t %s -u '%s' -s '%s' %s -xu '%s' -xp '%s' -o message-file='%s'",
+            $smtp_from, $to, $subject, $smtp_server, $email_attach_str, $smtp_login, $smtp_password, $outfile);
+    $output=shell_exec($strcmd);
+    echo "$output";
+}
+
 function sendmail($vt) {
 	global $smtp_from, $to, $subject, $smtp_server, $smtp_login, $smtp_password, $outfile,$las_filename;
-	global $email_attach,$filename_gamma_1,$filename_gamma_5;
+	global $email_attach,$filename_gamma_1,$filename_gamma_5, $email_attach_2;
 	if(file_exists("/tmp/sendemail.log")) exec(">/tmp/sendemail.log"); 
 	$email_attach_str="";
 	if($email_attach!=""){
 		$email_attach_str = " -a '".$email_attach."'";
+		if($email_attach_2!=""){
+		    $email_attach_str.= " '".$email_attach_2."'";
+		}
 	}
 	if($las_filename!="" && ($vt=='all'||$vt=='las_report_1'||$vt=='las_report_2')){
 		$email_attach_str .= " '".$las_filename."'";
@@ -90,11 +114,13 @@ function sendmail($vt) {
 $now = new DateTime();
 $seldbname=$_POST['seldbname'];
 $email_attach=$_POST['email_attach'];
+$email_attach_2 = "";
 $gen_las = isset($_POST['las'])?$_POST['las']:0;
 $gen_1inch = isset($_POST['inch1gr'])?1:0;
 $gen_5inch = isset($_POST['inch5gr'])?1:0;
 $program=$_POST['program'];
 $filename=$_POST['filename'];
+$filename_cl = "tmp/$seldbname.surveyplotcl.png";
 $filename=str_replace($seldbname,$now->format('Y-m-d_H-i-s_T')."_".$seldbname,$filename);
 //$messagein=html_entity_decode($_POST['message']);
 $messagein=trim($_POST['message']);
@@ -188,8 +214,12 @@ if(strlen($program)>0 && file_exists($program)) {
 	}
 	echo "done\n";
 	if(file_exists($filename)) {
-		echo "Attaching report $filename to email\n";
+		echo "Attaching report $filename to email\n";		
 		$email_attach=$filename;
+	}
+	if(file_exists($filename_cl)){
+	    echo "Attaching report $filename_cl to email\n";
+	    $email_attach_2 = $filename_cl;
 	}
 }
 
@@ -259,6 +289,7 @@ if($gen_5inch){
 	$pdf->Output($filename_gamma_5, "F");
 }
 $contacts=array();
+$phone_contacts=array();
 $contacts_variance=array("all"=>array("emails"=>array(),"filename"=>""),
 						 "none"=>array("emails"=>array(),"filename"=>""),
 						 "las"=>array("emails"=>array(),"filename"=>""),
@@ -277,49 +308,52 @@ while($db->FetchRow()) {
 	$r2 = $db->FetchField("report_2");
 	if(strlen($c)>1) {
 		if(check_email_address($c)==true) {
-			$contacts[]="'$c'";
-			if(!$las && !$r1 && !$r2){
-				$contacts_variance['none']["emails"][]="'$c'";
-				if($contacts_variance['none']["filename"]==""){
-					$contacts_variance['none']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}elseif($las && !$r1 && !$r2){
-				$contacts_variance['las']["emails"][]="'$c'";
-				if($contacts_variance['las']["filename"]==""){
-					$contacts_variance['las']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}elseif(!$las && $r1 && !$r2){
-				$contacts_variance['report_1']["emails"][]="'$c'";
-				if($contacts_variance['report_1']["filename"]==""){
-					$contacts_variance['report_1']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}elseif(!$las && !$r1 && $r2){
-				$contacts_variance['report_2']["emails"][]="'$c'";
-				if($contacts_variance['report_2']["filename"]==""){
-					$contacts_variance['report_2']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}elseif($las && $r1 && !$r2){
-				$contacts_variance['las_report_1']["emails"][]="'$c'";
-				if($contacts_variance['las_report_1']["filename"]==""){
-					$contacts_variance['las_report_1']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}elseif($las && !$r1 && $r2){
-				$contacts_variance['las_report_2']["emails"][]="'$c'";
-				if($contacts_variance['las_report_2']["filename"]==""){
-					$contacts_variance['las_report_2']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}elseif(!$las && $r1 && $r2){
-				$contacts_variance['report_1_2']["emails"][]="'$c'";
-				if($contacts_variance['report_1_2']["filename"]==""){
-					$contacts_variance['report_1_2']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			} else {
-				$contacts_variance['all']["emails"][]="'$c'";
-				if($contacts_variance['all']["filename"]==""){
-					$contacts_variance['all']["filename"]=tempnam("/tmp", $seldbname);
-				}
-			}
-			
+		    if(check_phone_email($c)){
+		        $phone_contacts[] ="'$c'";
+		    } else {
+    			$contacts[]="'$c'";
+    			if(!$las && !$r1 && !$r2){
+    				$contacts_variance['none']["emails"][]="'$c'";
+    				if($contacts_variance['none']["filename"]==""){
+    					$contacts_variance['none']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}elseif($las && !$r1 && !$r2){
+    				$contacts_variance['las']["emails"][]="'$c'";
+    				if($contacts_variance['las']["filename"]==""){
+    					$contacts_variance['las']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}elseif(!$las && $r1 && !$r2){
+    				$contacts_variance['report_1']["emails"][]="'$c'";
+    				if($contacts_variance['report_1']["filename"]==""){
+    					$contacts_variance['report_1']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}elseif(!$las && !$r1 && $r2){
+    				$contacts_variance['report_2']["emails"][]="'$c'";
+    				if($contacts_variance['report_2']["filename"]==""){
+    					$contacts_variance['report_2']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}elseif($las && $r1 && !$r2){
+    				$contacts_variance['las_report_1']["emails"][]="'$c'";
+    				if($contacts_variance['las_report_1']["filename"]==""){
+    					$contacts_variance['las_report_1']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}elseif($las && !$r1 && $r2){
+    				$contacts_variance['las_report_2']["emails"][]="'$c'";
+    				if($contacts_variance['las_report_2']["filename"]==""){
+    					$contacts_variance['las_report_2']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}elseif(!$las && $r1 && $r2){
+    				$contacts_variance['report_1_2']["emails"][]="'$c'";
+    				if($contacts_variance['report_1_2']["filename"]==""){
+    					$contacts_variance['report_1_2']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			} else {
+    				$contacts_variance['all']["emails"][]="'$c'";
+    				if($contacts_variance['all']["filename"]==""){
+    					$contacts_variance['all']["filename"]=tempnam("/tmp", $seldbname);
+    				}
+    			}
+		    }
 		} else {
 			echo "Email address not valid:$c\n";
 		}
@@ -349,6 +383,10 @@ foreach($contacts_variance as $variant=>$contact){
 		if($to!="") sendmail($variant);
 		unlink($outfile);
 	}
+}
+
+if(count($phone_contacts) > 0 && $program == 'surveyplotlat.php'){
+    sendphone();
 }
 //if($handle!=NULL) {
 //	fwrite($handle, "<html><body style='color:#050505'>".$messagein."</body></html>");
