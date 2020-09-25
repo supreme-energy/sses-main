@@ -80,7 +80,16 @@ exec("./sses_ps -d $seldbname $args");
 // echo "<pre>\n"; foreach($retstr as $rs) { echo "$rs\n"; } echo "</pre>";
 
 // exec("./sses_ps -d $seldbname -t lat -c $cutoff -p $projection -o $imgfn1 -h 1536 -w 2048");
+$imgfn5="tmp/$seldbname.surveyplotcl.png";
+if(file_exists($imgfn5)) unlink($imgfn5);
 
+$args=" -t hor";
+if(isset($cutoff) and strlen($cutoff))	$args=$args." -c $cutoff";
+$args=$args." -o $imgfn5";
+$args=$args." -h 698";
+$args=$args." -w 1148";
+$retstr = array(); $retval = 0;
+exec("./sses_ps -d $seldbname $args",$retstr,$retval);
 
 class PDF extends FPDF
 {
@@ -378,6 +387,8 @@ class PDF extends FPDF
 				$tf = $this->db->FetchField('tf');
 				if(!$tf){
 					$tf='-';
+				} else{
+				    $tf = sprintf("%0.2f", $tf);
 				}
 				$svytot=$tot;
 				$svybot=$bot;
@@ -608,6 +619,8 @@ $pdf->PlotImage();
 $pdf->ReportSurveys();
 $pdf->ReportProjections();
 $pdf->ReportAnnos();
+$pdf->AddPage();
+$this->Image($imgfn5, 2.375, 0, 8.5, 8.25);
 $pdf->db->CloseDb();
 $pdf->db2->CloseDb();
 // if($tofile>0) $pdf->Output($filename, "F");
