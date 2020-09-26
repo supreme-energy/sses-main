@@ -229,7 +229,7 @@
 		        $line=trim($line);
 		        $line=preg_replace( '/\s+/', ',', $line );
 		        $r = explode(",", $line);
-		        if($r[0]=='GAMA.API'){
+		        if($r[0]=='GAMA.API' || $r[0]=='GR_MWD.API'){
 		            array_push($final, 'GR');
 		        } else if($r[0]=='DEPT.ft') {
 		            array_push($final,'Mdepth');
