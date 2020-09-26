@@ -74,13 +74,13 @@ function sendphone(){
     foreach($phone_contact as $pc){
         $email_attach_str = " -a '$updated_email'";
         $strcmd=sprintf("sendEmail -l /tmp/sendemail.log -f %s -t %s -u '%s' -s '%s' %s -xu '%s' -xp '%s' -m ''",
-            $smtp_from, $to, $subject, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
+            $smtp_from, $pc, $subject, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
         $output=shell_exec($strcmd);
         echo "$output";
         $sub2 ="$subject horizontal plot";
         $email_attach_str = " -a '$email_attach_2'";
         $strcmd=sprintf("sendEmail -l /tmp/sendemail.log -f %s -t %s -u '%s' -s '%s' %s -xu '%s' -xp '%s' -m ''",
-          $smtp_from, $to, $sub2, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
+          $smtp_from, $pc, $sub2, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
         $output=shell_exec($strcmd);
         echo "$output";
      }     
