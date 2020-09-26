@@ -71,7 +71,7 @@ function sendphone(){
     global $email_attach, $email_attach_2;
     $updated_email = str_replace('.pdf','.png', $email_attach);
     $to = implode(" ",$phone_contacts);
-    foreach($phone_contact as $pc){
+    foreach($phone_contacts as $pc){
         $email_attach_str = " -a '$updated_email'";
         $strcmd=sprintf("sendEmail -l /tmp/sendemail.log -f %s -t %s -u '%s' -s '%s' %s -xu '%s' -xp '%s' -m ''",
             $smtp_from, $pc, $subject, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
