@@ -35,6 +35,8 @@ float height, width;
 float forcedheight, forcedwidth;
 float forcedmintvd, forcedmaxtvd;
 float forcedminvs, forcedmaxvs;
+float forcedminew, forcedmaxew;
+float forcedminns, forcedmaxns;
 float elev_ground, elev_rkb;
 
 float labeling_start=0;
@@ -1331,7 +1333,11 @@ void setScaling(void) {
 	if(forcedmaxtvd<99900.0&&forcedmaxtvd>-99900.0)	maxtvd=forcedmaxtvd;
 	if(forcedminvs<99900.0&&forcedminvs>-99900.0)	minvs=forcedminvs;
 	if(forcedmaxvs<99900.0&&forcedmaxvs>-99900.0)	maxvs=forcedmaxvs;
-
+	if(forcedminew<99900.0&&forcedminew>-99900.0)	minew=forcedminew;
+	if(forcedmaxew<99900.0&&forcedmaxew>-99900.0)	maxew=forcedmaxew;
+	if(forcedminns<99900.0&&forcedminns>-99900.0)	minns=forcedminns;
+	if(forcedmaxns<99900.0&&forcedmaxns>-99900.0)	maxns=forcedmaxns;
+	
 	if(plotType==PLOTTYPE_VS) {
 		yscale1=((maxvs-minvs)*yfactor)/scaleright;
 		yscale2=((maxtvd-mintvd)*yfactor)/scaleright;
@@ -1564,7 +1570,7 @@ void barfAndDie(char* progname) {
 	{-h forced height}\n\
 	{-w forced width}\n\
 	{-tvd1 forcedMinTVD}\n\
-	{-tvd2 forcedMaxTVD}\n\
+	{-tvd2 forcedMaxTVD}\n\	
 	{-vs1 forcedMinVS}\n\
 	{-vs2 forcedMaxVS}\n\
 	{-f font size}\n\
@@ -1639,8 +1645,9 @@ int main(int argc, char * argv[])
 	for(i=0;i<MAX_TARGETS;i++)
 		strcpy(targetfn[i], "\0");
 	forcedwidth=forcedheight=-1;
-	forcedmintvd=forcedminvs=-999990.0;
-	forcedmaxtvd=forcedmaxvs=999999.0;
+	forcedminew=forcedminns=forcedmintvd=forcedminvs=-999990.0;
+	forcedmaxew=forcedmaxns=forcedmaxtvd=forcedmaxvs=999999.0;
+	
 	strcpy(transparent, " \0");
 
 	if(argc<4)	barfAndDie(argv[0]);
@@ -1678,6 +1685,14 @@ int main(int argc, char * argv[])
 			forcedminvs=atof(argv[++i]);
 		else if(!strcmp(argv[i], "-vs2"))
 			forcedmaxvs=atof(argv[++i]);
+		else if(!strcmp(argv[i], "-minew"))
+			forcedminew=atof(argv[++i]);
+		else if(!strcmp(argv[i], "-maxew"))
+			forcedmaxew=atof(argv[++i]);
+		else if(!strcmp(argv[i], "-minns"))
+			forcedminns=atof(argv[++i]);
+		else if(!strcmp(argv[i], "-maxns"))
+			forcedmaxns=atof(argv[++i]);
 		else if(!strcmp(argv[i], "-yscale"))
 			yfactor=atof(argv[++i]);
 		else if(!strcmp(argv[i], "-f"))
