@@ -239,6 +239,7 @@
 		        } else if($r[0] && ($r[0]!='~Ascii' || $r[0]!='~Log_Data')){		            
 		            array_push($final,$r[0]);		            
 		        }
+		        if(stristr($line, "~Log_Data")==false) break;		       
 		    } while(stristr($line, "~A")==FALSE);
 		    
 		    fclose($infile);		    
