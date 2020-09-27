@@ -234,7 +234,7 @@
 		        if($r[0]=='GAMA.API' || $r[0]=='GR_MWD.API' ||
 		            $r[0] == 'Gamma_Ray' || $r['Gamma']){
 		            array_push($final, 'GR');
-		        } else if($r[0]=='DEPT.ft') {
+		        } else if($r[0]=='DEPT.ft' || $r[0]=='DEPTH') {
 		            array_push($final,'Mdepth');
 		        } else if($r[0] && ($r[0]!='~Ascii' || $r[0]!='~Log_Data')){		            
 		            array_push($final,$r[0]);		            
