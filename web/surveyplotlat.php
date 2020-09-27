@@ -20,6 +20,10 @@ if(strlen($maxtvd)<=0)	$maxtvd=$_GET['maxtvd'];
 if(strlen($minvs)<=0)	$minvs=$_GET['minvs'];
 if(strlen($maxvs)<=0)	$maxvs=$_GET['maxvs'];
 if(strlen($yscale)<=0)	$yscale=$_GET['yscale'];
+if(strlen($minew)<=0)	$minew=$_GET['minew'];
+if(strlen($maxew)<=0)	$maxew=$_GET['maxew'];
+if(strlen($minns)<=0)	$minns=$_GET['minns'];
+if(strlen($maxns)<=0)	$maxns=$_GET['maxns'];
 if($cutoff=="")	$cutoff=0;
 $approve_send = isset($_REQUEST['approve_report'])? true:false;
 include "generatepdfimageleft.php";
@@ -89,6 +93,10 @@ if(isset($cutoff) and strlen($cutoff))	$args=$args." -c $cutoff";
 $args=$args." -o $imgfn5";
 $args=$args." -h 698";
 $args=$args." -w 1148";
+if(strlen($minew))	$args=$args." -minew $minew";
+if(strlen($maxew))	$args=$args." -maxew $maxew";
+if(strlen($minns))	$args=$args." -minns $minns";
+if(strlen($maxns))	$args=$args." -maxns $maxns";
 $retstr = array(); $retval = 0;
 exec("./sses_ps -d $seldbname $args",$retstr,$retval);
 copy($imgfn5, $imgfn5_final);
@@ -389,7 +397,13 @@ class PDF extends FPDF
 				if(!$tf){
 					$tf='-';
 				} else{
-				    $tf = sprintf("%0.2f", $tf);
+				    $ntf = sprintf("%0.2f", $tf);
+				    if(strpos('R', $tf) !== false){				    
+    				    $ntf .= "R";
+				    } else {
+				        $ntf .= "L";
+				    }
+				    $tf = $ntf;
 				}
 				$svytot=$tot;
 				$svybot=$bot;
