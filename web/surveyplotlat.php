@@ -397,7 +397,7 @@ class PDF extends FPDF
 				if(!$tf){
 					$tf='-';
 				} else{
-				    $rl = substr($rf, -1);
+				    $rl = substr($tf, -1);
 				    $tf = sprintf("%0.2f", $tf).$rl;
 				}
 				$svytot=$tot;
