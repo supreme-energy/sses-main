@@ -221,6 +221,8 @@
 		            echo json_encode(array('status'=>'error', 'message'=>"End of file looking for ~A data section"));
 		            exit;
 		        }
+		        if(stristr($line, "~Curve")==false) break;
+		        if(stristr($line, "~Log_Definition")==false) break;		        
 		    } while(stristr($line, "~Curve")==FALSE);
 		    
 		    $final = array();
@@ -230,11 +232,11 @@
 		        $line=preg_replace( '/\s+/', ',', $line );
 		        $r = explode(",", $line);
 		        if($r[0]=='GAMA.API' || $r[0]=='GR_MWD.API' ||
-		            $r[0] == 'Gamma_Ray'){
+		            $r[0] == 'Gamma_Ray' || $r['Gamma']){
 		            array_push($final, 'GR');
 		        } else if($r[0]=='DEPT.ft') {
 		            array_push($final,'Mdepth');
-		        } else if($r[0] && $r[0]!='~Ascii'){
+		        } else if($r[0] && ($r[0]!='~Ascii' || $r[0]!='~Log_Data')){		            
 		            array_push($final,$r[0]);		            
 		        }
 		    } while(stristr($line, "~A")==FALSE);
@@ -256,7 +258,8 @@
 		        if($line==FALSE){
 		            echo json_encode(array('status'=>'error', 'message'=>"End of file looking for ~A data section"));
 		            exit;
-		        }
+		        }		        
+		        if(stristr($line, "~Log_Data")==false) break;	
 		    } while(stristr($line, "~A")==FALSE);
 		    $final = array();
 		    while($line=fgets($infile,1024)) {
