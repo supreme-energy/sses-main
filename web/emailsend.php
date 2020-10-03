@@ -77,12 +77,12 @@ function sendphone(){
             $smtp_from, $pc, $subject, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
         $output=shell_exec($strcmd);
         echo "$output";
-        $sub2 ="$subject horizontal plot";
-        $email_attach_str = " -a '$email_attach_2'";
-        $strcmd=sprintf("sendEmail -l /tmp/sendemail.log -f %s -t %s -u '%s' -s '%s' %s -xu '%s' -xp '%s' -m ''",
-          $smtp_from, $pc, $sub2, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
-        $output=shell_exec($strcmd);
-        echo "$output";
+      #  $sub2 ="$subject horizontal plot";
+      #  $email_attach_str = " -a '$email_attach_2'";
+      #  $strcmd=sprintf("sendEmail -l /tmp/sendemail.log -f %s -t %s -u '%s' -s '%s' %s -xu '%s' -xp '%s' -m ''",
+      #    $smtp_from, $pc, $sub2, $smtp_server, $email_attach_str, $smtp_login, $smtp_password);
+      #  $output=shell_exec($strcmd);
+      #  echo "$output";
      }     
 }
 
@@ -94,9 +94,9 @@ function sendmail($vt) {
 	if($email_attach!=""){
 	    $updated_email = str_replace('.pdf','.png', $email_attach);
 	    $email_attach_str = " -a '".$updated_email."'";
-		if($email_attach_2!=""){
-		    $email_attach_str.= " '".$email_attach_2."'";
-		}
+		#if($email_attach_2!=""){
+		#    $email_attach_str.= " '".$email_attach_2."'";
+		#}
 	}
 	if($las_filename!="" && ($vt=='all'||$vt=='las_report_1'||$vt=='las_report_2')){
 		$email_attach_str .= " '".$las_filename."'";
