@@ -276,11 +276,113 @@
 		    return $final;
 		}
 		
-		function prepare_las_data($sdepth=0,$edepth=100,$pass=1,$include_additional=false,$dip=false,$fault=false){
-			
+		function prepare_add_log_header(){
+		    $headers = $this->retreive_log_headers();
+		    $cols = array();		    
+		    $i=0;
+		    
+		    foreach($headers as $column){
+		        $edata = array();
+		        $mnemo =$column;
+		        if(isset($cols["$mnemo"])){
+		            continue;
+		        }
+		        array_push($edata,$i);		    
+		        $query ="select * from edatalogs where label='".$column."';";
+		        $this->db->DoQuery($query);
+		        $row = $this->db->FetchRow();
+		        if($row){
+		            array_push($edata,$row['tablename']);
+		        } else {
+		            array_push($edata,'SKIP');
+		        }
+		        array_push($edata,$i);
+		        $cols["$mnemo"]=$edata;
+		        $i++;
+		    }
+		    return $cols;
+		}
+		
+		function prepare_vsgrtvd_data($csv_data, $cols){
+		    $use_data = $this->drop_empties($csv_data,$cols);
+		    if(count($use_data)==0){
+		        $smooth_range =count($csv_data);
+		    }
+		    if(!$this->current_r_survery || !$this->first_r_survey ){
+		        $this->simple_load_last_current();
+		    }		    
+		    $tvdr = $this->smooth_range($this->first_r_survey['tvd'],$this->current_r_survey['tvd'],$smooth_range);		    
+		    $vsr  = $this->smooth_range($this->first_r_survey['vs'],$this->current_r_survey['vs'], $smooth_range);
+		    $query= "select tablename from welllogs where endmd <= ".$this->first_r_survey['md']." order by endmd desc limit 1";
+		    $this->db->DoQuery($query);
+		    $row = $this->db->FetchRow();
+		    $query = "select value from ".$row['tablename']." order by md desc limit 1";
+		    $this->db->DoQuery($query);
+		    $row = $this->db->FetchRow();
+		    $intlgr = $row['value'];
+		    if($this->raw_request['debug']){
+		        print_r($use_data);
+		    }
+		    $grr  = $this->smooth_gr($use_data,$cols,$intlgr);
+		    return [$grr, $vsr, $tvdr];
+		}
+		
+		function import_add_data(){
+		    $this->db->OpenDb();
+		    $cols = $this->prepare_add_log_header();
+		    
+		    $query = "select * from surveys where plan = 0 order by md desc limit 1";
+		    $this->db->DoQuery($query);
+		    $lastsurvey = $this->db->FetchRow();
+		    $sdepth = $this->aisd;
+		    $edepth = $lastsurvey['md'];
+		    $csv_data = $this->retrieve_log_file($sdepth,$edepth);
+		    [$grr, $vsr, $tvdr ] = $this->prepare_vsgrtvd_data($csv_data, $cols);
+		    $curpos=0;
+		    foreach($csv_data as $delement){		    
+		        $val = implode(',',$delement);
+		        array_push($rawdata_ar,$val);
+		        $exploded = $delement;
+		        $md =  $exploded[$cols['Mdepth'][2]];
+		        if(!$md){$md = $exploded[$cols['DEPTH'][2]];}
+		        if(!$md){$md = $exploded[$cols['TOT_DPT_MD'][2]];}
+		        $val = round($grr[$curpos],2);
+		        $vs = round($vsr[$curpos],2);
+		        $tvd =$tvdr[$curpos];
+		        $curpos++;
+		        foreach($cols as $edata_log){
+		            $edatalog_tn = $edata_log[1];
+		            if($edatalog_tn == 'SKIP') continue; 
+		            $edlog_val = $exploded[$edata_log[2]];
+		            $query = "select * from \"$edatalog_tn\" where md=$md and tvd=$tvd and vs=$vs and value=$edlog_val";
+		            $this->db->DoQuery($query);
+		            if(!$this->db->FetchRow()){
+		                $this->db->DoQuery("BEGIN TRANSACTION;");
+		                if($edlog_val){
+		                    $query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
+		                    //echo $query."\n";
+		                    $result = $this->db->DoQuery($query);
+		                    if($result==FALSE) {
+		                        //echo "rollback";
+		                        $this->db->DoQuery("ROLLBACK;");
+		                    }
+		                }
+		                $this->db->DoQuery("COMMIT;");
+		            }
+		        }
+		    }
+		    $this->db->DoQuery("COMMIT;");
+		    exec(__DIR__ ."/../sses_gva -d ".$this->db_name);
+		    exec(__DIR__ ."/../sses_cc -d ".$this->db_name);
+		    exec(__DIR__ ."/../sses_cc -d ".$this->db_name." -p");
+		    exec(__DIR__ ."/../sses_af -d $this->db_name"); 
+		}
+		
+		function prepare_las_data($sdepth=0,$edepth=100,$pass=1,$include_additional=false,$dip=false,$fault=false){		    
 		    $csv_data = $this->retrieve_log_file($sdepth,$edepth);
 			$headers = $this->retreive_log_headers();
-												
+		    $new_count = 0;
+		    $run_indep_add = false;
 			if($this->debug){
 			    echo "headers data \n";
 			    print_r($headers);
@@ -307,6 +409,7 @@
 				if($row){
 					array_push($edata,$row['tablename']);
 				} else {
+				    $new_count++; 
 					$query = "insert into edatalogs (tablename,label,scalelo,scalehi,enabled,color) values ('edl_xxx','".$column."',0,300,0,'000000')";
 					$this->db->DoQuery($query);
 					$query = "select * from edatalogs where tablename='edl_xxx'";
@@ -328,12 +431,12 @@
 				$cols["$mnemo"]=$edata;
 				$i++;
 			}
-			
+			$run_indep_add = ((count($headers) != $new_count) && $new_count > 0);
 			$wllastquery = "select * from welllogs order by id desc limit 1";
-			$result = $this->db->DoQuery($wllastquery);
+			$this->db->DoQuery($wllastquery);
 			$lastwellog= $this->db->FetchRow();
 			$query = "select * from welllogs where startmd=$sdepth and endmd=$edepth";
-			$result=$this->db->DoQuery($query);
+			$this->db->DoQuery($query);
 			$welllogexists=$this->db->FetchRow();
 			if(!$welllogexists){
 				if($lastwellog){
@@ -420,10 +523,9 @@
 				foreach($cols as $edata_log){
 					$edatalog_tn = $edata_log[1];
 					$edlog_val = $exploded[$edata_log[2]];
-					//$query = "select * from \"$edatalog_tn\" where md=$md and tvd=$tvd and vs=$vs and value=$edlog_val";
-					//echo $query."\n";
-					//$this->db->DoQuery($query);
-					//if(!$this->db->FetchRow()){
+					$query = "select * from \"$edatalog_tn\" where md=$md and tvd=$tvd and vs=$vs and value=$edlog_val";					
+					$this->db->DoQuery($query);
+					if(!$this->db->FetchRow()){
 					$this->db->DoQuery("BEGIN TRANSACTION;");
 						if($edlog_val){
 							$query = "insert into \"$edatalog_tn\" (md,tvd,vs,value) values ($md,$tvd,$vs,$edlog_val)";
@@ -435,7 +537,7 @@
 							}
 						}
 					$this->db->DoQuery("COMMIT;");						
-					//}
+					}
 				}
 			}
 			$this->db->DoQuery("COMMIT;");
@@ -504,6 +606,7 @@
 			exec(__DIR__ ."/../sses_cc -d ".$this->db_name." -p");
 			exec(__DIR__ ."/../sses_af -d $this->db_name"); 
 			$this->db->CloseDb();
+			return $run_indep_add;
 		}
 	function cleanup_data($cleanup_surveys){
 	   $grp_id = false;
@@ -720,11 +823,15 @@
    	$queryl = "select * from surveys  where plan=0 order by md desc limit 1 offset 1";
    	$this->db->DoQuery($queryl);
    	$this->last_r_survey=$this->db->FetchRow();
+   	$queryl = "select * from surveys  where plan=0 order by md asc limit 1 offset 1";
+   	$this->db->DoQuery($queryl);
+   	$this->first_r_survey = $this->db->FetchRow();
    }
    
    function load_next_survey($load=false,$do_cleanup=false){
 			if($this->db_name){
 					$this->db->OpenDb();
+					$add_needs_reload = false;
 					$surveys = $this->get_survey_from_file();
 					if($this->debug){
 					    print 'outputing survey data'."\n";
@@ -805,7 +912,7 @@
 		   							" and inc=$inc";
 		   							$this->db->DoQuery($nfquery);
 		   							$this->current_r_survey = $this->db->FetchRow();
-									$this->prepare_las_data($lastmd,$md);
+									$add_needs_reload = $this->prepare_las_data($lastmd,$md);
 								}
 								$new_survey_found=true;
 								break;
@@ -815,15 +922,15 @@
 
 				   	if($new_survey_found)
 					{
-				   		return array("next_survey"=>true,"md"=>$md,"inc"=>$inc,"azm"=>$azm,"cleanup_occured"=>$cleanup_occured,"cmes"=>$cleanup_message);
+					    return array("next_survey"=>true,"md"=>$md,"inc"=>$inc,"azm"=>$azm,"cleanup_occured"=>$cleanup_occured,"cmes"=>$cleanup_message, "add_reload" => $add_needs_reload);
 				   	}
 					else
 					{
-				   		return array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"cleanup_occured"=>$cleanup_occured,"cmes"=>$cleanup_message);;
+					    return array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"cleanup_occured"=>$cleanup_occured,"cmes"=>$cleanup_message, "add_reload" => $add_needs_reload);;
 				   	}
 	   				
 			}else{
-   				return array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"msg"=>'Polaris connection error');;
+   				return array("next_survey"=>false,"md"=>'',"inc"=>'',"azm"=>'',"msg"=>'Polaris connection error', "add_reload" => $add_needs_reload);;
    			}
 		}
 	}
