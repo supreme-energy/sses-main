@@ -324,7 +324,7 @@
 		        print_r($use_data);
 		    }
 		    $grr  = $this->smooth_gr($use_data,$cols,$intlgr);
-		    return [$grr, $vsr, $tvdr];
+		    return array($grr, $vsr, $tvdr);
 		}
 		
 		function import_add_data(){
