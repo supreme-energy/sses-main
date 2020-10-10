@@ -337,7 +337,7 @@
 		    $sdepth = $this->aisd;
 		    $edepth = $lastsurvey['md'];
 		    $csv_data = $this->retrieve_log_file($sdepth,$edepth);
-		    [$grr, $vsr, $tvdr ] = $this->prepare_vsgrtvd_data($csv_data, $cols);
+		    list($grr, $vsr, $tvdr) = $this->prepare_vsgrtvd_data($csv_data, $cols);
 		    $curpos=0;
 		    foreach($csv_data as $delement){		    
 		        $val = implode(',',$delement);
