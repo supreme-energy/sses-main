@@ -22,7 +22,10 @@
  			"logscale"  => $db->FetchField('logscale'),
  			"enabled"    => $db->FetchField('enabled'),
  			"color"  => $db->FetchField('color'),
- 	        "single_plot" => $db->FetchField('single_plot')
+ 	        "single_plot" => $db->FetchField('single_plot'),
+     	    "group_number" => $db->FetchField('group_number'),
+     	    "scale" => $db->FetchField("scale"),
+     	    "bias"  => $db->FetchField("bias")
  	);
  	if($with_data){
  		include("read_edata_log.include.php");
