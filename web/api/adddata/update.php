@@ -20,6 +20,7 @@ if(strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
 if ($id == 0){ echo json_encode(array("status"=>"failed", "message" => "id is required")); }
 if (count($updates_array) > 0) {
     $query = "update edatalogs set " . implode($updates_array, ',') . " where id=$id";
+    echo($query);
     $db->DoQuery($query);
 }
 exec ("../../sses_af -d $seldbname");
