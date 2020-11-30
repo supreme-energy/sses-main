@@ -7,7 +7,8 @@ $field_names = array(
     'color',
     'logscale',
     'enabled',
-    'single_plot'
+    'single_plot',
+    'group_number'
 );
 $updates_array = array();
 $id = 0;
