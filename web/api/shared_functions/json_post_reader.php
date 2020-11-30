@@ -26,11 +26,7 @@ function jsonPostReader($json, $allowed){
             if($key == 'sectdip' ){
                 $query_field_name = 'dip';
             }
-            if($key == 'group_number' && $value = ''){
-                $updates_array[$query_field_name] = "$query_field_name = null";
-            } else {
-                $updates_array[$query_field_name] = "$query_field_name = '$value'";
-            }
+            $updates_array[$query_field_name] = "$query_field_name = '".$value."'";
         }
     }
     return array($updates_array, $obj->id);
