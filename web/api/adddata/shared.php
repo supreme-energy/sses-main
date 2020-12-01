@@ -24,7 +24,9 @@ function addDataJson($id, $with_data){
             "color"  => $db->FetchField('color'),
             "single_plot" => $db->FetchField('single_plot'),
             "data_count"  => $data_count,
-            "group_number" => $db->FetchField('group_number')
+            "group_number" => $db->FetchField('group_number'),
+            "bias" => $db->FetchField('bias'),
+            "scale" =>  $db->FetchField('scale')
         );
         if($with_data){
             include("../read_edata_log.include.php");
