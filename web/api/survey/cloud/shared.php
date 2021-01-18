@@ -31,6 +31,7 @@
           return json_encode($next);
       }elseif($autorc_type=='lasfile'){
           require_once('../../../classes/LasFileConnection.class.php');
+          header('Content-type: application/json');
           $filename="/tmp/custom_import_$seldbname.las";
           $f2 = "/tmp/survey_import_$seldbname.las";
           $infile=file_exists ("$filename");
@@ -40,6 +41,9 @@
           } else {              
               $obj = new LasFileConnection($_REQUEST);
               $next = $obj->load_next_survey($do_load,$do_cleanup);
+              if($next['add_reload']){
+                  $obj->import_add_data();
+              }
           }
           return json_encode($next);
       }

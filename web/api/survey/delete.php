@@ -22,8 +22,13 @@
             $drop_querys .= "drop table ". $wlrow['tablename'].";";
             $del_querys .= "delete from welllogs where id = $welllogid;";
         }
+        $db->DoQuery("select * from edatalogs;");    
+        while($db->FetchRow()){
+            $tn = $db->FetchField('tablename');
+            $del_querys .="delete from \"$tn\" where md > $start_md;";
+        }        
         $db->DoQuery($del_querys);
-        $db->DoQuery($drop_querys);
+        $db->DoQuery($drop_querys);               
         $response = array("status"=>"success", "message"=>"survey deleted");
         exec("../../sses_gva -d $seldbname ");
         exec("../../sses_cc -d $seldbname");

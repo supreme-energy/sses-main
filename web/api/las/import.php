@@ -31,11 +31,8 @@ function import_from_stored_file($sdepth, $edepth, $seldbname){
             fputs($tempfile, "\n");
         }
     }
-    #$md = $data[0];
-    #$val = $data[1];
-    #$tvd = $data[4];
-    #$vs  = $data[5];
-    $columns = array(
+
+    array(
         'ROP.ft/hr',
         'ARPM.RPM',
         'RPM_W.RPM',

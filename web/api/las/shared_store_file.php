@@ -32,5 +32,57 @@ if(!$infile){
     echo json_encode(array("status" => "error", "message" => "file not found. Send again with file_check."));
     exit;
 }
+if($validate_las){
+    //GAMA.API
+    $found_gamma= false;
+    $in_data = false;
+    $in_headers = false;
+    $line_num = 1;
+    while (($line = fgets($infile)) !== false) {
+        if(stristr($line, "~Curve")==true){
+            $in_headers = true;
+        }
+        if($in_headers){
+            if(stristr($line,'GAMA.API')){
+                $found_gamma==true;
+            }
+        }
+        if(stristr($line, "~A")==true){
+            $in_data=true;
+            $in_headers=false;
+        }
+        if($in_data){
+            $res = explode(' ', $line);
+            foreach($res as $r){
+                if(!is_numeric($r)){
+                    fclose($infile);
+                    echo json_econde(array("status" => "error", "LAS File detected non numeric value at line ".$line_num));
+                    exit;
+                }
+            }
+        }
+        $line_num++;
+    }
+    if(!$found_gamma){
+        fclose($infile);
+        echo json_econde(array("status" => "error", "Gamma header not found in ~Curve, expected GAMA.API"));
+        exit;
+    }
+}
+if($validate_survey){    
+    $line_num = 1;
+    while (($line = fgets($infile)) !== false) {
+        $res = explode(',', $line);        
+        foreach($res as $r){
+            if(!is_numeric($r)){
+                fclose($infile);
+                echo json_econde(array("status" => "error", "Survey File detected non numeric value at line ".$line_num));
+                exit;
+            }
+        }
+        $line_num++;
+    }            
+}
+fclose($infile);
 echo json_encode(array("status" => "success", "message" => "file uploaded"));
 ?>
