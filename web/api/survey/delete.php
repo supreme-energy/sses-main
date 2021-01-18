@@ -15,8 +15,14 @@
          $tn = $db->FetchField('tablename');
          $del_querys .="delete from \"$tn\" where md > $start_md;";
      }
-     $db->DoQuery($del_querys);
-     $db->DoQuery($drop_querys);               
+     $del_array = explode(';', $del_querys);
+     foreach($del_array as $del_q){
+         $db->DoQuery($del_q);
+     }
+     $drop_array = explode(';', $drop_querys);
+     foreach($drop_array as $drop_q){
+         $db->DoQuery($drop_q);
+     }                    
  } 
  $id = $_REQUEST['id'];
  $query = "select * from surveys where plan=0 and id = " .$id;
