@@ -40,7 +40,7 @@
         delete_associated_data($db, $start_md, $cur_md);
         $response = array("status"=>"success", "message"=>"survey deleted");
     } else {
-        delete_associated_data($db, $cur_md, $cur_md*2);
+        delete_associated_data($db, $cur_md, strval(floatval($cur_md)*2));
         $response = array("status"=>"failed", "message"=>"cannot delete tie in row");
     }
     exec("../../sses_gva -d $seldbname ");
