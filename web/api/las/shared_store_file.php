@@ -56,7 +56,7 @@ if($validate_las){
             foreach($res as $r){
                 if(!is_numeric($r)){
                     fclose($infile);
-                    echo json_ecode(array("status" => "error", "LAS File detected non numeric value at line ".$line_num));
+                    echo json_encode(array("status" => "error", "LAS File detected non numeric value at line ".$line_num));
                     exit;
                 }
             }
@@ -65,7 +65,7 @@ if($validate_las){
     }
     if(!$found_gamma){
         fclose($infile);
-        echo json_ecode(array("status" => "error", "Gamma header not found in ~Curve, expected GAMA.API"));
+        echo json_encode(array("status" => "error", "Gamma header not found in ~Curve, expected GAMA.API"));
         exit;
     }
 }
