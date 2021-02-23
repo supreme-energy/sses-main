@@ -43,7 +43,7 @@ if($validate_las){
             $in_headers = true;
         }
         if($in_headers){
-            if(stristr($line,'GAMA.API')){
+            if(stristr($line,'GAMA.API') || stristr($line,'GR_MWD.API')){
                 $found_gamma==true;
             }
         }
@@ -56,7 +56,7 @@ if($validate_las){
             foreach($res as $r){
                 if(!is_numeric($r)){
                     fclose($infile);
-                    echo json_econde(array("status" => "error", "LAS File detected non numeric value at line ".$line_num));
+                    echo json_ecode(array("status" => "error", "LAS File detected non numeric value at line ".$line_num));
                     exit;
                 }
             }
@@ -65,7 +65,7 @@ if($validate_las){
     }
     if(!$found_gamma){
         fclose($infile);
-        echo json_econde(array("status" => "error", "Gamma header not found in ~Curve, expected GAMA.API"));
+        echo json_ecode(array("status" => "error", "Gamma header not found in ~Curve, expected GAMA.API"));
         exit;
     }
 }
