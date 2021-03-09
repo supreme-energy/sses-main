@@ -46,7 +46,7 @@ $db->CloseDb();
 		<button onclick="window.close()">Close</button>
 	</TD>
 	<td>
-	<FORM method='post' action='dbsaveas.php'>
+	<FORM method='post' action='advancedjobsaveas.php'>
 	<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 	<INPUT type='hidden' name='dbname' value='sgta_template'>
 	<INPUT type='hidden' name='newname' value='New Database'>
@@ -54,7 +54,7 @@ $db->CloseDb();
 	</FORM>
 	</td>
 	<td>
-	<FORM method='post' action='dbrestorebackup.php'>
+	<FORM method='post' action='advancedrestorefrombackup.php'>
 	<INPUT type='hidden' name='seldbname' value='<?echo $seldbname;?>'>
 	<INPUT type='submit' value='Create New Job From Backup' onclick="return ray.ajax()">
 	</FORM>
@@ -109,7 +109,7 @@ function OnDelete(rowform)
 	var r=confirm("Delete this database?");
 	if (r==true)
  	{
-		t = 'dbdelete.php';
+		t = 'advancedjobdelete.php';
 		t = encodeURI (t);
 		rowform.action = t;
 		rowform.submit();
