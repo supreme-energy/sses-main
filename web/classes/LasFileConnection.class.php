@@ -233,7 +233,7 @@
 		            $r[0]=='GR.API' ||
 		            $r[0] == 'Gamma_Ray' || $r[0] == 'Gamma'){
 		            array_push($final, 'GR');
-		        } else if($r[0]=='DEPT.ft' || $r[0]=='DEPTH') {
+		        } else if($r[0]=='DEPT.ft' || $r[0]=='DEPTH' || $r[0] == 'Depth.ft') {
 		            array_push($final,'Mdepth');
 		        } else if($r[0] && $r[0]!='~Ascii'){
 		            array_push($final,$r[0]);		            
